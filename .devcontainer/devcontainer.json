@@ -1,0 +1,30 @@
+{
+  "name": "Hugbo Dev Container",
+  "dockerComposeFile": "../docker-compose.yml",
+  "service": "backend",
+  "workspaceFolder": "/workspace",
+  "shutdownAction": "stopCompose",
+  "settings": {
+    "terminal.integrated.shell.linux": "/bin/bash"
+  },
+  "extensions": [
+    "vscjava.vscode-java-pack",
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode"
+  ],
+  "postCreateCommand": "npm install --prefix frontend",
+  "remoteEnv": {
+    "NODE_OPTIONS": "--openssl-legacy-provider"
+  },
+  "portsAttributes": {
+    "8080": {
+      "label": "Java Spring Boot",
+      "onAutoForward": "notify"
+    },
+    "3000": {
+      "label": "React Frontend",
+      "onAutoForward": "openBrowser"
+    }
+  },
+  "forwardPorts": [8080, 3000]
+}
