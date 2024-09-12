@@ -1,6 +1,12 @@
 # Stage 1: Build the React app using Node.js
 FROM node:18 AS build
 
+RUN apt-get update && apt-get install -y git
+
+# Copy the package.json and install dependencies
+COPY package*.json ./
+RUN npm install
+
 # Set the environment variable to handle OpenSSL issues
 ENV NODE_OPTIONS=--openssl-legacy-provider
 
