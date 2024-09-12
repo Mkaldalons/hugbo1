@@ -2,7 +2,7 @@
   "name": "Hugbo Dev Container",
   "dockerComposeFile": "../docker-compose.yml",
   "service": "backend",
-  "workspaceFolder": "/workspace",
+  "workspaceFolder": "/hugbo1",
   "shutdownAction": "stopCompose",
   "settings": {
     "terminal.integrated.shell.linux": "/bin/bash"
