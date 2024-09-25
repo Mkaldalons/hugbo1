@@ -2,6 +2,7 @@
 # idea stuff
 /.idea
 /.vscode
+/.mvn
 
 # dependencies
 /node_modules

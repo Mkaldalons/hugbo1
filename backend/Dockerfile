@@ -5,6 +5,8 @@ COPY pom.xml ./
 COPY src ./src
 RUN mvn clean package -DskipTests
 
+RUN apt-get update && apt-get install -y git
+
 # Stage 2: Use a lightweight JDK image to run the Spring Boot app
 FROM eclipse-temurin:17-jre
 WORKDIR /app
