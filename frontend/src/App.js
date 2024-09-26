@@ -1,35 +1,17 @@
 import React from 'react';
-import logo from './logo.svg';
+import NavBar from "./navBar.js";
 import './App.css';
-
-function MyButton() {
-  return (
-      <button>
-        I'm a button
-      </button>
-  );
-}
+import frontpage from "./frontPage.png"
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload. Or Not!
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-      <MyButton/>
-    </div>
-  );
+    return (
+        <div className="App">
+            <NavBar />
+            <div className="App-header">
+                <img src={frontpage} alt="frontpage"/>
+            </div>
+        </div>
+    );
 }
 
 export default App;

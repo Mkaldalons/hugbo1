@@ -1,31 +1,64 @@
+:root {
+  --primary-color: #4a90e2; /* Soft Blue */
+  --secondary-color: #50e3c2; /* Mint Green */
+  --accent-color: #f5a623; /* Bright Orange */
+  --text-color: #2c3e50; /* Dark Slate */
+  --background-color: #f7f9fc; /* Light Gray */
+  --hover-color: #f39c12; /* Vibrant Orange */
+  --nav-shadow: rgba(44, 62, 80, 0.15); /* Softer Shadow */
+}
+
 .App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  position: relative;
 }
 
-.App-link {
-  color: #61dafb;
+.nav-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  background-color: var(--primary-color);
+  position: fixed;
+  top: 0;
+  width: 100%;
+  box-shadow: 0 4px 6px var(--nav-shadow);
+  z-index: 1000;
+}
+
+.navBar-title {
+  color: var(--background-color);
+}
+
+.nav-logo img {
+  height: 40px;
+  filter: brightness(0) invert(1); /* Keeps the logo white */
+}
+
+.nav-icon {
+  display: flex;
+}
+
+.nav-icon-color {
+  background-color: var(--accent-color);
+  color: var(--background-color);
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.nav-icon-color:hover {
+  background-color: var(--hover-color); /* Brighter on hover */
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .nav-logo img {
+    animation: App-logo-spin infinite 20s linear;
+  }
 }
 
 @keyframes App-logo-spin {
