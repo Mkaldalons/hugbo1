@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import NavBar from "./navBar";
 import './App.css';
 import frontpage from "./frontPage.png";
-import NewPage from './loginPage'; // Import the new page component
+import NewPage from './LoginPage'; // Import the new page component
 
 function App() {
     return (
