@@ -15,8 +15,11 @@ public class Student extends User {
         return enrolledCourses;
     }
 
-    public void setEnrolledCourses(List<Course> enrolledCourses) {
-        this.enrolledCourses = enrolledCourses;
+    public void addCourse(Course course) {
+        enrolledCourses.add(course);
+    }
+    public void removeCourse(Course course) {
+        enrolledCourses.remove(course);
     }
 
 }
