@@ -21,5 +21,8 @@ public class Student extends User {
     public void removeCourse(Course course) {
         enrolledCourses.remove(course);
     }
+    public String toString(){
+        return "Name: "+ getName() + "username: " + getUserName();
+    }
 
 }

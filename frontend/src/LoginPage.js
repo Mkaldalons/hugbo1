@@ -46,7 +46,13 @@ function LoginPage() {
             });
 
             if (response.ok) {
-                navigate('/'); // Redirect to home page on success
+                const successMessage = await response.text();  // Get response message from server
+                setMessage(successMessage);  // Display success message (e.g., "Login successful")
+
+                // Optionally, delay the navigation to give the user time to see the message
+                setTimeout(() => {
+                    navigate('/');
+                }, 2000);  // Redirect after 2 seconds
             } else {
                 const error = await response.text();
                 setMessage(`Error: ${error}`);

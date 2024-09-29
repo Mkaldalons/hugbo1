@@ -18,4 +18,8 @@ public class Instructor extends User {
     public void removeCourse(Course course) {
         courses.remove(course);
     }
+
+    public String toString(){
+        return "Name: " + getName() + "Username: " + getUserName();
+    }
 }

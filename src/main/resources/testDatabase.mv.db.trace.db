@@ -1,0 +1,6 @@
+2024-09-29 21:20:10 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "USERS" not found (this database is empty); SQL statement:
+INSERT INTO PUBLIC.USERS (name, userName, email, password) VALUES (?, ?, ?, ?) [42104-214]
+2024-09-29 21:20:10 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "USERS" not found (this database is empty); SQL statement:
+SELECT name, userName, email, password FROM PUBLIC.USERS [42104-214]
