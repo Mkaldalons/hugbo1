@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import NavBar from "./navBar";
 import './App.css';
 import frontpage from "./frontPage.png";
-import NewPage from './LoginPage'; // Import the new page component
+import LoginPage from './LoginPage'; // Import the LoginPage component
 
 function App() {
     return (
@@ -13,10 +13,11 @@ function App() {
                 <Routes>
                     <Route path="/" element={
                         <div className="App-header">
-                            <img src={frontpage} alt="frontpage"/>
+                            <img src={frontpage} alt="frontpage" />
                         </div>
                     } />
-                    <Route path="/new-page" element={<NewPage />} /> {/* New Route */}
+                    <Route path="/login" element={<LoginPage />} /> {/* Correct path for login */}
+                    <Route path="/signup" element={<LoginPage />} /> {/* Correct path for signup */}
                 </Routes>
             </div>
         </Router>

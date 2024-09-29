@@ -11,7 +11,7 @@ function NavBar() {
     };
 
     const goToNewPage = () => {
-        navigate('/new-page'); // Navigate to the new page
+        navigate('/login'); // Navigate to the new page
     };
 
     return (
