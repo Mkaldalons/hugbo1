@@ -1,35 +1,27 @@
 import React from 'react';
-import logo from './logo.svg';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import NavBar from "./navBar";
 import './App.css';
-
-function MyButton() {
-  return (
-      <button>
-        I'm a button
-      </button>
-  );
-}
+import frontpage from "./frontPage.png";
+import LoginPage from './LoginPage'; // Import the LoginPage component
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload. Or Not!
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-      <MyButton/>
-    </div>
-  );
+    return (
+        <Router>
+            <div className="App">
+                <NavBar />
+                <Routes>
+                    <Route path="/" element={
+                        <div className="App-header">
+                            <img src={frontpage} alt="frontpage" />
+                        </div>
+                    } />
+                    <Route path="/login" element={<LoginPage />} />
+                    <Route path="/signup" element={<LoginPage />} />
+                </Routes>
+            </div>
+        </Router>
+    );
 }
 
 export default App;
