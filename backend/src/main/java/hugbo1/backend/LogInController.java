@@ -1,58 +1,46 @@
 package hugbo1.backend;
 
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.Objects;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:3000")
 public class LogInController {
 
-    private final UserRepository userRepository;
+    private Map<String, User> userStore = new HashMap<>();  // In-memory user store for demo purposes
 
-    private final UserController userController;
-
-    public LogInController(UserRepository userRepository, UserController userController) {
-        this.userRepository = userRepository;
-        this.userController = userController;
-    }
-
-    // Login Endpoint for Student
-    @PostMapping("/student/login")
-    public boolean loginStudent(@RequestParam String userName, @RequestParam String password) {
-        return studentUserExists(userName) && isStudentPasswordValid(password);
-    }
-
-    // Login Endpoint for Instructor
-    @PostMapping("/instructor/login")
-    public boolean loginInstructor(@RequestParam String userName, @RequestParam String password) {
-        return instructorUserExists(userName) && isInstructorPasswordValid(password);
-    }
-
-    public boolean studentUserExists(String userName) {
-        return userController.doesStudentExist(userName);
-    }
-
-    public boolean instructorUserExists(String userName) {
-        return userController.doesInstructorExist(userName);
-    }
-
-    public boolean isInstructorPasswordValid(String password) {
-        for (Instructor instructor : userRepository.allInstructors) {
-            if (Objects.equals(password, instructor.getPassword())){
-                return true;
-            }
+    @PostMapping("/signup")
+    public ResponseEntity<String> signUp(@RequestBody SignupRequest signupRequest) {
+        if (userStore.containsKey(signupRequest.getUsername())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Username already exists");
         }
-        return false;
-    }
-    public boolean isStudentPasswordValid(String password) {
-        for (Student student : userRepository.allStudents) {
-            if (Objects.equals(password, student.getPassword())){
-                return true;
-            }
+        if (!signupRequest.getPassword().equals(signupRequest.getConfirmPassword())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Passwords do not match");
         }
-        return false;
+
+        // Create a new user and add to the user store
+        User newUser = new User(
+                signupRequest.getUsername(),
+                signupRequest.getName(),
+                signupRequest.getEmail(),
+                signupRequest.getPassword()
+        );
+        userStore.put(signupRequest.getUsername(), newUser);
+        return ResponseEntity.ok("User registered successfully");
     }
 
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) {
+        User user = userStore.get(loginRequest.getUsername());
+
+        if (user != null && user.getPassword().equals(loginRequest.getPassword())) {
+            return ResponseEntity.ok("Login successful");
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
+        }
+    }
 }

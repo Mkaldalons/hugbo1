@@ -1,25 +1,19 @@
 package hugbo1.backend;
 
-public class User {
-    private String userName;
+public class SignupRequest {
+    private String username;
     private String name;
     private String email;
     private String password;
-
-    public User(String userName, String name, String email, String password) {
-        this.userName = userName;
-        this.name = name;
-        this.email = email;
-        this.password = password;
-    }
+    private String confirmPassword;
 
     // Getters and Setters
-    public String getUserName() {
-        return userName;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getName() {
@@ -44,5 +38,13 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getConfirmPassword() {
+        return confirmPassword;
+    }
+
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
     }
 }

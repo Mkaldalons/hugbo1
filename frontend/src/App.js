@@ -16,8 +16,8 @@ function App() {
                             <img src={frontpage} alt="frontpage" />
                         </div>
                     } />
-                    <Route path="/login" element={<LoginPage />} /> {/* Correct path for login */}
-                    <Route path="/signup" element={<LoginPage />} /> {/* Correct path for signup */}
+                    <Route path="/login" element={<LoginPage />} />
+                    <Route path="/signup" element={<LoginPage />} />
                 </Routes>
             </div>
         </Router>
