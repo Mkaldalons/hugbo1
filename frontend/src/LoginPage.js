@@ -1,23 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
-function LoginPage() {
+function LoginPage({ setUsername }) {
     const location = useLocation();
     const [isLogin, setIsLogin] = useState(true);
-    const [username, setUsername] = useState('');
-    const [name, setName] = useState('');          // Only for sign-up
-    const [email, setEmail] = useState('');        // Only for sign-up
+    const [username, setUsernameInput] = useState('');
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');  // Only for sign-up
+    const [confirmPassword, setConfirmPassword] = useState('');
     const [message, setMessage] = useState('');
     const navigate = useNavigate();
 
     useEffect(() => {
-        // Check the current path and update the form state accordingly
         setIsLogin(location.pathname === '/login');
     }, [location.pathname]);
 
     const toggleForm = () => {
+        setMessage(''); // Clear the error message when toggling forms
         const newPath = isLogin ? '/signup' : '/login';
         navigate(newPath);
     };
@@ -25,16 +25,15 @@ function LoginPage() {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        // Check if passwords match during sign-up
         if (!isLogin && password !== confirmPassword) {
             setMessage('Passwords do not match');
             return;
         }
 
-        const url = isLogin ? 'http://localhost:8080/login' : 'http://localhost:8080/signup';  // Corrected URLs
+        const url = isLogin ? 'http://localhost:8080/login' : 'http://localhost:8080/signup';
         const requestData = isLogin
-            ? { username, password }  // Login requires only username and password
-            : { username, name, email, password, confirmPassword };  // Sign-up requires more fields
+            ? { username, password }
+            : { username, name, email, password, confirmPassword };
 
         try {
             const response = await fetch(url, {
@@ -46,13 +45,15 @@ function LoginPage() {
             });
 
             if (response.ok) {
-                const successMessage = await response.text();  // Get response message from server
-                setMessage(successMessage);  // Display success message (e.g., "Login successful")
+                const successMessage = await response.text();
+                setMessage(successMessage);
 
-                // Optionally, delay the navigation to give the user time to see the message
+                // Set the username on successful login
+                setUsername(username);
+
                 setTimeout(() => {
                     navigate('/');
-                }, 2000);  // Redirect after 2 seconds
+                }, 2000);
             } else {
                 const error = await response.text();
                 setMessage(`Error: ${error}`);
@@ -72,11 +73,11 @@ function LoginPage() {
                         <input
                             type="text"
                             value={username}
-                            onChange={(e) => setUsername(e.target.value)}
+                            onChange={(e) => setUsernameInput(e.target.value)} // Capture input username
                             required
                         />
                     </div>
-                    {!isLogin && (  // These fields are only shown during sign-up
+                    {!isLogin && (
                         <>
                             <div className="form-group">
                                 <label>Name:</label>

@@ -11,16 +11,7 @@
   --input-focus-border-color: var(--primary-color); /* Input focus border */
 }
 
-.App {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  background-color: var(--background-color);
-  min-height: 100vh;
-}
-
+/* NavBar section */
 .nav-bar {
   display: flex;
   align-items: center;
@@ -34,10 +25,19 @@
   z-index: 1000;
 }
 
+/* Centering the title */
 .navBar-title {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
   color: var(--background-color);
   font-size: 24px;
   font-weight: bold;
+}
+
+.nav-logo {
+  display: flex;
+  align-items: center;
 }
 
 .nav-logo img {
@@ -45,8 +45,17 @@
   filter: brightness(0) invert(1); /* Keeps the logo white */
 }
 
-.nav-icon {
+/* New section for icon and username */
+.nav-user-info {
   display: flex;
+  align-items: center;
+  position: relative; /* Make dropdown absolute relative to this */
+}
+
+.nav-username {
+  color: var(--background-color);  /* Same color as the rest of the nav */
+  margin-right: 10px;              /* Add space between the text and the icon */
+  font-weight: bold;               /* Make the text bold for better visibility */
 }
 
 .nav-icon-color {
@@ -60,6 +69,43 @@
 
 .nav-icon-color:hover {
   background-color: var(--hover-color); /* Brighter on hover */
+}
+
+/* Dropdown Menu */
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: white;
+  border: 1px solid var(--border-color);
+  border-radius: 5px;
+  box-shadow: 0 4px 6px var(--nav-shadow);
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  z-index: 1001;
+}
+
+.dropdown-item {
+  padding: 10px;
+  cursor: pointer;
+  color: var(--text-color);
+}
+
+.dropdown-item:hover {
+  background-color: var(--hover-color);
+  color: white;
+}
+
+/* Other global styles */
+.App {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background-color: var(--background-color);
+  min-height: 100vh;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -77,6 +123,7 @@
   }
 }
 
+/* Authentication and form container styles */
 .auth-container {
   display: flex;
   flex-direction: column;
@@ -154,6 +201,7 @@ input:focus {
   color: var(--hover-color);
 }
 
+/* Page container styles */
 .login-page-container {
   display: flex;
   justify-content: center;
@@ -177,5 +225,3 @@ input:focus {
   box-shadow: 0 0 10px var(--nav-shadow);
   background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent background for contrast */
 }
-
-
