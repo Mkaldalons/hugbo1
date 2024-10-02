@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import './App.css';
-import logo from './logo.svg';
+import './NavBar.css';
+import './Dropdown.css';
+import logo from '../../assets/logo.svg';
 import { useNavigate } from 'react-router-dom';
 
 function NavBar({ username, setUsername }) {
-    const [isDropdownOpen, setIsDropdownOpen] = useState(false); // State to toggle dropdown
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const navigate = useNavigate();
 
     const goToHomePage = () => {
@@ -16,34 +17,31 @@ function NavBar({ username, setUsername }) {
     };
 
     const handleIconClick = () => {
-        // If the user is logged in, show the dropdown for logout, otherwise navigate to login
         if (username) {
-            setIsDropdownOpen(!isDropdownOpen); // Toggle dropdown visibility
+            setIsDropdownOpen(!isDropdownOpen);
         } else {
-            goToLoginPage(); // Redirect to login page if not logged in
+            goToLoginPage();
         }
     };
 
     const handleLogout = () => {
-        setUsername(''); // Clear username to simulate logout
-        setIsDropdownOpen(false); // Close the dropdown
-        navigate('/'); // Redirect to home page after logging out
+        setUsername('');
+        setIsDropdownOpen(false);
+        navigate('/');
     };
 
     return (
         <div className="nav-bar">
-            <div className="nav-logo" onClick={goToHomePage} style={{ cursor: 'pointer' }}>
+            <div className="nav-logo">
                 <img src={logo} alt="Logo" />
             </div>
             <div className="navBar-title" onClick={goToHomePage} style={{ cursor: 'pointer' }}>
                 Learning Square
             </div>
             <div className="nav-user-info">
-                {/* Display the username if logged in */}
                 {username && <span className="nav-username">Hello, {username}</span>}
                 <button className="nav-icon-color" onClick={handleIconClick}>👤</button>
 
-                {/* Dropdown Menu for logout */}
                 {isDropdownOpen && username && (
                     <div className="dropdown-menu">
                         <div className="dropdown-item" onClick={handleLogout}>

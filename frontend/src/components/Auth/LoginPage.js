@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import './AuthForm.css';
+import './PageContainer.css';
 
 function LoginPage({ setUsername }) {
     const location = useLocation();
@@ -17,7 +19,7 @@ function LoginPage({ setUsername }) {
     }, [location.pathname]);
 
     const toggleForm = () => {
-        setMessage(''); // Clear the error message when toggling forms
+        setMessage('');
         const newPath = isLogin ? '/signup' : '/login';
         navigate(newPath);
     };
@@ -48,11 +50,10 @@ function LoginPage({ setUsername }) {
                 const successMessage = await response.text();
                 setMessage(successMessage);
 
-                // Set the username on successful login
                 setUsername(username);
 
                 setTimeout(() => {
-                    navigate('/');
+                    navigate('/instructor');
                 }, 2000);
             } else {
                 const error = await response.text();
