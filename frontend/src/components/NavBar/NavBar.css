@@ -1,0 +1,56 @@
+.nav-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+    background-color: var(--primary-color);
+    position: fixed;
+    top: 0;
+    width: 100%;
+    box-shadow: 0 4px 6px var(--nav-shadow);
+    z-index: 1000;
+}
+
+.navBar-title {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    color: var(--background-color);
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.nav-logo {
+    display: flex;
+    align-items: center;
+}
+
+.nav-logo img {
+    height: 40px;
+    filter: brightness(0) invert(1); /* Keeps the logo white */
+}
+
+.nav-user-info {
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.nav-username {
+    color: var(--background-color);
+    margin-right: 10px;
+    font-weight: bold;
+}
+
+.nav-icon-color {
+    background-color: var(--accent-color);
+    color: var(--background-color);
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.nav-icon-color:hover {
+    background-color: var(--hover-color);
+}

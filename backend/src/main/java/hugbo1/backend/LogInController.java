@@ -22,7 +22,7 @@ public class LogInController {
         if (userRepository.allUsers.contains(user) && loginRequest.getPassword().equals(user.getPassword())) {
             return ResponseEntity.ok("Login successful");
         } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Login failed");
         }
     }
 }
