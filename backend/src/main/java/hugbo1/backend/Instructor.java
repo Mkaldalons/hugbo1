@@ -6,7 +6,7 @@ public class Instructor extends User {
     private List<Course> courses;
 
     public Instructor(String userName, String name, String email, String password) {
-        super(userName, name, email, password);
+        super(userName, name, email, password, true);
     }
 
     public List<Course> getCourses() {

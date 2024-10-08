@@ -30,7 +30,8 @@ public class RegisterController {
                 signupRequest.getUsername(),
                 signupRequest.getName(),
                 signupRequest.getEmail(),
-                signupRequest.getPassword()
+                signupRequest.getPassword(),
+                signupRequest.isInstructor()
         );
         userRepository.addUser(newUser);
         return ResponseEntity.ok("User registered successfully");

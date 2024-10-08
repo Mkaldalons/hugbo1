@@ -5,12 +5,14 @@ public class User {
     private String name;
     private String email;
     private String password;
+    private boolean isInstructor;
 
-    public User(String userName, String name, String email, String password) {
+    public User(String userName, String name, String email, String password, boolean isInstructor) {
         this.userName = userName;
         this.name = name;
         this.email = email;
         this.password = password;
+        this.isInstructor = isInstructor;
     }
 
     // Getters and Setters
@@ -44,6 +46,12 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+    public boolean isInstructor() {
+        return isInstructor;
+    }
+    public void setInstructor(boolean isInstructor) {
+        this.isInstructor = isInstructor;
     }
 
     public String toString(){
