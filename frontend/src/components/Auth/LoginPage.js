@@ -12,6 +12,7 @@ function LoginPage({ setUsername }) {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [message, setMessage] = useState('');
+    const [isInstructor, setIsInstructor] = useState(false);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -35,7 +36,7 @@ function LoginPage({ setUsername }) {
         const url = isLogin ? 'http://localhost:8080/login' : 'http://localhost:8080/signup';
         const requestData = isLogin
             ? { username, password }
-            : { username, name, email, password, confirmPassword };
+            : { username, name, email, password, confirmPassword, isInstructor };
 
         try {
             const response = await fetch(url, {
@@ -74,7 +75,7 @@ function LoginPage({ setUsername }) {
                         <input
                             type="text"
                             value={username}
-                            onChange={(e) => setUsernameInput(e.target.value)} // Capture input username
+                            onChange={(e) => setUsernameInput(e.target.value)}
                             required
                         />
                     </div>
@@ -97,6 +98,16 @@ function LoginPage({ setUsername }) {
                                     onChange={(e) => setEmail(e.target.value)}
                                     required
                                 />
+                            </div>
+                            <div className="form-group">
+                                <label>
+                                    <input
+                                        type="checkbox"
+                                        checked={isInstructor}
+                                        onChange={(e) => setIsInstructor(e.target.checked)}
+                                    />
+                                    Instructor
+                                </label>
                             </div>
                         </>
                     )}
