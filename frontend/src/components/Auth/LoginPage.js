@@ -99,16 +99,6 @@ function LoginPage({ setUsername }) {
                                     required
                                 />
                             </div>
-                            <div className="form-group">
-                                <label>
-                                    <input
-                                        type="checkbox"
-                                        checked={isInstructor}
-                                        onChange={(e) => setIsInstructor(e.target.checked)}
-                                    />
-                                    Instructor
-                                </label>
-                            </div>
                         </>
                     )}
                     <div className="form-group">
@@ -121,15 +111,26 @@ function LoginPage({ setUsername }) {
                         />
                     </div>
                     {!isLogin && (
-                        <div className="form-group">
-                            <label>Confirm Password:</label>
-                            <input
-                                type="password"
-                                value={confirmPassword}
-                                onChange={(e) => setConfirmPassword(e.target.value)}
-                                required
-                            />
-                        </div>
+                        <>
+                            <div className="form-group">
+                                <label>Confirm Password:</label>
+                                <input
+                                    type="password"
+                                    value={confirmPassword}
+                                    onChange={(e) => setConfirmPassword(e.target.value)}
+                                    required
+                                />
+                            </div>
+                            <div className="form-group">
+                                <label>Instructor:</label>
+                                <input
+                                    type="checkbox"
+                                    checked={isInstructor}
+                                    onChange={(e) => setIsInstructor(e.target.checked)}
+                                    className="checkbox-input"
+                                />
+                            </div>
+                        </>
                     )}
                     <button type="submit" className="auth-btn">
                         {isLogin ? 'Login' : 'Sign Up'}

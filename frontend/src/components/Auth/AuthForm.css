@@ -34,12 +34,21 @@ label {
     text-align: right;
 }
 
-input {
+input,
+.checkbox-input {
     padding: 8px;
     border-radius: 5px;
     border: 1px solid var(--input-border-color);
     transition: border-color 0.3s ease-in-out;
     flex-basis: 70%;
+}
+
+.checkbox-input {
+    padding: 0;
+    margin-left: 0;
+    width: auto;
+    height: auto;
+    align-self: flex-start; /* Aligns the checkbox to the start */
 }
 
 input:focus {
