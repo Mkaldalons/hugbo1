@@ -6,7 +6,6 @@ import './styles/variables.css';
 import frontpage from './assets/frontPage.png';
 import LoginPage from './components/Auth/LoginPage';
 import Instructor from './components/InstructorPage/Instructor';
-import Student from './components/StudentPage/StudentPage';
 
 function App() {
     const [username, setUsername] = useState('');
@@ -43,10 +42,6 @@ function App() {
                     <Route
                         path="/instructor"
                         element={<Instructor />}
-                    />
-                    <Route
-                        path="/student"
-                        element={<Student />}
                     />
                 </Routes>
             </div>
