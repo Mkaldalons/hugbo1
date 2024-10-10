@@ -28,17 +28,22 @@ function LoginPage({ setUsername }) {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
+        // Validate passwords for signup
         if (!isLogin && password !== confirmPassword) {
             setMessage('Passwords do not match');
             return;
         }
 
+        // Determine the correct endpoint for login or signup
         const url = isLogin ? 'http://localhost:8080/login' : 'http://localhost:8080/signup';
+
+        // Prepare the request body data
         const requestData = isLogin
-            ? { username, password }
-            : { username, name, email, password, confirmPassword, isInstructor };
+            ? { userName: username, password }
+            : { userName: username, name, email, password, confirmPassword, isInstructor };
 
         try {
+            // Make the POST request to the backend
             const response = await fetch(url, {
                 method: 'POST',
                 headers: {
@@ -47,16 +52,24 @@ function LoginPage({ setUsername }) {
                 body: JSON.stringify(requestData),
             });
 
+            // Handle successful response
             if (response.ok) {
                 const successMessage = await response.text();
                 setMessage(successMessage);
 
+                // Set the username in the parent component (for tracking the logged-in user)
                 setUsername(username);
 
+                // Redirect based on whether the user is an instructor or a student
                 setTimeout(() => {
-                    navigate('/instructor');
+                    if (isInstructor) {
+                        navigate('/instructor');
+                    } else {
+                        navigate('/student');
+                    }
                 }, 2000);
             } else {
+                // Handle error response
                 const error = await response.text();
                 setMessage(`Error: ${error}`);
             }
@@ -69,6 +82,7 @@ function LoginPage({ setUsername }) {
         <div className="login-page-container">
             <div className="auth-container">
                 <h1>{isLogin ? 'Login' : 'Sign Up'}</h1>
+                {message && <p className="message">{message}</p>}
                 <form className="auth-form" onSubmit={handleSubmit}>
                     <div className="form-group">
                         <label>Username:</label>
@@ -139,7 +153,6 @@ function LoginPage({ setUsername }) {
                 <button onClick={toggleForm} className="toggle-form-btn">
                     {isLogin ? 'Sign Up' : 'Login'}
                 </button>
-                {message && <p>{message}</p>}
             </div>
         </div>
     );

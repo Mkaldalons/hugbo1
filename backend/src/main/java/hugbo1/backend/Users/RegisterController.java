@@ -1,4 +1,4 @@
-package hugbo1.backend;
+package hugbo1.backend.Users;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +16,7 @@ public class RegisterController {
         this.userRepository = userRepository;
     }
 
+
     @PostMapping("/signup")
     public ResponseEntity<String> signUp(@RequestBody SignupRequest signupRequest) {
         if (userRepository.doesUserExist(signupRequest.getUsername())) {
@@ -25,15 +26,15 @@ public class RegisterController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Passwords do not match");
         }
 
-        // Create a new user and add to the user store
+        // Create a new user without manually setting the ID
         User newUser = new User(
-                signupRequest.getUsername(),
+                null, // ID will be generated
                 signupRequest.getName(),
+                signupRequest.getUsername(),
                 signupRequest.getEmail(),
                 signupRequest.getPassword()
         );
         userRepository.addUser(newUser);
         return ResponseEntity.ok("User registered successfully");
     }
-
 }
