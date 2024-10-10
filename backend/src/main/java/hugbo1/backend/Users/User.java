@@ -1,60 +1,31 @@
 package hugbo1.backend.Users;
 
 public class User {
-    private String userName;
+    private Integer id;
     private String name;
+    private String userName;
     private String email;
     private String password;
-    private boolean isInstructor;
 
-    public User(String userName, String name, String email, String password, boolean isInstructor) {
-        this.userName = userName;
+    public User(Integer id, String name, String userName, String email, String password) {
+        this.id = id;
         this.name = name;
+        this.userName = userName;
         this.email = email;
         this.password = password;
-        this.isInstructor = isInstructor;
     }
 
-    // Getters and Setters
-    public String getUserName() {
-        return userName;
-    }
+    // Getters and setters
+    public Integer getId() { return id; }
+    public String getName() { return name; }
+    public String getUserName() { return userName; }
+    public String getEmail() { return email; }
+    public String getPassword() { return password; }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
+    public void setId(Integer id) { this.id = id; }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-    public boolean isInstructor() {
-        return isInstructor;
-    }
-    public void setInstructor(boolean isInstructor) {
-        this.isInstructor = isInstructor;
-    }
-
-    public String toString(){
-        return "Name: " + name + "User name: " + userName;
+    @Override
+    public String toString() {
+        return "User{id=" + id + ", name='" + name + "', userName='" + userName + "', email='" + email + "'}";
     }
 }

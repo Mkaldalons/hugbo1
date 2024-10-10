@@ -1,16 +1,16 @@
 package hugbo1.backend.Users;
 
 public class LoginRequest {
-    private String username;
+    private String userName;
     private String password;
 
-    // Getters and Setters
-    public String getUsername() {
-        return username;
+    // Getters and setters
+    public String getUserName() {
+        return userName;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getPassword() {
