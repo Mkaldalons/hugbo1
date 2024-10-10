@@ -7,6 +7,16 @@ public class SignupRequest {
     private String password;
     private String confirmPassword;
 
+    public boolean isInstructor() {
+        return isInstructor;
+    }
+
+    public void setInstructor(boolean instructor) {
+        isInstructor = instructor;
+    }
+
+    private boolean isInstructor;
+
     // Getters and Setters
     public String getUsername() {
         return username;

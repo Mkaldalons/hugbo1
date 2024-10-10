@@ -2,8 +2,6 @@ package hugbo1.backend;
 
 import org.springframework.stereotype.Controller;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 @Controller
@@ -15,7 +13,7 @@ public class UserController {
 
 
     public boolean doesStudentExist(String username) {
-        for (Student student : userRepository.allStudents) {
+        for (Student student : userRepository.students) {
             if (Objects.equals(username, student.getUserName())){
                 return true;
             }
@@ -24,7 +22,7 @@ public class UserController {
     }
 
     public boolean doesInstructorExist(String username) {
-        for (Instructor instructor : userRepository.allInstructors) {
+        for (Instructor instructor : userRepository.instructors) {
             if (Objects.equals(username, instructor.getUserName())){
                 return true;
             }

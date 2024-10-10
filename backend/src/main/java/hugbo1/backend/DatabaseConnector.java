@@ -1,0 +1,69 @@
+package hugbo1.backend;
+
+import java.sql.*;
+import java.sql.Connection;
+import java.sql.SQLException;
+
+public class DatabaseConnector {
+    private static final String url = "jdbc:sqlite:src/main/resources/learningSquare.db";
+
+    public Connection connect() {
+        Connection connection = null;
+        try {
+            connection = DriverManager.getConnection(url);
+            System.out.println("Connection to SQLite has been established: " + connection);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return connection;
+    }
+
+    public void createTable() {
+        String createTableSQL = "CREATE TABLE IF NOT EXISTS Users ("
+                + " userName TEXT NOT NULL, "
+                + " name TEXT NOT NULL, "
+                + " email TEXT UNIQUE NOT NULL, "
+                + " password TEXT NOT NULL, "
+                + " instructor boolean NOT NULL"
+                + ");";
+
+        try (Connection conn = connect();
+             Statement stmt = conn.createStatement()) {
+
+            conn.setAutoCommit(false); // Disable auto-commit
+            stmt.execute(createTableSQL);
+            conn.commit(); // Commit the transaction
+            System.out.println("Table created successfully.");
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+
+    public void addUser(User user) {
+        String addUserSQL = "INSERT INTO Users (userName, name, email, password, instructor) VALUES (?, ?, ?, ?, ?)";
+        try (Connection connection = connect();
+             PreparedStatement preparedStatement = connection.prepareStatement(addUserSQL)) {
+
+            connection.setAutoCommit(false); // Disable auto-commit
+            preparedStatement.setString(1, user.getUserName());
+            preparedStatement.setString(2, user.getName());
+            preparedStatement.setString(3, user.getEmail());
+            preparedStatement.setString(4, user.getPassword());
+            preparedStatement.setBoolean(5, user.isInstructor());
+            preparedStatement.executeUpdate(); // Execute the query
+            connection.commit(); // Commit the transaction
+            System.out.println("User added successfully.");
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void main(String[] args) {
+        DatabaseConnector connector = new DatabaseConnector();
+        connector.createTable();
+        connector.addUser(new User("userName3", "Name3", "email3@test.is", "password3", false));
+    }
+}
