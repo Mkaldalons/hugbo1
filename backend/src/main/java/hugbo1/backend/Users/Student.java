@@ -1,3 +1,4 @@
+
 package hugbo1.backend.Users;
 
 import hugbo1.backend.Assignments.Course;
@@ -8,9 +9,8 @@ import java.util.List;
 public class Student extends User {
     private List<Course> enrolledCourses;
 
-    // Constructor without 'id' parameter
     public Student(String userName, String name, String email, String password) {
-        super(null, name, userName, email, password); // Passing 'null' for the ID initially
+        super(userName, name, email, password, false);
         this.enrolledCourses = new ArrayList<>();
     }
 
@@ -21,13 +21,11 @@ public class Student extends User {
     public void addCourse(Course course) {
         enrolledCourses.add(course);
     }
-
     public void removeCourse(Course course) {
         enrolledCourses.remove(course);
     }
-
-    @Override
-    public String toString() {
-        return "Name: " + getName() + ", Username: " + getUserName();
+    public String toString(){
+        return "Name: "+ getName() + "username: " + getUserName();
     }
+
 }
