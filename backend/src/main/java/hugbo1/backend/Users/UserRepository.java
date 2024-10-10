@@ -1,5 +1,6 @@
-package hugbo1.backend;
+package hugbo1.backend.Users;
 
+import hugbo1.backend.database.DatabaseConnector;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Connection;

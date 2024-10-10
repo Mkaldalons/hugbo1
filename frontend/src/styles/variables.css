@@ -8,5 +8,5 @@
     --nav-shadow: rgba(44, 62, 80, 0.15);
     --border-color: #ccc;
     --input-border-color: #bdc3c7;
-        --input-focus-border-color: var(--primary-color);
+    --input-focus-border-color: var(--primary-color);
 }

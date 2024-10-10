@@ -1,4 +1,4 @@
-package hugbo1.backend;
+package hugbo1.backend.Users;
 
 public class LoginRequest {
     private String username;

@@ -1,4 +1,4 @@
-package hugbo1.backend;
+package hugbo1.backend.Users;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,4 +1,6 @@
-package hugbo1.backend;
+package hugbo1.backend.Users;
+
+import hugbo1.backend.Assignments.Course;
 
 import java.util.List;
 

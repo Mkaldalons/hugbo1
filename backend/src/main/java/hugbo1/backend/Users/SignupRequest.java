@@ -1,4 +1,5 @@
-package hugbo1.backend;
+
+package hugbo1.backend.Users;
 
 public class SignupRequest {
     private String username;

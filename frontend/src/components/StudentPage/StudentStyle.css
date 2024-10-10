@@ -1,0 +1,81 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+.dashboard-container {
+    width: 90%;
+    margin: 70px;
+}
+
+header {
+    text-align: center;
+    padding: 20px;
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.buttons {
+    margin-top: 10px;
+}
+
+.buttons button {
+    padding: 10px 20px;
+    margin: 5px;
+    background-color: white;
+    border: 1px solid var(--primary-color);
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    color: var(--primary-color);
+}
+
+.buttons button:hover {
+    background-color: var(--hover-color);
+    color: white;
+}
+
+main {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.assignments-section, .students-section {
+    width: 48%;
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0 0 10px var(--nav-shadow);
+    padding: 20px;
+    border: 1px solid var(--border-color);
+}
+
+.assignments-section h2, .students-section h2 {
+    margin-bottom: 20px;
+}
+
+ul {
+    list-style-type: none;
+}
+
+ul li {
+    padding: 10px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+}
+
+th {
+    background-color: var(--primary-color);
+    color: white;
+}
