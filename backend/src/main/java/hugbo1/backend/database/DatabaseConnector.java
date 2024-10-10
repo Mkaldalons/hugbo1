@@ -31,9 +31,7 @@ public class DatabaseConnector {
         try (Connection conn = connect();
              Statement stmt = conn.createStatement()) {
 
-            conn.setAutoCommit(false); // Disable auto-commit
             stmt.execute(createTableSQL);
-            conn.commit(); // Commit the transaction
             System.out.println("Table created successfully.");
 
         } catch (SQLException e) {
@@ -47,14 +45,12 @@ public class DatabaseConnector {
         try (Connection connection = connect();
              PreparedStatement preparedStatement = connection.prepareStatement(addUserSQL)) {
 
-            connection.setAutoCommit(false); // Disable auto-commit
             preparedStatement.setString(1, user.getUserName());
             preparedStatement.setString(2, user.getName());
             preparedStatement.setString(3, user.getEmail());
             preparedStatement.setString(4, user.getPassword());
             preparedStatement.setBoolean(5, user.isInstructor());
             preparedStatement.executeUpdate(); // Execute the query
-            connection.commit(); // Commit the transaction
             System.out.println("User added successfully.");
 
         } catch (SQLException e) {

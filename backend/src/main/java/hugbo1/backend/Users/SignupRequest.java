@@ -1,6 +1,8 @@
 
 package hugbo1.backend.Users;
 
+import org.springframework.stereotype.Service;
+
 public class SignupRequest {
     private String username;
     private String name;

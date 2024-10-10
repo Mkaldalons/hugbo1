@@ -132,6 +132,7 @@ public class UserRepository {
     public void addInstructor(Instructor instructor) {
         instructors.add(instructor);
     }
+
     public void addUser(User user) {
         databaseConnector.addUser(user);
         users.add(user);
