@@ -1,4 +1,7 @@
-package hugbo1.backend;
+package hugbo1.backend.database;
+
+import hugbo1.backend.Users.Instructor;
+import hugbo1.backend.Users.Student;
 
 import java.util.ArrayList;
 import java.util.List;
