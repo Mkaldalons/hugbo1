@@ -5,15 +5,23 @@ import './styles/global.css';
 import './styles/variables.css';
 import frontpage from './assets/frontPage.png';
 import LoginPage from './components/Auth/LoginPage';
-import Instructor from "./components/InstructorPage/Instructor";  // Import the Dashboard
+import Instructor from './components/InstructorPage/Instructor';
 
 function App() {
     const [username, setUsername] = useState('');
+    const [isDarkMode, setIsDarkMode] = useState(false);
+
+    const toggleDarkMode = () => {
+        setIsDarkMode((prevMode) => !prevMode);
+    };
 
     return (
         <Router>
-            <div className="App">
+            <div className={`App ${isDarkMode ? 'dark-mode' : ''}`}>
                 <NavBar username={username} setUsername={setUsername} />
+                <button onClick={toggleDarkMode} className="dark-mode-toggle">
+                    {isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+                </button>
                 <Routes>
                     <Route
                         path="/"
@@ -31,7 +39,6 @@ function App() {
                         path="/signup"
                         element={<LoginPage setUsername={setUsername} />}
                     />
-                    {/* Add route for the instructor dashboard */}
                     <Route
                         path="/instructor"
                         element={<Instructor />}
