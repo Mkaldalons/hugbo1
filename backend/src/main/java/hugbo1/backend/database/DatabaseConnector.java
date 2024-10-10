@@ -1,8 +1,9 @@
-package hugbo1.backend;
+package hugbo1.backend.database;
 
 import java.sql.*;
 import java.sql.Connection;
 import java.sql.SQLException;
+import hugbo1.backend.Users.User;
 
 public class DatabaseConnector {
     private static final String url = "jdbc:sqlite:src/main/resources/learningSquare.db";
