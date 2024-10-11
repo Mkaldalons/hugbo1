@@ -7,22 +7,15 @@ import frontpage from './assets/frontPage.png';
 import LoginPage from './components/Auth/LoginPage';
 import Instructor from './components/InstructorPage/Instructor';
 import Student from './components/StudentPage/StudentPage';
+import UpdatePasswordPage from './components/Auth/UpdatePasswordPage';
 
 function App() {
     const [username, setUsername] = useState('');
-    const [isDarkMode, setIsDarkMode] = useState(false);
-
-    const toggleDarkMode = () => {
-        setIsDarkMode((prevMode) => !prevMode);
-    };
 
     return (
         <Router>
-            <div className={`App ${isDarkMode ? 'dark-mode' : ''}`}>
+            <div className="App">
                 <NavBar username={username} setUsername={setUsername} />
-                <button onClick={toggleDarkMode} className="dark-mode-toggle">
-                    {isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
-                </button>
                 <Routes>
                     <Route
                         path="/"
@@ -32,22 +25,11 @@ function App() {
                             </div>
                         }
                     />
-                    <Route
-                        path="/login"
-                        element={<LoginPage setUsername={setUsername} />}
-                    />
-                    <Route
-                        path="/signup"
-                        element={<LoginPage setUsername={setUsername} />}
-                    />
-                    <Route
-                        path="/instructor"
-                        element={<Instructor />}
-                    />
-                    <Route
-                        path="/student"
-                        element={<Student />}
-                    />
+                    <Route path="/login" element={<LoginPage setUsername={setUsername} />} />
+                    <Route path="/signup" element={<LoginPage setUsername={setUsername} />} />
+                    <Route path="/update-password" element={<UpdatePasswordPage username={username} />} />
+                    <Route path="/instructor" element={<Instructor />} />
+                    <Route path="/student" element={<Student />} />
                 </Routes>
             </div>
         </Router>

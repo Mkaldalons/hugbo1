@@ -1,10 +1,8 @@
 import {useState} from 'react'
 
 export const useInitial = () => {
-    const [status, setStatus] = useState({
-        loading: false,
-        error: false
-    })
+    // eslint-disable-next-line no-unused-vars
+    const [status, setStatus] = useState(false);
     /*
       Implement hook functionality here.
       If you need to execute async operation, set loading to true and when it's over, set loading to false.
