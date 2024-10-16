@@ -21,6 +21,12 @@ public class Instructor extends User {
         courses.remove(course);
     }
 
+    public void createAssignment(Course course, String name, Date publishDate, Date dueDate) {
+        Assignment assignment = new Assignment(course, name, publishDate, dueDate);
+        AssignmentRepository repository = new AssignmentRepository();
+        repository.addAssignment(assignment);
+    }
+
     public String toString(){
         return "Name: " + getName() + "Username: " + getUserName();
     }
