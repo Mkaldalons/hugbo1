@@ -10,16 +10,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
 public class RegisterController {
-    private final UserRepository userRepository;
+    private final UserService userService;
 
-    public RegisterController(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public RegisterController(UserService userService) {
+        this.userService = userService;
     }
 
     @PostMapping("/signup")
     public ResponseEntity<String> signUp(@RequestBody SignupRequest signupRequest) {
-        if (userRepository.doesUserExist(signupRequest.getUsername())) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Username already exists");
+        if (userService.doesUserExistByEmail(signupRequest.getEmail())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Email already registered");
         }
         if (!signupRequest.getPassword().equals(signupRequest.getConfirmPassword())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Passwords do not match");
@@ -33,7 +33,7 @@ public class RegisterController {
                 signupRequest.getPassword(),
                 signupRequest.isInstructor()
         );
-        userRepository.addUser(newUser);
+        userService.addUser(newUser);
         return ResponseEntity.ok("User registered successfully");
     }
 

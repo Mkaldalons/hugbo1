@@ -1,4 +1,4 @@
-package hugbo1.backend.database;
+package hugbo1.backend.Database;
 
 import java.sql.*;
 import java.sql.Connection;
@@ -59,8 +59,8 @@ public class DatabaseConnector {
     }
 
     public static void main(String[] args) {
-        DatabaseConnector connector = new DatabaseConnector();
-        connector.createTable();
-        connector.addUser(new User("userName3", "Name3", "email3@test.is", "password3", false));
+        //DatabaseConnector connector = new DatabaseConnector();
+        //connector.createTable();
+        //connector.addUser(new User("userName3", "Name3", "email3@test.is", "password3", false));
     }
 }
