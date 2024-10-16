@@ -53,5 +53,7 @@ public class SignupRequest {
 
     public boolean isInstructor() {
         return false;
+        //vantar að fá skilaboð hér frá frontend um hvort kassinn
+        //sé checked
     }
 }

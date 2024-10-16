@@ -9,15 +9,14 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin(origins = "http://localhost:3000")
 public class LogInController {
 
-    private final UserRepository userRepository = new UserRepository();
+    private UserService userService;
 
     public LogInController(){
     }
 
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) {
-        User user = userRepository.getUserByUsername(loginRequest.getUsername());
-        if (userRepository.users.contains(user) && loginRequest.getPassword().equals(user.getPassword())) {
+        if (userService.authenticateUser(loginRequest.getUsername(), loginRequest.getPassword())) {
             return ResponseEntity.ok("Login successful");
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Login failed");
