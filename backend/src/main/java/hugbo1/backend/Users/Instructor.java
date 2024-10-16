@@ -1,7 +1,10 @@
 package hugbo1.backend.Users;
 
 import hugbo1.backend.Assignments.Course;
+import hugbo1.backend.Assignments.Assignment;
+import hugbo1.backend.Assignments.AssignmentRepository;
 
+import java.util.Date;
 import java.util.List;
 
 public class Instructor extends User {
