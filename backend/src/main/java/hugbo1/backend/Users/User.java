@@ -1,12 +1,21 @@
 package hugbo1.backend.Users;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "Users")
 public class User {
     private String userName;
     private String name;
+    @Id
+    @Column(name = "email", unique = true, nullable = false)
     private String email;
     private String password;
     private boolean isInstructor;
 
+    public User() {
+
+    }
     public User(String userName, String name, String email, String password, boolean isInstructor) {
         this.userName = userName;
         this.name = name;
@@ -55,6 +64,6 @@ public class User {
     }
 
     public String toString(){
-        return "Name: " + name + "User name: " + userName;
+        return "Name: " + name + "\n User name: " + userName;
     }
 }
