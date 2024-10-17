@@ -12,6 +12,7 @@ const Assignment = () => {
     const [dueDate, setDueDate] = useState("");
 
     useEffect(() => {
+        // Fetch the list of courses when the component loads
         const fetchCourses = async () => {
             try {
                 const response = await axios.get('http://localhost:8080/courses');
