@@ -5,8 +5,9 @@ body {
 }
 
 .dashboard-container {
-    width: 90%;
-    margin: 70px;
+    width: 100%; /* Make the container full width */
+    margin: 20px auto; /* Center the content vertically */
+    padding: 20px;
 }
 
 header {
@@ -18,6 +19,7 @@ header {
 
 .buttons {
     margin-top: 10px;
+    text-align: center; /* Center the buttons */
 }
 
 .buttons button {
@@ -39,19 +41,22 @@ header {
 main {
     margin-top: 20px;
     display: flex;
-    justify-content: space-between;
+    flex-direction: column; /* Stack sections vertically */
+    align-items: stretch;   /* Make the sections stretch to fill the width */
 }
 
-.assignments-section, .students-section {
-    width: 48%;
+.assignments-section {
+    flex: 1; /* Make the assignment section take up all available space */
+    width: 100%; /* Full width */
     background-color: white;
     border-radius: 5px;
     box-shadow: 0 0 10px var(--nav-shadow);
     padding: 20px;
     border: 1px solid var(--border-color);
+    margin-bottom: 20px; /* Add some margin at the bottom */
 }
 
-.assignments-section h2, .students-section h2 {
+.assignments-section h2 {
     margin-bottom: 20px;
 }
 

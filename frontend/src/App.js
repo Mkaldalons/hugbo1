@@ -8,6 +8,8 @@ import LoginPage from './components/Auth/LoginPage';
 import Instructor from './components/InstructorPage/Instructor';
 import Student from './components/StudentPage/StudentPage';
 import UpdatePasswordPage from './components/Auth/UpdatePasswordPage';
+import Assignment from './components/Assignment/Assignment';
+import Course from './components/Course/Course';
 
 function App() {
     const [username, setUsername] = useState('');
@@ -30,6 +32,8 @@ function App() {
                     <Route path="/update-password" element={<UpdatePasswordPage username={username} />} />
                     <Route path="/instructor" element={<Instructor />} />
                     <Route path="/student" element={<Student />} />
+                    <Route path="/assignment" element={<Assignment />} />
+                    <Route path="/course" element={<Course />} />
                 </Routes>
             </div>
         </Router>

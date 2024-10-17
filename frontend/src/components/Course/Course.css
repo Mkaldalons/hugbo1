@@ -1,0 +1,78 @@
+.course-container {
+    width: 80%;
+    margin: 30px auto;
+    padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--border-color);
+}
+
+h2 {
+    text-align: center;
+    color: var(--primary-color);
+    margin-bottom: 20px;
+}
+
+.input-section {
+    margin-bottom: 20px;
+}
+
+.input-section label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: var(--text-color);
+}
+
+.input-section input[type="text"], .input-section input[type="date"], .input-section select {
+    width: calc(100% - 20px);
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    font-size: 16px;
+    color: var(--text-color);
+    margin-bottom: 10px;
+    transition: border-color 0.3s ease;
+}
+
+.input-section input:focus, .input-section select:focus {
+    border-color: var(--primary-color);
+    outline: none;
+}
+
+.create-course-btn, .create-assignment-btn {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: 16px;
+    margin-top: 10px;
+    display: block;
+    width: 100%;
+}
+
+.create-course-btn:hover, .create-assignment-btn:hover {
+    background-color: var(--hover-color);
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+    margin-top: 20px;
+}
+
+ul li {
+    padding: 10px;
+    border-bottom: 1px solid var(--border-color);
+    color: var(--text-color);
+}
+
+h3 {
+    margin-top: 20px;
+    color: var(--primary-color);
+    text-align: center;
+}
