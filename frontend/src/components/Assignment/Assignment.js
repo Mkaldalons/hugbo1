@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './Assignment.css';
-import axios from 'axios';  // Import Axios for HTTP requests
+import axios from 'axios';
 
 const Assignment = () => {
     const [questions, setQuestions] = useState([]);
