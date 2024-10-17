@@ -50,4 +50,8 @@ public class SignupRequest {
     public void setConfirmPassword(String confirmPassword) {
         this.confirmPassword = confirmPassword;
     }
+
+    public boolean isInstructor() {
+        return false;
+    }
 }
