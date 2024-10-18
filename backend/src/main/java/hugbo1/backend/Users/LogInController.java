@@ -5,22 +5,33 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
 public class LogInController {
 
-    private UserService userService;
+    private final UserService userService;
 
     public LogInController(UserService userService){
         this.userService = userService;
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) {
+    public ResponseEntity< Map <String, Object> > login(@RequestBody LoginRequest loginRequest) {
         if (userService.authenticateUser(loginRequest.getUsername(), loginRequest.getPassword())) {
-            return ResponseEntity.ok("Login successful");
+            boolean isInstructor = userService.isInstructor(loginRequest.getUsername());
+            Map<String, Object> responseBody = new HashMap<>();
+            responseBody.put("message", "Login successful");
+            responseBody.put("isInstructor", isInstructor);
+            System.out.println("isInstructor: " + isInstructor);
+
+            return ResponseEntity.ok(responseBody);
         } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Login failed");
+            Map<String, Object> responseBody = new HashMap<>();
+            responseBody.put("message", "Invalid username or password");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseBody);
         }
     }
 }
