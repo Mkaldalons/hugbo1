@@ -31,7 +31,7 @@ public class RegisterController {
                 signupRequest.getName(),
                 signupRequest.getEmail(),
                 signupRequest.getPassword(),
-                true // TODO: Add isInstructor() back in
+                signupRequest.isInstructor()
         );
         userService.addUser(newUser);
         return ResponseEntity.ok("User registered successfully");
