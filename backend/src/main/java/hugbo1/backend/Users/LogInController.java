@@ -11,7 +11,8 @@ public class LogInController {
 
     private UserService userService;
 
-    public LogInController(){
+    public LogInController(UserService userService){
+        this.userService = userService;
     }
 
     @PostMapping("/login")
