@@ -33,7 +33,7 @@ const Assignment = () => {
             };
 
             try {
-                const response = await axios.post('http://localhost:8080/assignments', newQuestionObject);
+                const response = await axios.post('http://localhost:8080/create', newQuestionObject);
                 setQuestions([...questions, newQuestionObject]);
             } catch (error) {
                 console.error('Error saving question:', error);

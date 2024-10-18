@@ -1,6 +1,6 @@
 package hugbo1.backend.Assignments;
 
-import hugbo1.backend.database.DatabaseConnector;
+import hugbo1.backend.Database.DatabaseConnector;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
