@@ -13,7 +13,7 @@ const Instructor = () => {
                 <div className="buttons">
                     <button onClick={() => navigate('/course')}>Create Course</button>
                     <button onClick={() => navigate('/assignment')}>Create Assignment</button>
-                    <button onClick={() => alert('View Students feature coming soon!')}>View Students</button>
+                    <button onClick={() => navigate('/student')}>View Students</button>
                 </div>
             </header>
 

@@ -48,7 +48,7 @@ input,
     margin-left: 0;
     width: auto;
     height: auto;
-    align-self: flex-start; /* Aligns the checkbox to the start */
+    align-self: flex-start;
 }
 
 input:focus {

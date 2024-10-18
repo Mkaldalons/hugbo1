@@ -30,6 +30,24 @@ function NavBar({ username, setUsername }) {
         navigate('/');
     };
 
+    const handleUpdatePassword = () => {
+        navigate('/update-password'); // Route to update password page
+        setIsDropdownOpen(false);
+    };
+
+    const handleDeleteAccount = () => {
+        const confirmed = window.confirm("Are you sure you want to delete this account? This action cannot be undone.");
+        if (confirmed) {
+            // Add logic here to delete the account from the backend/database
+            alert("Your account has been deleted.");
+            setUsername(''); // Reset username after deletion
+            navigate('/'); // Navigate back to home page
+        } else {
+            alert("Account deletion cancelled.");
+        }
+        setIsDropdownOpen(false);
+    };
+
     return (
         <div className="nav-bar">
             <div className="nav-logo">
@@ -44,8 +62,14 @@ function NavBar({ username, setUsername }) {
 
                 {isDropdownOpen && username && (
                     <div className="dropdown-menu">
+                        <div className="dropdown-item" onClick={handleUpdatePassword}>
+                            Update Password
+                        </div>
                         <div className="dropdown-item" onClick={handleLogout}>
                             Log out
+                        </div>
+                        <div className="dropdown-item" onClick={handleDeleteAccount}>
+                            Delete Account
                         </div>
                     </div>
                 )}

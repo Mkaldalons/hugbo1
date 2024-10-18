@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import './Assignment.css';
-import axios from 'axios';  // Import Axios for HTTP requests
+import axios from 'axios';
 
 const Assignment = () => {
     const [courses, setCourses] = useState([]);
@@ -12,7 +12,6 @@ const Assignment = () => {
     const [dueDate, setDueDate] = useState("");
 
     useEffect(() => {
-        // Fetch the list of courses when the component loads
         const fetchCourses = async () => {
             try {
                 const response = await axios.get('http://localhost:8080/courses');

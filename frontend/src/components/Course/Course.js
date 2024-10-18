@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './Course.css';
-import axios from "axios";  // Updated to link the new CSS file
+import axios from "axios";
 
 const Course = () => {
     const [courseName, setCourseName] = useState("");
@@ -12,8 +12,8 @@ const Course = () => {
 
             try {
                 const response = await axios.post('http://localhost:8080/courses', newCourse);
-                setCourses([...courses, response.data]); // Add the new course to the state
-                setCourseName(""); // Reset the course name input
+                setCourses([...courses, response.data]);
+                setCourseName("");
             } catch (error) {
                 console.error('Error creating course:', error);
             }

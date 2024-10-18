@@ -20,13 +20,13 @@
 }
 
 .question-section {
-    margin-bottom: 20px;  /* Reduced margin for better spacing control */
+    margin-bottom: 20px;
     font-size: 18px;
     color: var(--text-color);
 }
 
 .quiz-options {
-    margin-top: 40px;  /* Increased margin-top to create space between question and options */
+    margin-top: 40px;
 }
 
 .option-checkbox {
@@ -37,14 +37,14 @@
 }
 
 .option-checkbox input[type="text"] {
-    flex: 0 1 90%;  /* Text input takes 90% of the available space */
+    flex: 0 1 90%;
     padding: 8px;
     border-radius: 5px;
     border: 1px solid var(--border-color);
 }
 
 .option-checkbox input[type="checkbox"] {
-    flex: 1; /* Checkbox takes the remaining space */
+    flex: 1;
     height: 100%;
     cursor: pointer;
 }
