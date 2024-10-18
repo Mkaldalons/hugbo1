@@ -37,11 +37,4 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public void deleteUser(User user) {
-        userRepository.delete(user);
-    }
-    public void changePassword(String oldPassword, String newPassword) {
-        userRepository.changePassword(oldPassword, newPassword);
-    }
-
 }

@@ -6,32 +6,66 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
 import java.util.Date;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/assignments")
 @CrossOrigin(origins = "http://localhost:3000")
 public class AssignmentController {
 
-    private final AssignmentService assignmentService;
-
-    public AssignmentController(AssignmentService assignmentService) {
-        this.assignmentService = assignmentService;
-    }
-
-    //Spurning hvort við lesum inn spurningar og svör í sitthvoru fallinu og metadata?
-    //Er smá confused
-    @PostMapping("/lesa_inn_spurningar")
-    public ResponseEntity<String> saveTextAsJson(@RequestBody AssignmentRequest assignmentRequest) throws IOException {
-        return null;
-    }
-
-
+//    public static class AssignmentRequest {
+//        private String instructorUsername;
+//        private String courseName;
+//        private String assignmentName;
+//        private Date publishDate;
+//        private Date dueDate;
+//
+//        // Getters and Setters
+//        public String getInstructorUsername() {
+//            return instructorUsername;
+//        }
+//
+//        public void setInstructorUsername(String instructorUsername) {
+//            this.instructorUsername = instructorUsername;
+//        }
+//
+//        public String getCourseName() {
+//            return courseName;
+//        }
+//
+//        public void setCourseName(String courseName) {
+//            this.courseName = courseName;
+//        }
+//
+//        public String getAssignmentName() {
+//            return assignmentName;
+//        }
+//
+//        public void setAssignmentName(String assignmentName) {
+//            this.assignmentName = assignmentName;
+//        }
+//
+//        public Date getPublishDate() {
+//            return publishDate;
+//        }
+//
+//        public void setPublishDate(Date publishDate) {
+//            this.publishDate = publishDate;
+//        }
+//
+//        public Date getDueDate() {
+//            return dueDate;
+//        }
+//
+//        public void setDueDate(Date dueDate) {
+//            this.dueDate = dueDate;
+//        }
+//    }
+//
+//
 //    private final AssignmentRepository assignmentRepository = new AssignmentRepository();
 //    private final UserRepository userRepository = new UserRepository();
-
+//
 //    @PostMapping("/create")
 //    public ResponseEntity<String> createAssignment(@RequestBody AssignmentRequest assignmentRequest) {
 //

@@ -1,7 +1,7 @@
 
 package hugbo1.backend.Users;
 
-import hugbo1.backend.Courses.Course;
+import hugbo1.backend.Assignments.Course;
 
 import java.util.ArrayList;
 import java.util.List;
