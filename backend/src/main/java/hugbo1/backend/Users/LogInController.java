@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin(origins = "http://localhost:3000")
 public class LogInController {
 
-    private UserService userService;
+    private final UserService userService;
 
     public LogInController(UserService userService){
         this.userService = userService;
