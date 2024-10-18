@@ -36,5 +36,8 @@ public class UserService {
     public void addUser(User user) {
         userRepository.save(user);
     }
+    public boolean isInstructor(String username) {
+        return userRepository.findIsInstructorByUsername(username);
+    }
 
 }

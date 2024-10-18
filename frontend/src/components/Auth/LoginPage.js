@@ -49,14 +49,19 @@ function LoginPage({ setUsername }) {
                 body: JSON.stringify(requestData),
             });
 
+            const responseData = await response.json();
+            console.log('Response data: ', responseData);
+            console.log('isInstructorValue', responseData.isInstructor);
+
             if (response.ok) {
-                const successMessage = await response.text();
-                setMessage(successMessage);
+                //const successMessage = await response.text();
+                //setMessage(successMessage);
+                setMessage(responseData.message);
 
                 setUsername(username);
 
                 setTimeout(() => {
-                    if (isInstructor) {
+                    if (responseData.isInstructor) {
                         navigate('/instructor');
                     } else {
                         navigate('/student');
