@@ -1,31 +1,62 @@
 package hugbo1.backend.Assignments;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
 import java.util.Date;
 
+@Entity
+@Table( name="Assignments")
 public class Assignment {
-    private Course course;
-    private String name;
-    private Date publishData;
-    private Date dueDate;
 
-    public Assignment(Course course, String name, Date publishData, Date dueDate) {
-        this.course = course;
-        this.name = name;
-        this.publishData = publishData;
-        this.dueDate = dueDate;
+    @Id
+    @Column( name = "id", unique = true, nullable = false)
+    private int id;
+    private Date date;
+    private String jsonData;
+    private String courseId;
+    private String assignmentName;
+
+
+    public int getId() {
+        return id;
     }
 
-    public Course getCourse() { return course; }
-    public String getName() { return name; }
-    public Date getPublishData() { return publishData; }
-    public Date getDueDate() { return dueDate; }
+    public void setId(int id) {
+        this.id = id;
+    }
 
-    public void setCourse(Course course) { this.course = course; }
-    public void setName(String name) { this.name = name; }
-    public void setPublishData(Date publishData) { this.publishData = publishData; }
-    public void setDueDate(Date dueDate) { this.dueDate = dueDate; }
+    public Date getDate() {
+        return date;
+    }
 
-    public String toString() {
-        return "Assignment{name='" + name + "', course='" + course.getName() + "', publishDate=" + publishData + ", dueDate=" + dueDate + "}";
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public String getJsonData() {
+        return jsonData;
+    }
+
+    public void setJsonData(String jsonData) {
+        this.jsonData = jsonData;
+    }
+
+    public String getCourseId() {
+        return courseId;
+    }
+
+    public void setCourseId(String courseId) {
+        this.courseId = courseId;
+    }
+
+    public String getAssignmentName() {
+        return assignmentName;
+    }
+
+    public void setAssignmentName(String assignmentName) {
+        this.assignmentName = assignmentName;
     }
 }
