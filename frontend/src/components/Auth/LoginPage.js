@@ -50,12 +50,8 @@ function LoginPage({ setUsername }) {
             });
 
             const responseData = await response.json();
-            console.log('Response data: ', responseData);
-            console.log('isInstructorValue', responseData.isInstructor);
 
             if (response.ok) {
-                //const successMessage = await response.text();
-                //setMessage(successMessage);
                 setMessage(responseData.message);
 
                 setUsername(username);
