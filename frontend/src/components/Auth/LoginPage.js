@@ -54,6 +54,7 @@ function LoginPage({ setUsername }) {
                 setMessage(responseData.message);
 
                 setUsername(username);
+                localStorage.setItem('username', username)
 
                 setTimeout(() => {
                     if (responseData.isInstructor) {
