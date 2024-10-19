@@ -25,6 +25,7 @@ public class LogInController {
             Map<String, Object> responseBody = new HashMap<>();
             responseBody.put("message", "Login successful");
             responseBody.put("isInstructor", isInstructor);
+            System.out.println("isInstructor: " + isInstructor);
 
             return ResponseEntity.ok(responseBody);
         } else {
