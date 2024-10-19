@@ -1,0 +1,74 @@
+/* Basic layout */
+.assignment-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Adds space between assignment cards */
+    margin: 20px 0;
+}
+
+/* Styling for each assignment item */
+.assignment-list li {
+    background-color: #f8f9fa; /* Light gray background */
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease;
+}
+
+/* Hover effect for assignments */
+.assignment-list li:hover {
+    transform: scale(1.02); /* Slight zoom effect */
+}
+
+/* Assignment titles */
+.assignment-list h3 {
+    font-size: 1.25rem;
+    margin-bottom: 8px;
+    color: #343a40;
+}
+
+/* Due date style */
+.assignment-list p {
+    font-size: 0.9rem;
+    color: #6c757d;
+}
+
+/* Button styling */
+.assignment-list button {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+/* Button hover effect */
+.assignment-list button:hover {
+    background-color: #0056b3;
+}
+
+/* Selected assignment details section */
+.assignment-details {
+    margin-top: 30px;
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Selected assignment title */
+.assignment-details h2 {
+    font-size: 1.5rem;
+    color: #495057;
+    margin-bottom: 10px;
+}
+
+/* Selected assignment due date */
+.assignment-details p {
+    font-size: 1rem;
+    color: #6c757d;
+}

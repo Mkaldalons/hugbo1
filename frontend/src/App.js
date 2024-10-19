@@ -10,6 +10,7 @@ import Student from './components/StudentPage/StudentPage';
 import UpdatePasswordPage from './components/Auth/UpdatePasswordPage';
 import Assignment from './components/Assignment/Assignment';
 import Course from './components/Course/Course';
+import StudentPage from "./components/Students/StudentPage";
 
 function App() {
     const [username, setUsername] = useState('');
@@ -34,6 +35,7 @@ function App() {
                     <Route path="/student" element={<Student />} />
                     <Route path="/assignment" element={<Assignment />} />
                     <Route path="/course" element={<Course />} />
+                    <Route path="/StudentPage" element={<StudentPage />} />
                 </Routes>
             </div>
         </Router>

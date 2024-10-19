@@ -1,4 +1,3 @@
-// LoginPage.js
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import LoginForm from './LoginForm';
@@ -37,7 +36,7 @@ function LoginPage({ setUsername }) {
 
         const url = isLogin ? 'http://localhost:8080/login' : 'http://localhost:8080/signup';
         const requestData = isLogin
-            ? { username, password }
+            ? { username, password, isInstructor}
             : { username, name, email, password, confirmPassword, isInstructor };
 
         try {
