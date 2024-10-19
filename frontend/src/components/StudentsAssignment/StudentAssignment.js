@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import './StudentPage.css'; //
+import './StudentAssignment.css'; //
 
-const StudentPage = () => {
+const StudentAssignments = () => {
     const [assignments, setAssignments] = useState([]);
     const [selectedAssignment, setSelectedAssignment] = useState(null);
 
@@ -54,4 +54,4 @@ const StudentPage = () => {
     );
 };
 
-export default StudentPage;
+export default StudentAssignments;

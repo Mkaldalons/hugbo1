@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './NavBar.css';
 import './Dropdown.css';
 import logo from '../../assets/logo.svg';
@@ -6,10 +6,30 @@ import { useNavigate } from 'react-router-dom';
 
 function NavBar({ username, setUsername }) {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const [isInstructor, setIsInstructor] = useState(null); // To store user role
     const navigate = useNavigate();
 
+    // Fetch user role from the backend once username is set
+    useEffect(() => {
+        if (username) {
+            // Fetch user data (assume there's an endpoint that checks if the user is an instructor)
+            fetch(`/users/${username}`)
+                .then(response => response.json())
+                .then(data => setIsInstructor(data.isInstructor))
+                .catch(error => console.error('Error fetching user role:', error));
+        }
+    }, [username]);
+
     const goToHomePage = () => {
-        navigate('/');
+        if (isInstructor === null) {
+            // If the user role hasn't been fetched yet, prevent navigation
+            return;
+        }
+        if (isInstructor) {
+            navigate('/instructor');  // Navigate to instructor page
+        } else {
+            navigate('/student');     // Navigate to student page
+        }
     };
 
     const goToLoginPage = () => {

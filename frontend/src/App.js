@@ -10,7 +10,8 @@ import Student from './components/StudentPage/StudentPage';
 import UpdatePasswordPage from './components/Auth/UpdatePasswordPage';
 import Assignment from './components/Assignment/Assignment';
 import Course from './components/Course/Course';
-import StudentPage from "./components/Students/StudentPage";
+import StudentAssignments from "./components/StudentsAssignment/StudentAssignment";
+import StudentView from "./components/StudentView/StudentView";
 
 function App() {
     const [username, setUsername] = useState('');
@@ -20,14 +21,7 @@ function App() {
             <div className="App">
                 <NavBar username={username} setUsername={setUsername} />
                 <Routes>
-                    <Route
-                        path="/"
-                        element={
-                            <div className="App-header">
-                                <img src={frontpage} alt="frontpage" />
-                            </div>
-                        }
-                    />
+                    <Route path="/" element={ <div className="App-header"> <img src={frontpage} alt="frontpage" /></div>}/>
                     <Route path="/login" element={<LoginPage setUsername={setUsername} />} />
                     <Route path="/signup" element={<LoginPage setUsername={setUsername} />} />
                     <Route path="/update-password" element={<UpdatePasswordPage username={username} />} />
@@ -35,7 +29,8 @@ function App() {
                     <Route path="/student" element={<Student />} />
                     <Route path="/assignment" element={<Assignment />} />
                     <Route path="/course" element={<Course />} />
-                    <Route path="/StudentPage" element={<StudentPage />} />
+                    <Route path="/studentAssignments" element={<StudentAssignments />} />
+                    <Route path="/studentView" element={<StudentView />} />
                 </Routes>
             </div>
         </Router>
@@ -43,3 +38,4 @@ function App() {
 }
 
 export default App;
+

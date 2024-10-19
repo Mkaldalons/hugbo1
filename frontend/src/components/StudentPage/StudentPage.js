@@ -7,7 +7,7 @@ const StudentPage = () => {
             <header>
                 <h1>Student Dashboard</h1>
                 <div className="buttons">
-                    <button onClick={() => alert('Assignment feature coming soon!')}>Assignment</button>
+                    <button onClick={() => alert('/studentAssignments')}>Assignment</button>
                     <button onClick={() => alert('View Grades feature coming soon!')}>View Grades</button>
                 </div>
             </header>
