@@ -8,7 +8,12 @@ const Course = () => {
 
     const createCourse = async () => {
         if (courseName.trim()) {
-            const newCourse = { name: courseName };
+            const username = localStorage.getItem('username');
+            const newCourse = { courseName: courseName, createdBy: username };
+            if(!username){
+                console.error('No username found.')
+                return;
+            }
 
             try {
                 const response = await axios.post('http://localhost:8080/courses', newCourse);
