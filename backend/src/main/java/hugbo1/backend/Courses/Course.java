@@ -1,9 +1,9 @@
 package hugbo1.backend.Courses;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import hugbo1.backend.Students.Student;
+import jakarta.persistence.*;
+
+import java.util.Set;
 
 @Entity
 @Table( name = "Courses" )
@@ -15,6 +15,9 @@ public class Course {
     private String courseName;
     private String instructor;
     private String description;
+
+    @ManyToMany( mappedBy = "courses")
+    private Set<Student> students;
 
     public String getCourseId() {
         courseId = courseName + 101;
