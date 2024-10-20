@@ -1,12 +1,11 @@
 package hugbo1.backend.Assignments;
 
-import org.springframework.web.multipart.MultipartFile;
-
 import java.util.Date;
+import java.util.List;
 
 public class AssignmentRequest {
     private Date dueDate;
-    private MultipartFile jsonData;
+    private List<QuestionRequest> questionRequest;
     private String courseId;
 
     public Date getDueDate() {
@@ -17,12 +16,12 @@ public class AssignmentRequest {
         this.dueDate = dueDate;
     }
 
-    public MultipartFile getJsonData() {
-        return jsonData;
+    public List<QuestionRequest> getQuestionRequests() {
+        return questionRequest;
     }
 
-    public void setJsonData(MultipartFile jsonData) {
-        this.jsonData = jsonData;
+    public void setQuestionRequests(List<QuestionRequest> questionRequests) {
+        this.questionRequest = questionRequests;
     }
 
     public String getCourseId() {
