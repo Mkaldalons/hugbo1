@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './AuthForm.css';
@@ -19,14 +18,36 @@ function UpdatePasswordPage({ username }) {
             return;
         }
 
-        const url = 'http://localhost:8080/update-password';
-        const requestData = {
-            username,
-            oldPassword,
-            newPassword,
-        };
-
         try {
+            // Fetch user details by username
+            const userDetailsResponse = await fetch(`http://localhost:8080/users/${username}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            if (!userDetailsResponse.ok) {
+                setMessage('Error fetching user details');
+                return;
+            }
+
+            const userDetails = await userDetailsResponse.json();
+
+            // Check if the old password matches the one in the database
+            if (userDetails.password !== oldPassword) {
+                setMessage('Old password is incorrect');
+                return;
+            }
+
+            // Proceed to update the password
+            const url = 'http://localhost:8080/update-password';
+            const requestData = {
+                username,
+                oldPassword,
+                newPassword,
+            };
+
             const response = await fetch(url, {
                 method: 'PUT',
                 headers: {
