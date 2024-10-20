@@ -44,10 +44,15 @@ function NavBar({ username, setUsername }) {
         }
     };
 
-    const handleLogout = () => {
+    const logout = () => {
         setUsername('');
         setIsDropdownOpen(false);
         navigate('/');
+    };
+
+    const changePass = () => {
+        setIsDropdownOpen(false);
+        navigate('/update-password'); // Redirect to profile page
     };
 
     return (
@@ -64,7 +69,10 @@ function NavBar({ username, setUsername }) {
 
                 {isDropdownOpen && username && (
                     <div className="dropdown-menu">
-                        <div className="dropdown-item" onClick={handleLogout}>
+                        <div className="dropdown-item" onClick={changePass}>
+                            Update Password
+                        </div>
+                        <div className="dropdown-item" onClick={logout}>
                             Log out
                         </div>
                     </div>
