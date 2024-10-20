@@ -39,5 +39,18 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
         }
     }
+    @PostMapping("/delete-account")
+    public ResponseEntity<Map<String, Object>> deleteAccount(@RequestBody UserRequest userRequest) {
+        Map<String, Object> responseBody = new HashMap<>();
+        User user = userService.getUserByUserName(userRequest.getUsername());
+        if (userService.doesUserExistByEmail(user.getEmail())) {
+            userService.deleteUser(user);
+            responseBody.put("status", "Account deleted successfully");
+            return ResponseEntity.ok(responseBody);
+        }else {
+            responseBody.put("status", "Wrong email");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
+        }
+    }
 }
 

@@ -1,5 +1,6 @@
 package hugbo1.backend.Courses;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import hugbo1.backend.Students.Student;
 import jakarta.persistence.*;
 
@@ -16,8 +17,18 @@ public class Course {
     private String instructor;
     private String description;
 
+
     @ManyToMany( mappedBy = "courses")
+    @JsonIgnore
     private Set<Student> students;
+
+    public Set<Student> getStudents() {
+        return students;
+    }
+
+    public void setStudents(Set<Student> students) {
+        this.students = students;
+    }
 
     public String getCourseId() {
         courseId = courseName + 101;

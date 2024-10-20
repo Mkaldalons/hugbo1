@@ -1,6 +1,7 @@
 
 package hugbo1.backend.Students;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import hugbo1.backend.Courses.Course;
 import jakarta.persistence.*;
 
@@ -22,6 +23,7 @@ public class Student {
             joinColumns = @JoinColumn(name="student_id"),
             inverseJoinColumns = @JoinColumn(name="course_id")
     )
+    @JsonIgnore
     private Set<Course> courses;
 
 

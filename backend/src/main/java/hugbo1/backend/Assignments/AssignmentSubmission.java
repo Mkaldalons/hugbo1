@@ -14,4 +14,35 @@ public class AssignmentSubmission {
     private int studentId;
 
 
+    public int getSubmissionId() {
+        return submissionId;
+    }
+
+    public void setSubmissionId(int submissionId) {
+        this.submissionId = submissionId;
+    }
+
+    public int getAssignmentId() {
+        return assignmentId;
+    }
+
+    public void setAssignmentId(int assignmentId) {
+        this.assignmentId = assignmentId;
+    }
+
+    public int getStudentId() {
+        return studentId;
+    }
+
+    public void setStudentId(int studentId) {
+        this.studentId = studentId;
+    }
+
+    public double getAssignmentGrade() {
+        return assignmentGrade;
+    }
+
+    public void setAssignmentGrade(double assignmentGrade) {
+        this.assignmentGrade = assignmentGrade;
+    }
 }
