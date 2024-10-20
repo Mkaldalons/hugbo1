@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import './Course.css';
-import axios from "axios";  // Updated to link the new CSS file
+import axios from "axios";// Updated to link the new CSS file
 
 const Course = () => {
     const [courseName, setCourseName] = useState("");
@@ -25,6 +25,19 @@ const Course = () => {
         }
     };
 
+    useEffect(() => {
+        const fetchCourses = async () => {
+            try {
+                const response = await axios.get('http://localhost:8080/courses');
+                setCourses(response.data);
+            } catch (error) {
+                console.error('Error fetching courses:', error);
+            }
+        };
+        fetchCourses();
+    }, []);
+
+
     return (
         <div className="course-container">
             <h2>Create a New Course</h2>
@@ -44,7 +57,7 @@ const Course = () => {
             <ul>
                 {courses.length > 0 ? (
                     courses.map((course) => (
-                        <li key={course.id}>{course.name}</li>
+                        <li key={course.courseId}>{course.courseName}</li>
                     ))
                 ) : (
                     <li>No courses available</li>
