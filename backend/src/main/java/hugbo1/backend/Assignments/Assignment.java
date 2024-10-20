@@ -1,9 +1,6 @@
 package hugbo1.backend.Assignments;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.util.Date;
 
@@ -12,28 +9,29 @@ import java.util.Date;
 public class Assignment {
 
     @Id
-    @Column( name = "id", unique = true, nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)  // Use IDENTITY for auto-increment
+    @Column(name = "id", unique = true, nullable = false)
     private int id;
-    private Date date;
+    private Date dueDate;
     private String jsonData;
     private String courseId;
     private String assignmentName;
 
 
     public int getId() {
-        return id;
+        return id+1;
     }
 
     public void setId(int id) {
         this.id = id;
     }
 
-    public Date getDate() {
-        return date;
+    public Date getDueDate() {
+        return dueDate;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setDueDate(Date date) {
+        this.dueDate = date;
     }
 
     public String getJsonData() {

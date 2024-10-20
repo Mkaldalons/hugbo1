@@ -1,33 +1,75 @@
-import React, { useState } from 'react';
 import './Assignment.css';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const Assignment = () => {
+    const [courses, setCourses] = useState([]);
+    const [selectedCourseId, setSelectedCourseId] = useState("");
     const [questions, setQuestions] = useState([]);
     const [newQuestion, setNewQuestion] = useState("");
     const [newOptions, setNewOptions] = useState(["", "", "", ""]);
     const [correctAnswerIndex, setCorrectAnswerIndex] = useState(null);
     const [dueDate, setDueDate] = useState("");
 
-    const addQuestion = async () => {
-        if (newQuestion.trim() && newOptions.every((option) => option.trim()) && correctAnswerIndex !== null) {
+    useEffect(() => {
+        const fetchCourses = async () => {
+            try {
+                const response = await axios.get('http://localhost:8080/courses');
+                setCourses(response.data);
+            } catch (error) {
+                console.error('Error fetching courses:', error);
+            }
+        };
+        fetchCourses();
+    }, []);
+
+    const addQuestion = () => {
+        if (newQuestion.trim() && newOptions.every(option => option.trim()) && correctAnswerIndex !== null) {
             const newQuestionObject = {
                 question: newQuestion,
                 options: [...newOptions],
-                correctAnswer: newOptions[correctAnswerIndex],
-                dueDate
+                correctAnswer: newOptions[correctAnswerIndex]
             };
 
-            try {
-                const response = await axios.post('http://localhost:8080/assignments', newQuestionObject);
-                setQuestions([...questions, newQuestionObject]);
-            } catch (error) {
-                console.error('Error saving question:', error);
-            }
+            setQuestions([...questions, newQuestionObject]);
 
             setNewQuestion("");
             setNewOptions(["", "", "", ""]);
             setCorrectAnswerIndex(null);
+        } else {
+            alert('Please fill out the question, options, and select a correct answer.');
+        }
+    };
+
+    const submitAssignment = async () => {
+        if (!selectedCourseId) {
+            alert('Please select a course.');
+            return;
+        }
+        if (!dueDate) {
+            alert('Please select a due date.');
+            return;
+        }
+
+        // Create the JSON object to represent the questions
+        const assignmentData = {
+            courseId: selectedCourseId,
+            dueDate: dueDate,
+            questionRequests: questions
+        };
+
+
+        try {
+            // Send the data as a JSON string in the request body
+            const response = await axios.post('http://localhost:8080/create', assignmentData, {
+                headers: {
+                    'Content-Type': 'application/json',  // Ensure the correct content type
+                },
+            });
+            console.log('Assignment created successfully:', response.data);
+            console.log(JSON.stringify(assignmentData, null, 2));
+        } catch (error) {
+            console.error('Error submitting assignment:', error);
         }
     };
 
@@ -35,7 +77,21 @@ const Assignment = () => {
         <div className="quiz-container">
             <h2>Create New Assignment</h2>
 
-            {/* Due Date Input */}
+            <div className="input-section">
+                <label>Select Course:</label>
+                <select
+                    value={selectedCourseId}
+                    onChange={(e) => setSelectedCourseId(e.target.value)}
+                >
+                    <option value="">Select a course</option>
+                    {courses.map((course) => (
+                        <option key={course.courseId} value={course.courseId}>
+                            {course.courseName}
+                        </option>
+                    ))}
+                </select>
+            </div>
+
             <div className="input-section">
                 <label>Due Date:</label>
                 <input
@@ -45,7 +101,6 @@ const Assignment = () => {
                 />
             </div>
 
-            {/* Add Questions Section */}
             <div className="input-section">
                 <h3>Add Questions</h3>
                 <div>
@@ -92,7 +147,7 @@ const Assignment = () => {
                 ))}
             </ul>
 
-            <button className="start-quiz-btn">
+            <button className="start-quiz-btn" onClick={submitAssignment}>
                 Submit Assignment
             </button>
         </div>
