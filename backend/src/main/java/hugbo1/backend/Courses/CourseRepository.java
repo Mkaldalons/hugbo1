@@ -12,6 +12,7 @@ import java.util.List;
 public interface CourseRepository extends JpaRepository<Course, String> {
 
     Course findByCourseName(String courseName);
+    Course findByCourseId(String courseId);
 
     @Query("SELECT c.students FROM Course c WHERE c.courseId = :courseId")
     List<Student> findStudentsByCourseId(@Param("courseId") String courseId);

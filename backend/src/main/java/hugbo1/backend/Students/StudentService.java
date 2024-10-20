@@ -20,7 +20,7 @@ public class StudentService {
     public Optional<Student> getStudentById(int id) {
         return studentRepository.findById(id);
     }
-    public Student getStudentByName(String name) {
+    public Student getStudentByUserName(String name) {
         return studentRepository.findByUserName(name);
     }
     public void addStudent(Student student) {
