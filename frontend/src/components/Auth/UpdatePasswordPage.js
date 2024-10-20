@@ -19,37 +19,15 @@ function UpdatePasswordPage({ username }) {
         }
 
         try {
-            // Fetch user details by username
-            const userDetailsResponse = await fetch(`http://localhost:8080/users/${username}`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            });
-
-            if (!userDetailsResponse.ok) {
-                setMessage('Error fetching user details');
-                return;
-            }
-
-            const userDetails = await userDetailsResponse.json();
-
-            // Check if the old password matches the one in the database
-            if (userDetails.password !== oldPassword) {
-                setMessage('Old password is incorrect');
-                return;
-            }
-
-            // Proceed to update the password
-            const url = 'http://localhost:8080/update-password';
+            const url = 'http://localhost:8080/update-password';  // Adjusted to match backend endpoint
             const requestData = {
-                username,
+                username,  // Pass the username
                 oldPassword,
                 newPassword,
             };
 
             const response = await fetch(url, {
-                method: 'PUT',
+                method: 'POST',  // Changed to POST to match backend
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -57,8 +35,8 @@ function UpdatePasswordPage({ username }) {
             });
 
             if (response.ok) {
-                const successMessage = await response.text();
-                setMessage(successMessage);
+                const result = await response.json();
+                setMessage(result.status);  // Display success message
                 setOldPassword('');
                 setNewPassword('');
                 setConfirmPassword('');
@@ -66,8 +44,8 @@ function UpdatePasswordPage({ username }) {
                     navigate('/login');
                 }, 2000);
             } else {
-                const error = await response.text();
-                setMessage(`Error: ${error}`);
+                const error = await response.json();
+                setMessage(error.status);  // Display error message
             }
         } catch (error) {
             setMessage(`Error: ${error.message}`);

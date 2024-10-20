@@ -39,5 +39,9 @@ public class UserService {
     public boolean isInstructor(String username) {
         return userRepository.findIsInstructorByUsername(username);
     }
+    public void changePassword(User user, String newPassword) {
+        user.setPassword(newPassword);
+        userRepository.save(user);
+    }
 
 }
