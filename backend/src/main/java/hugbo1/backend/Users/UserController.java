@@ -3,7 +3,6 @@ package hugbo1.backend.Users;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -11,7 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
@@ -40,9 +38,10 @@ public class UserController {
         }
     }
     @PostMapping("/delete-account")
-    public ResponseEntity<Map<String, Object>> deleteAccount(@RequestBody UserRequest userRequest) {
+    public ResponseEntity<Map<String, Object>> deleteAccount(@RequestBody DeleteAccountRequest deleteAccountRequest) {
+        System.out.println(deleteAccountRequest.getUsername() + "is recieved by backend");
         Map<String, Object> responseBody = new HashMap<>();
-        User user = userService.getUserByUserName(userRequest.getUsername());
+        User user = userService.getUserByUserName(deleteAccountRequest.getUsername());
         if (userService.doesUserExistByEmail(user.getEmail())) {
             userService.deleteUser(user);
             responseBody.put("status", "Account deleted successfully");

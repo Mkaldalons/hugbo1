@@ -8,6 +8,24 @@ public class AssignmentRequest {
     private List<QuestionRequest> questionRequest;
     private String courseId;
 
+    public int getAssignmentId() {
+        return assignmentId;
+    }
+
+    public void setAssignmentId(int assignmentId) {
+        this.assignmentId = assignmentId;
+    }
+
+    public List<QuestionRequest> getQuestionRequest() {
+        return questionRequest;
+    }
+
+    public void setQuestionRequest(List<QuestionRequest> questionRequest) {
+        this.questionRequest = questionRequest;
+    }
+
+    private int assignmentId;
+
     public Date getDueDate() {
         return dueDate;
     }

@@ -9,10 +9,8 @@ function NavBar({ username, setUsername }) {
     const [isInstructor, setIsInstructor] = useState(null); // To store user role
     const navigate = useNavigate();
 
-    // Fetch user role from the backend once username is set
     useEffect(() => {
         if (username) {
-            // Fetch user data (assume there's an endpoint that checks if the user is an instructor)
             fetch(`/users/${username}`)
                 .then(response => response.json())
                 .then(data => setIsInstructor(data.isInstructor))
@@ -52,7 +50,12 @@ function NavBar({ username, setUsername }) {
 
     const changePass = () => {
         setIsDropdownOpen(false);
-        navigate('/update-password'); // Redirect to profile page
+        navigate('/update-password'); // Redirect to update password page
+    };
+
+    const deleteAccount = () => {
+        setIsDropdownOpen(false);
+        navigate('/delete-account'); // Redirect to delete account page
     };
 
     return (
@@ -69,6 +72,9 @@ function NavBar({ username, setUsername }) {
 
                 {isDropdownOpen && username && (
                     <div className="dropdown-menu">
+                        <div className="dropdown-item" onClick={deleteAccount}>
+                            Delete Account
+                        </div>
                         <div className="dropdown-item" onClick={changePass}>
                             Update Password
                         </div>
