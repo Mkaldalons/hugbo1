@@ -16,6 +16,9 @@ public class AssignmentService {
     public void createAssignment(Assignment assignment) {
         assignmentRepository.save(assignment);
     }
+    public void updateAssignment(Assignment assignment) {
+        assignmentRepository.save(assignment);
+    }
 
     public List<Assignment> getAllAssignments() {
         return assignmentRepository.findAll();

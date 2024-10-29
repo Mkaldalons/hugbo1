@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -48,5 +49,32 @@ public class AssignmentController {
         response.put("message", "Assignment created");
         return ResponseEntity.ok(response);
     }
-
+    @GetMapping("/assignments")
+    public ResponseEntity<List<Assignment>> getAllAssignments() {
+        return ResponseEntity.ok(assignmentService.getAllAssignments());
     }
+
+    @PostMapping("/edit")
+    public ResponseEntity<Map<String, Object>> editAssignment(@RequestBody AssignmentRequest assignmentRequest) {
+        Map<String, Object> response = new HashMap<>();
+        if (!courseService.doesCourseExist(assignmentRequest.getCourseId())) {
+            response.put("message", "Course not found");
+            return ResponseEntity.status(400).body(response);
+        }else {
+            Assignment assignment = assignmentService.getAssignmentById(assignmentRequest.getAssignmentId());
+            assignment.setDueDate(assignmentRequest.getDueDate());
+            ObjectMapper objectMapper = new ObjectMapper();
+            String jsonQuestions;
+            try {
+                jsonQuestions = objectMapper.writeValueAsString(assignmentRequest.getQuestionRequests());
+            } catch (Exception e) {
+                response.put("message", "Couldn't serialize to JSON");
+                return ResponseEntity.status(500).body(response);
+            }
+            assignment.setJsonData(jsonQuestions);
+            assignmentService.updateAssignment(assignment);
+            response.put("message", "Assignment updated");
+            return ResponseEntity.ok(response);
+        }
+    }
+}
