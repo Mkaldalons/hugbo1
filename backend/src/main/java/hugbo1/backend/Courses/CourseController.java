@@ -53,7 +53,6 @@ public class CourseController {
 
     @PostMapping("/students/add")
     public ResponseEntity<Map<String, Object>> registerStudentInCourse(@RequestBody RegisterRequest registerRequest){
-        System.out.println("COURSE ID IS: "+registerRequest.getCourseId() + " USERNAME IS: " + registerRequest.getUserName());
         Student student = studentService.getStudentByUserName(registerRequest.getUserName());
         Optional<Course> course = courseService.getCourseById(registerRequest.getCourseId());
         Map<String, Object> responseBody = new HashMap<>();
@@ -64,7 +63,6 @@ public class CourseController {
             if (course.isPresent()) {
                 courseService.registerStudentToCourse(student, course.get());
                 responseBody.put("message", "Student registered successfully");
-                System.out.println("Student registered successfully" + registerRequest.getUserName());
                 return ResponseEntity.ok(responseBody);
             }else {
                 responseBody.put("message", "Student not registered successfully");
@@ -74,13 +72,11 @@ public class CourseController {
     }
     @GetMapping("/students")
     public ResponseEntity<List<Student>> getAllStudentsByCourseId(@RequestParam String courseId) {
-        System.out.println("COURSE ID IS: "+courseId);
         Optional<Course> course = courseService.getCourseById(courseId);
-        if (!course.isPresent()) {
+        if (course.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
         List<Student> students = courseService.getAllStudents(courseId);
-        System.out.println("Students: "+students);
         return ResponseEntity.ok(students);
     }
 }

@@ -30,8 +30,8 @@ const StudentAssignments = () => {
                     <ul>
                         {assignments.map((assignment) => (
                             <li key={assignment.id}>
-                                <h3>{assignment.title}</h3>
-                                <p>Due Date: {new Date(assignment.dueDate).toLocaleDateString()}</p>
+                                <h3>{assignment.assignmentName}</h3>
+                                <p>Due Date: {assignment.dueDate}</p>
                                 <button onClick={() => handleViewAssignment(assignment)}>
                                     View Assignment
                                 </button>

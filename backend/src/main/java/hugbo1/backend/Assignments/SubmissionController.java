@@ -19,17 +19,10 @@ public class SubmissionController {
 
     @GetMapping("/average-grade/{assignmentId}")
     public double averageGrade(@PathVariable int assignmentId) {
-        System.out.println("Assignment with id has grade: "+assignmentId+ " "+submissionService.getAverageGradeFromId(assignmentId));
         return submissionService.getAverageGradeFromId(assignmentId);
     }
     @GetMapping("/grades/{assignmentId}")
     public List<Double> grades(@PathVariable int assignmentId) {
         return submissionService.getAllAssignmentGrades(assignmentId);
     }
-
-
-    public void processJson(){
-
-    }
-
 }

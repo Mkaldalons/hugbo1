@@ -39,7 +39,6 @@ public class UserController {
     }
     @PostMapping("/delete-account")
     public ResponseEntity<Map<String, Object>> deleteAccount(@RequestBody DeleteAccountRequest deleteAccountRequest) {
-        System.out.println(deleteAccountRequest.getUsername() + "is recieved by backend");
         Map<String, Object> responseBody = new HashMap<>();
         User user = userService.getUserByUserName(deleteAccountRequest.getUsername());
         if (userService.doesUserExistByEmail(user.getEmail())) {

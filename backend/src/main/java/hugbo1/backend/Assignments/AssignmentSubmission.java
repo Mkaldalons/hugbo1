@@ -1,5 +1,6 @@
 package hugbo1.backend.Assignments;
 
+import hugbo1.backend.Students.Student;
 import jakarta.persistence.*;
 
 @Entity
@@ -11,7 +12,11 @@ public class AssignmentSubmission {
     private int submissionId;
     private int assignmentId;
     private double assignmentGrade;
-    private int studentId;
+    //private int studentId;
+
+    @ManyToOne
+    @JoinColumn(name = "student_id", nullable = false)
+    private Student student;
 
     public int getSubmissionId() {
         return submissionId;
@@ -29,13 +34,13 @@ public class AssignmentSubmission {
         this.assignmentId = assignmentId;
     }
 
-    public int getStudentId() {
-        return studentId;
-    }
+//    public int getStudentId() {
+//        return studentId;
+//    }
 
-    public void setStudentId(int studentId) {
-        this.studentId = studentId;
-    }
+//    public void setStudentId(int studentId) {
+//        this.studentId = studentId;
+//    }
 
     public double getAssignmentGrade() {
         return assignmentGrade;

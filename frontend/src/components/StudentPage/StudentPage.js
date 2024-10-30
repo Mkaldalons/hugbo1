@@ -11,7 +11,7 @@ const StudentPage = () => {
             <header className="header">
                 <h1 className="header-title">Student Dashboard</h1>
                 <div className="header-buttons">
-                    <button className="btn" onClick={() => navigate('/studentAssignments')}>Assignment</button>
+                    <button className="btn" onClick={() => navigate('/studentAssignments')}>Assignments</button>
                     <button className="btn" onClick={() => navigate('/studentGrades')}>View Grades</button>
                 </div>
             </header>
@@ -25,21 +25,37 @@ const StudentPage = () => {
     );
 };
 
-const Assignments = () => {
+const Assignments = ( ) => {
     const [assignments, setAssignments] = useState([]);
+    const [submissionStatus, setSubmissionStatus] = useState([])
+    const userName = localStorage.getItem("username")
 
     useEffect(() => {
         const fetchAssignments = async () => {
             try {
                 const response = await axios.get('http://localhost:8080/assignments');
                 setAssignments(response.data);
+
+                const statusPromises = response.data.map(async (assignment) => {
+                    const statusResponse = await axios.get(`http://localhost:8080/student/${userName}/assignments/${assignment.assignmentId}`);
+                    return { assignmentId: assignment.assignmentId, status: statusResponse.data};
+                });
+
+                const statuses = await Promise.all(statusPromises);
+                const statusMap = statuses.reduce((map, item) => {
+                    map[item.assignmentId] = item.status ? "Yes" : "No";
+                    return map;
+                }, {});
+
+                setSubmissionStatus(statusMap)
+
             } catch (error) {
                 console.error('Error fetching assignments:', error);
             }
         };
 
         fetchAssignments();
-    }, []);
+    }, [userName]);
 
     return (
         <div className="assignments-section">
@@ -47,8 +63,8 @@ const Assignments = () => {
             <ul className="assignments-list">
                 {assignments.length > 0 ? (
                     assignments.map((assignment) => (
-                        <li className="assignment-item" key={assignment.id}>
-                            {assignment.name} - Due: {assignment.dueDate} - Status: {assignment.status || 'Pending'}
+                        <li className="assignment-item" key={assignment.assignmentId}>
+                            {assignment.assignmentName} - Due: {assignment.dueDate} - Sumbitted: {submissionStatus[assignment.assignmentId]}
                         </li>
                     ))
                 ) : (

@@ -2,6 +2,7 @@
 package hugbo1.backend.Students;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import hugbo1.backend.Assignments.AssignmentSubmission;
 import hugbo1.backend.Courses.Course;
 import jakarta.persistence.*;
 
@@ -26,6 +27,9 @@ public class Student {
     @JsonIgnore
     private Set<Course> courses;
 
+    @OneToMany(mappedBy = "student")
+    @JsonIgnore
+    private Set<AssignmentSubmission> submissions;
 
     public Student() {
 

@@ -52,30 +52,20 @@ public class AssignmentController {
     @GetMapping("/assignments")
     public ResponseEntity<List<Assignment>> getAllAssignments() {
         List<Assignment> assignments = assignmentService.getAllAssignments();
-        for (Assignment assignment : assignments) {
-            System.out.println(assignment.getAssignmentName());
-            System.out.println(assignment.getDueDate());
-            System.out.println(assignment.getJsonData());
-            System.out.println(assignment.getAssignmentId());
-        }
         return ResponseEntity.ok(assignments);
     }
 
     @GetMapping("/assignment/{assignmentId}")
     public ResponseEntity<Assignment> getAssignmentById(@PathVariable int assignmentId) {
-        System.out.println(assignmentId);
         if (assignmentService.doesAssignmentExist(assignmentId)) {
-            System.out.println("Assignment found");
             return ResponseEntity.ok(assignmentService.getAssignmentById(assignmentId));
         }else {
-            System.out.println("Assignment not found, id passed from frontend is: "+assignmentId);
             return ResponseEntity.status(404).body(null);
         }
     }
 
     @PostMapping("/edit")
     public ResponseEntity<Map<String, Object>> editAssignment(@RequestBody AssignmentRequest assignmentRequest) {
-        System.out.println("Assignment edited");
         Map<String, Object> response = new HashMap<>();
         if (!courseService.doesCourseExist(assignmentRequest.getCourseId())) {
             response.put("message", "Course not found");
@@ -101,7 +91,6 @@ public class AssignmentController {
 
     @PostMapping("/delete-assignment")
     public ResponseEntity<Map<String, Object>> deleteAssignment(@RequestBody AssignmentRequest assignmentRequest) {
-        System.out.println("Assignment with this id is being deleted: "+assignmentRequest.getAssignmentId());
         Map<String, Object> response = new HashMap<>();
         Assignment assignment = assignmentService.getAssignmentById(assignmentRequest.getAssignmentId());
         if (assignmentService.doesAssignmentExist(assignment.getAssignmentId())) {
