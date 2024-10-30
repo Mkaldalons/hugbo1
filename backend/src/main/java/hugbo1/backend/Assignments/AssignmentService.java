@@ -1,5 +1,6 @@
 package hugbo1.backend.Assignments;
 
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,14 +20,20 @@ public class AssignmentService {
     public void updateAssignment(Assignment assignment) {
         assignmentRepository.save(assignment);
     }
+    public boolean doesAssignmentExist(int id) {
+        return assignmentRepository.existsByAssignmentId(id);
+    }
 
     public List<Assignment> getAllAssignments() {
         return assignmentRepository.findAll();
     }
+
     public Assignment getAssignmentById(int id) {
-        return assignmentRepository.findById(id);
+        return assignmentRepository.findByAssignmentId(id);
     }
+
+    @Transactional
     public void deleteAssignmentById(int id) {
-        assignmentRepository.deleteById(id);
+        assignmentRepository.deleteByAssignmentId(id);
     }
 }

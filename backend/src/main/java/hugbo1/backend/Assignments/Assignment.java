@@ -3,6 +3,7 @@ package hugbo1.backend.Assignments;
 import jakarta.persistence.*;
 
 import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 @Table( name="Assignments")
@@ -10,27 +11,26 @@ public class Assignment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)  // Use IDENTITY for auto-increment
-    @Column(name = "id", unique = true, nullable = false)
-    private int id;
-    private Date dueDate;
+    @Column(name = "assignment_id", unique = true, nullable = false)
+    private int assignmentId;
+    private LocalDate dueDate;
     private String jsonData;
     private String courseId;
     private String assignmentName;
 
-
-    public int getId() {
-        return id+1;
+    public int getAssignmentId() {
+        return assignmentId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setAssignmentId(int assignmentId) {
+        this.assignmentId = assignmentId;
     }
 
-    public Date getDueDate() {
+    public LocalDate getDueDate() {
         return dueDate;
     }
 
-    public void setDueDate(Date date) {
+    public void setDueDate(LocalDate date) {
         this.dueDate = date;
     }
 

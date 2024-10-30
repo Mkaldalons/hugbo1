@@ -1,12 +1,23 @@
 package hugbo1.backend.Assignments;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
 public class AssignmentRequest {
-    private Date dueDate;
+    private LocalDate dueDate;
     private List<QuestionRequest> questionRequest;
     private String courseId;
+
+    public String getAssignmentName() {
+        return assignmentName;
+    }
+
+    public void setAssignmentName(String assignmentName) {
+        this.assignmentName = assignmentName;
+    }
+
+    private String assignmentName;
 
     public int getAssignmentId() {
         return assignmentId;
@@ -26,11 +37,11 @@ public class AssignmentRequest {
 
     private int assignmentId;
 
-    public Date getDueDate() {
+    public LocalDate getDueDate() {
         return dueDate;
     }
 
-    public void setDueDate(Date dueDate) {
+    public void setDueDate(LocalDate dueDate) {
         this.dueDate = dueDate;
     }
 

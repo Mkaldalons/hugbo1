@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface AssignmentRepository extends JpaRepository<Assignment, String> {
-    Assignment findById(int id);
-    void deleteById(int id);
+    Assignment findByAssignmentId(int id);
+    boolean existsByAssignmentId(int id);
+    void deleteByAssignmentId(int id);
 }
