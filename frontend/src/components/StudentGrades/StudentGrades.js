@@ -13,9 +13,21 @@ async function fetchGrade(assignmentId, userName){
     }
 }
 
+async function fetchAverageGrade(userName) {
+    try {
+        const response = await axios.get(`http://localhost:8080/average-grade-student/${userName}`);
+        return response.data;
+    } catch (error) {
+        console.error(`Error fetching average grade for user ${userName}:`, error);
+        return null;
+    }
+}
+
+
 function StudentGrades( ) {
     const [assignments, setAssignments] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [averageGrade, setAverageGrade] = useState(null);
     const [error, setError] = useState(null);
     const [grades, setGrades] = useState({});
     const navigate = useNavigate();
@@ -58,6 +70,17 @@ function StudentGrades( ) {
         }
     }, [assignments, userName]);
 
+    useEffect(() => {
+        const getAverageGrade = async () => {
+            const averageGrade = await fetchAverageGrade(userName);
+            setAverageGrade(averageGrade);
+        };
+
+        if(userName){
+            getAverageGrade();
+        }
+    }, [userName]);
+
     return (
         <div className="student-assignments-page">
             <h1>{userName}'s Assignments and Grades</h1>
@@ -76,6 +99,13 @@ function StudentGrades( ) {
                         </li>
                     ))}
                 </ul>
+            )}
+
+            {!loading && (
+                <div className="average-grade">
+                    <h2>Average Grade:</h2>
+                    <p>{averageGrade !== null ? averageGrade.toFixed(2) : "No grades available"}</p>
+                </div>
             )}
 
             <button className="go-back-btn" onClick={handleGoBack}>Go Back</button>
