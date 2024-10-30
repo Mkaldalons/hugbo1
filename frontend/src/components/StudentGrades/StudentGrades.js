@@ -1,23 +1,32 @@
 import React, { useState, useEffect } from 'react';
-import './StudentGrades.css'; // Add your styles here if necessary
+import './StudentGrades.css';
 import { useNavigate } from 'react-router-dom';
+import axios from "axios";
 
-function StudentGrades({ username }) {
+async function fetchGrade(assignmentId, userName){
+    try{
+        const response = await axios.get(`http://localhost:8080/grade/${assignmentId}/student/${userName}`);
+        return response.data;
+    }catch (error){
+        console.error(`Error fetching grade for assignment ${assignmentId} and username ${userName}`, error);
+        return "No grades available";
+    }
+}
+
+function StudentGrades( ) {
     const [assignments, setAssignments] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [grades, setGrades] = useState({});
     const navigate = useNavigate();
 
+    const userName = localStorage.getItem("username")
+
     useEffect(() => {
-        // Fetch assignments and grades for the student from the backend
         const fetchAssignments = async () => {
             try {
-                const response = await fetch(`/students/${username}/assignments`);
-                if (!response.ok) {
-                    throw new Error('Error fetching assignments');
-                }
-                const data = await response.json();
-                setAssignments(data);
+                const response = await axios.get(`http://localhost:8080/students-submitted-assignments/${userName}`);
+                setAssignments(response.data);
                 setLoading(false);
             } catch (error) {
                 setError(error.message);
@@ -25,18 +34,33 @@ function StudentGrades({ username }) {
             }
         };
 
-        if (username) {
+        if (userName) {
             fetchAssignments();
         }
-    }, [username]);
+    }, [userName]);
 
     const handleGoBack = () => {
         navigate('/');
     };
 
+    useEffect(() => {
+        const fetchGradesForAssignments = async () => {
+            const gradesMap = {};
+            for (const assignment of assignments){
+                const grade = await fetchGrade(assignment.assignmentId, userName);
+                gradesMap[assignment.assignmentId] = grade;
+            }
+            setGrades(gradesMap);
+        };
+
+        if(assignments.length > 0) {
+            fetchGradesForAssignments();
+        }
+    }, [assignments, userName]);
+
     return (
         <div className="student-assignments-page">
-            <h1>{username}'s Assignments and Grades</h1>
+            <h1>{userName}'s Assignments and Grades</h1>
             {loading && <p>Loading assignments...</p>}
             {error && <p>Error: {error}</p>}
 
@@ -47,8 +71,8 @@ function StudentGrades({ username }) {
             {!loading && assignments.length > 0 && (
                 <ul className="assignments-list">
                     {assignments.map((assignment) => (
-                        <li key={assignment.name} className="assignment-item">
-                            {assignment.name}: {assignment.grade !== null ? assignment.grade : 'Not Graded'}
+                        <li key={assignment.assignmentId} className="assignment-item">
+                            {assignment.assignmentName} -Due: {assignment.dueDate} - Grade: {grades[assignment.assignmentId] ?? 'Loading...'}
                         </li>
                     ))}
                 </ul>

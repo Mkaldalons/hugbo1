@@ -1,10 +1,11 @@
 package hugbo1.backend.Students;
 
+import hugbo1.backend.Assignments.Assignment;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
@@ -15,12 +16,20 @@ public class StudentController {
         this.studentService = studentService;
     }
 
-//    @PostMapping("/mapping-to-see-student-info")
-//    public ResponseEntity<Student> studentInfo(@RequestBody Student student) {
-//
-//    }
-
-    public static void main(String[] args){
-
+    @GetMapping("/student/{userName}/assignments/{assignmentId}")
+    public boolean hasStudentSubmitted(@PathVariable String userName, @PathVariable int assignmentId) {
+        Student student = studentService.getStudentByUserName(userName);
+        return studentService.hasStudentSubmitted(student, assignmentId);
     }
+    @GetMapping("/students-submitted-assignments/{userName}")
+    public List<Assignment> getStudentsSubmittedAssignments(@PathVariable String userName) {
+        return studentService.getAllSubmissionsByStudent(studentService.getStudentByUserName(userName));
+    }
+    @GetMapping("/grade/{assignmentId}/student/{userName}")
+    public double getGradeForAssignment(@PathVariable int assignmentId, @PathVariable String userName){
+        double grade = studentService.getGradeForAssignment(studentService.getStudentByUserName(userName), assignmentId);
+        return grade;
+    }
+
 }
+

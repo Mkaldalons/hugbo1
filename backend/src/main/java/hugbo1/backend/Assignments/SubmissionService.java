@@ -16,9 +16,17 @@ public class SubmissionService {
     public double getAverageGradeFromId(int assignmentId) {
         List<Double> assignmentGrades = submissionRepository.getAllAssignmentGradesById(assignmentId);
         double averageGrade = 0;
-        for (Double assignmentGrade : assignmentGrades) {
-            averageGrade += assignmentGrade;
+        if (!assignmentGrades.isEmpty()) {
+            for (Double assignmentGrade : assignmentGrades) {
+                averageGrade += assignmentGrade;
+            }
+            return averageGrade / assignmentGrades.size();
+        }else {
+            return 0; //Testing purposes
         }
-        return averageGrade / assignmentGrades.size();
+
+    }
+    public List<Double> getAllAssignmentGrades(int assignmentId) {
+        return submissionRepository.getAllAssignmentGradesById(assignmentId);
     }
 }
