@@ -73,4 +73,16 @@ public class StudentService {
         }
         return 0;
     }
+    public double getAverageGradeForStudent(Student student) {
+        List <AssignmentSubmission> submissions = studentRepository.findAssignmentSubmissionByStudentId(student.getStudentId());
+        double averageGrade = 0;
+        for (AssignmentSubmission assignmentSubmission : submissions) {
+           averageGrade += assignmentSubmission.getAssignmentGrade();
+        }
+        if (!submissions.isEmpty()) {
+            return averageGrade/submissions.size();
+        }else {
+            return 0;
+        }
+    }
 }

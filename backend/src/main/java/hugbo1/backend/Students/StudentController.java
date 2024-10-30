@@ -27,8 +27,11 @@ public class StudentController {
     }
     @GetMapping("/grade/{assignmentId}/student/{userName}")
     public double getGradeForAssignment(@PathVariable int assignmentId, @PathVariable String userName){
-        double grade = studentService.getGradeForAssignment(studentService.getStudentByUserName(userName), assignmentId);
-        return grade;
+        return studentService.getGradeForAssignment(studentService.getStudentByUserName(userName), assignmentId);
+    }
+    @GetMapping("/average-grade-student/{userName}")
+    public double getAverageGradeForAssignments(@PathVariable String userName){
+        return studentService.getAverageGradeForStudent(studentService.getStudentByUserName(userName));
     }
 
 }
