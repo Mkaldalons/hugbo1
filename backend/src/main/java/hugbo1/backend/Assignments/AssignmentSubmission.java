@@ -13,7 +13,6 @@ public class AssignmentSubmission {
     private double assignmentGrade;
     private int studentId;
 
-
     public int getSubmissionId() {
         return submissionId;
     }

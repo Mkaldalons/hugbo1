@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Instructor.css';
 import axios from 'axios';
+import AverageGrades from './AverageGrades';
 
 const Instructor = () => {
     const navigate = useNavigate();
@@ -70,7 +71,7 @@ const Assignments = () => {
                 {assignments.length > 0 ? (
                     assignments.map((assignment) => (
                         <li key={assignment.assignmentId}>
-                            {assignment.assignmentName} - Due: {assignment.dueDate}
+                            {assignment.assignmentName} - Due: {assignment.dueDate} - < AverageGrades assignmentId={assignment.assignmentId}/>
                             <button onClick={() => handleEdit(assignment.assignmentId)}>Edit</button>
                             <button onClick={() => handleDelete(assignment.assignmentId)}>Delete</button>
                         </li>

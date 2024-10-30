@@ -13,7 +13,7 @@ import java.util.List;
 @Table(name="Assignment_Submissions")
 public interface SubmissionRepository extends JpaRepository<Student, Integer> {
 
-    @Query("SELECT assignmentGrade FROM AssignmentSubmission WHERE assignmentId = assignmentId")
+    @Query("SELECT s.assignmentGrade FROM AssignmentSubmission s WHERE s.assignmentId = :assignmentId")
     List<Double> getAllAssignmentGradesById(@Param("assignmentId") int assignmentId);
 
 }
