@@ -2,9 +2,56 @@ import React, {useEffect, useState} from 'react';
 import './Course.css';
 import axios from "axios";// Updated to link the new CSS file
 
+
+const CourseItem = ( { course } ) => {
+    const [students, setStudents] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [hasFetched, setHasFetched] = useState(false);
+    const[error, setError] = useState('')
+
+    const onViewStudents = async (courseId) => {
+        setLoading(true);
+
+        const url = "http://localhost:8080/students?courseId=" + courseId
+        await axios.get(url).then((response) => {
+                setStudents(response.data);
+        }).catch((error) => {
+            console.log("error fetching students", error);
+            setError("ekki náðist að sækja nemendur")
+        }).finally(() => {
+            setHasFetched(true);
+            setLoading(false);
+        });
+    }
+
+    return (
+        <div key={course.id} className='courseItem'>
+            <div className='courseItemContent'>
+                
+            <p>{course.courseName}</p>
+            <button onClick={() => onViewStudents(course.courseId)}>Sjá nemendur</button>
+            </div>
+            {loading && <p className='courseItemLoader'>fetching students...</p>}
+            {hasFetched && (
+                <>
+            <p>Students:</p>
+            <div className='courseItemStudentList'>
+                {students.map((student) => (
+                    <p className='courseItemStudentListItem' key={student.studentId}>{student.name}</p>
+                ))}
+            </div>
+            {error !== "" && <p className="courseItemLoader">{error}</p>}
+            {students.length === 0 && <p className='courseItemLoader'>Engir nemendur fundust</p>}
+                </>
+            )}
+        </div>
+    )
+}
+
 const Course = () => {
     const [courseName, setCourseName] = useState("");
     const [courses, setCourses] = useState([]);
+
 
     const createCourse = async () => {
         if (courseName.trim()) {
@@ -38,6 +85,9 @@ const Course = () => {
     }, []);
 
 
+    
+    
+
     return (
         <div className="course-container">
             <h2>Create a New Course</h2>
@@ -57,7 +107,7 @@ const Course = () => {
             <ul>
                 {courses.length > 0 ? (
                     courses.map((course) => (
-                        <li key={course.courseId}>{course.courseName}</li>
+                        <CourseItem key={course.courseId} course={course} />
                     ))
                 ) : (
                     <li>No courses available</li>
