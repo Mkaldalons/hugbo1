@@ -15,6 +15,7 @@ const Instructor = () => {
                     <button onClick={() => navigate('/course')}>Create Course</button>
                     <button onClick={() => navigate('/assignment')}>Create Assignment</button>
                     <button onClick={() => navigate('/studentView')}>View Students</button>
+                    <button onClick={() => navigate('/courseView')}>View My Courses</button>
                 </div>
             </header>
 
