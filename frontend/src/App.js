@@ -15,6 +15,7 @@ import StudentAssignments from "./components/StudentsAssignment/StudentAssignmen
 import StudentView from "./components/StudentView/StudentView";
 import StudentGrades from "./components/StudentGrades/StudentGrades";
 import EditAssignment from "./components/Assignment/EditAssignment";
+import CourseView from "./components/Course/CourseView"
 
 function App() {
     const [username, setUsername] = useState('');
@@ -34,6 +35,7 @@ function App() {
                     <Route path="/assignment" element={<Assignment />} />
                     <Route path="/edit-assignment/:assignmentId" element={<EditAssignment />} />
                     <Route path="/course" element={<Course />} />
+                    <Route path="/courseView" element={<CourseView/>}/>
                     <Route path="/studentAssignments" element={<StudentAssignments />} />
                     <Route path="/studentView" element={<StudentView />} />
                     <Route path="/studentGrades" element={<StudentGrades />} />

@@ -2,6 +2,7 @@ package hugbo1.backend.Courses;
 
 import hugbo1.backend.Students.Student;
 import hugbo1.backend.Students.StudentRepository;
+import hugbo1.backend.Users.Instructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -44,12 +45,14 @@ public class CourseService {
         return courseRepository.findStudentsByCourseId(courseId);
     }
     public void registerStudentToCourse(Student student, Course course) {
-        // Ensure both sides of the relationship are updated
-        course.getStudents().add(student);  // Add student to course
-        student.getCourses().add(course);  // Add course to student (optional but recommended)
+        course.getStudents().add(student);
+        student.getCourses().add(course);
 
-        // Save the course, which is the owning side
-        courseRepository.save(course);  // Persist the relationship in the join table
+        courseRepository.save(course);
+    }
+    //Breyta þessu í instructor seinna
+    public List<Course> getAllCoursesByInstructor(String userName) {
+        return courseRepository.findByInstructor(userName);
     }
 
 }

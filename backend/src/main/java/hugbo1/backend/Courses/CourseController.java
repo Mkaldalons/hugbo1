@@ -2,6 +2,7 @@ package hugbo1.backend.Courses;
 
 import hugbo1.backend.Students.Student;
 import hugbo1.backend.Students.StudentService;
+import hugbo1.backend.Users.Instructor;
 import hugbo1.backend.Users.User;
 import hugbo1.backend.Users.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +50,13 @@ public class CourseController {
     @GetMapping("/courses")
     public ResponseEntity<List<Course>> getAllCourses() {
         return ResponseEntity.ok(courseService.getAllCourses());
+    }
+
+    @GetMapping("/my-courses/{userName}")
+    public List<Course> getMyCourses(@PathVariable String userName) {
+        System.out.println("Instructor with username: "+userName+
+                " has course"+courseService.getAllCoursesByInstructor(userName));
+        return courseService.getAllCoursesByInstructor(userName);
     }
 
     @PostMapping("/students/add")
