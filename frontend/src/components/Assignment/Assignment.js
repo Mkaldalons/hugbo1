@@ -76,14 +76,17 @@ const Assignment = () => {
     };
 
     const handleSearch = async () => {
-        try {
-            const response = await axios.get(`http://localhost:8080/api/assignments/search?name=${searchTerm}`);
-            setSearchResults(response.data);
-        } catch (error) {
-            console.error('Error searching assignments:', error);
+        if (searchTerm.trim()) {
+            try {
+                const encodedSearchTerm = encodeURIComponent(searchTerm.trim());
+                const response = await axios.get(`http://localhost:8080/api/assignments/search?name=${encodedSearchTerm}`);
+                console.log('Search response:', response.data);
+                setSearchResults(response.data);
+            } catch (error) {
+                console.error('Error searching assignments:', error);
+            }
         }
     };
-
     return (
         <div className="quiz-container">
             <h2>Create New Assignment</h2>
@@ -101,12 +104,18 @@ const Assignment = () => {
             </div>
 
             {/* Display search results */}
-            <h3>Search Results:</h3>
-            <ul>
-                {searchResults.map((assignment) => (
-                    <li key={assignment.id}>{assignment.assignmentName}</li>
-                ))}
-            </ul>
+            <div className="search-results">
+                <h3>Search Results:</h3>
+                <ul>
+                    {searchResults.length > 0 ? (
+                        searchResults.map((assignment) => (
+                            <li key={assignment.id}>{assignment.assignmentName}</li>
+                        ))
+                    ) : (
+                        <p>No assignments found.</p>
+                    )}
+                </ul>
+            </div>
 
             <div className="input-section">
                 <label>Select Course:</label>

@@ -9,5 +9,5 @@ public interface AssignmentRepository extends JpaRepository<Assignment, String> 
     Assignment findByAssignmentId(int id);
     boolean existsByAssignmentId(int id);
     void deleteByAssignmentId(int id);
-    List<Assignment> findByNameContainingIgnoreCase(String name);
+    List<Assignment> findByAssignmentNameContainingIgnoreCase(String assignmentName);
 }
