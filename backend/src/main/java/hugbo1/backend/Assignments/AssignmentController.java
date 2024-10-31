@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import hugbo1.backend.Courses.CourseService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.HashMap;
 import java.util.List;
@@ -102,4 +103,10 @@ public class AssignmentController {
             return ResponseEntity.status(404).body(response);
         }
     }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<Assignment>> searchAssignments(@RequestParam("name") String name) {
+        List<Assignment> assignments = assignmentService.searchAssignments(name);
+        return ResponseEntity.ok(assignments);
+}
 }

@@ -36,4 +36,8 @@ public class AssignmentService {
     public void deleteAssignmentById(int id) {
         assignmentRepository.deleteByAssignmentId(id);
     }
+
+    public List<Assignment> searchAssignments(String name) {
+        return assignmentRepository.findByNameContainingIgnoreCase(name);
+    }
 }

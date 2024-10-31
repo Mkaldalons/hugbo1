@@ -10,6 +10,8 @@ const Assignment = () => {
     const [newOptions, setNewOptions] = useState(["", "", "", ""]);
     const [correctAnswerIndex, setCorrectAnswerIndex] = useState(null);
     const [dueDate, setDueDate] = useState("");
+    const [searchTerm, setSearchTerm] = useState("");
+    const [searchResults, setSearchResults] = useState([]);
 
     useEffect(() => {
         const fetchCourses = async () => {
@@ -73,9 +75,38 @@ const Assignment = () => {
         }
     };
 
+    const handleSearch = async () => {
+        try {
+            const response = await axios.get(`http://localhost:8080/api/assignments/search?name=${searchTerm}`);
+            setSearchResults(response.data);
+        } catch (error) {
+            console.error('Error searching assignments:', error);
+        }
+    };
+
     return (
         <div className="quiz-container">
             <h2>Create New Assignment</h2>
+
+            {/* Search bar for assignments */}
+            <div className="input-section">
+                <label>Search Assignments:</label>
+                <input
+                    type="text"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    placeholder="Enter assignment name"
+                />
+                <button onClick={handleSearch}>Search</button>
+            </div>
+
+            {/* Display search results */}
+            <h3>Search Results:</h3>
+            <ul>
+                {searchResults.map((assignment) => (
+                    <li key={assignment.id}>{assignment.assignmentName}</li>
+                ))}
+            </ul>
 
             <div className="input-section">
                 <label>Select Course:</label>

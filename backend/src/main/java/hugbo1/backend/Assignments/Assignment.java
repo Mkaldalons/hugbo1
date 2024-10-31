@@ -57,4 +57,5 @@ public class Assignment {
     public void setAssignmentName(String assignmentName) {
         this.assignmentName = assignmentName;
     }
+    
 }
