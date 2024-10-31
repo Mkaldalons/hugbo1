@@ -49,7 +49,7 @@ public class DatabaseConnector {
             preparedStatement.setString(2, user.getName());
             preparedStatement.setString(3, user.getEmail());
             preparedStatement.setString(4, user.getPassword());
-            preparedStatement.setBoolean(5, user.isInstructor());
+            preparedStatement.setBoolean(5, user.getisInstructor());
             preparedStatement.executeUpdate(); // Execute the query
             System.out.println("User added successfully.");
 

@@ -9,6 +9,7 @@ public class SignupRequest {
     private String email;
     private String password;
     private String confirmPassword;
+    private Boolean isInstructor;
 
     // Getters and Setters
     public String getUsername() {
@@ -51,9 +52,11 @@ public class SignupRequest {
         this.confirmPassword = confirmPassword;
     }
 
-    public boolean isInstructor() {
-        return false;
-        //vantar að fá skilaboð hér frá frontend um hvort kassinn
-        //sé checked
+    public Boolean getisInstructor() {
+        return isInstructor;
+    }
+    public void setisInstructor(Boolean isInstructor ){
+        this.isInstructor = isInstructor;
+
     }
 }

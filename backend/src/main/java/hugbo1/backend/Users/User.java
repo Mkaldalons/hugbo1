@@ -56,10 +56,10 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
-    public boolean isInstructor() {
+    public boolean getisInstructor() {
         return isInstructor;
     }
-    public void setInstructor(boolean isInstructor) {
+    public void setisInstructor(boolean isInstructor) {
         this.isInstructor = isInstructor;
     }
 

@@ -35,10 +35,10 @@ public class RegisterController {
                 signupRequest.getName(),
                 signupRequest.getEmail(),
                 signupRequest.getPassword(),
-                signupRequest.isInstructor()
+                signupRequest.getisInstructor()
         );
         userService.addUser(newUser);
-        if (!newUser.isInstructor()){
+        if (!newUser.getisInstructor()){
             Student student = new Student();
             student.setUserName(newUser.getUserName());
             student.setName(newUser.getName());
