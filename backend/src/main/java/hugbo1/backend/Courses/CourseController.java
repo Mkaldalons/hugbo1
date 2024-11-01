@@ -87,4 +87,26 @@ public class CourseController {
         List<Student> students = courseService.getAllStudents(courseId);
         return ResponseEntity.ok(students);
     }
+    @GetMapping("/students/search")
+public ResponseEntity<List<Student>> searchStudentsInCourse(
+        @RequestParam String courseId,
+        @RequestParam(required = false) String name,
+        @RequestParam(required = false) String username) {
+
+    Optional<Course> course = courseService.getCourseById(courseId);
+    if (course.isEmpty()) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+    }
+
+    List<Student> students = courseService.getAllStudents(courseId);
+    
+    // Filter students by name or username if provided
+    List<Student> filteredStudents = students.stream()
+            .filter(student -> (name == null || student.getName().equalsIgnoreCase(name)) &&
+                               (username == null || student.getUserName().equalsIgnoreCase(username)))
+            .toList();
+
+    return ResponseEntity.ok(filteredStudents);
+}
+
 }
