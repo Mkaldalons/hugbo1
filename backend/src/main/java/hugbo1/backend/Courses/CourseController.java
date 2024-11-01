@@ -100,13 +100,13 @@ public ResponseEntity<List<Student>> searchStudentsInCourse(
 
     List<Student> students = courseService.getAllStudents(courseId);
     
-    // Filter students by name or username if provided
     List<Student> filteredStudents = students.stream()
             .filter(student -> (name == null || student.getName().equalsIgnoreCase(name)) &&
                                (username == null || student.getUserName().equalsIgnoreCase(username)))
             .toList();
 
-    return ResponseEntity.ok(filteredStudents);
+    return ResponseEntity.ok(filteredStudents); 
+    
 }
 
 }
