@@ -28,6 +28,7 @@ const StudentPage = () => {
 const Assignments = ( ) => {
     const [assignments, setAssignments] = useState([]);
     const [submissionStatus, setSubmissionStatus] = useState([])
+    const [searchQuery, setSearchQuery] = useState('');
     const userName = localStorage.getItem("username")
 
     useEffect(() => {
@@ -57,18 +58,31 @@ const Assignments = ( ) => {
         fetchAssignments();
     }, [userName]);
 
+    const filteredAssignments = assignments.filter((assignment) =>
+        assignment.assignmentName.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+
     return (
         <div className="assignments-section">
             <h2 className="assignments-title">Current Assignments</h2>
+            <div className="search-container">
+                <input
+                    type="text"
+                    placeholder="Search assignments by name..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="search-input"
+                />
+            </div>
             <ul className="assignments-list">
-                {assignments.length > 0 ? (
-                    assignments.map((assignment) => (
+                {filteredAssignments.length > 0 ? (
+                    filteredAssignments.map((assignment) => (
                         <li className="assignment-item" key={assignment.assignmentId}>
-                            {assignment.assignmentName} - Due: {assignment.dueDate} - Sumbitted: {submissionStatus[assignment.assignmentId]}
+                            {assignment.assignmentName} - Due: {assignment.dueDate} - Submitted: {submissionStatus[assignment.assignmentId] || 'No'}
                         </li>
                     ))
                 ) : (
-                    <li className="assignment-item no-assignments">No assignments available</li>
+                    <li className="assignment-item no-assignments">No assignments match your search</li>
                 )}
             </ul>
         </div>
