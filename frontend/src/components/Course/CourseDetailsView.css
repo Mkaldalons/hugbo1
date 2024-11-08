@@ -1,0 +1,151 @@
+.course-details-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .add-student-form {
+    display: flex;
+    gap: 10px;
+  
+    padding: 30px 0;
+  
+    input {
+      width: 300px;
+      margin-right: 10px;
+    }
+  }
+  
+  .course-title {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #333;
+    margin: 0;
+  }
+  
+  .course-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+  
+    width: 1000px;
+  }
+  
+  .section {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 20px;
+  }
+  
+  .section-title {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 0.5rem;
+    text-align: left;
+    padding: 20px;
+  }
+  
+  .student-row-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 40px;
+    border-bottom: 2px solid #ccc;
+    font-weight: bold;
+  }
+  
+  .student-name-wrapper {
+    font-weight: bold;
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+  }
+  
+  .student-name {
+    font-size: 1.2rem;
+  }
+  
+  .student-username {
+    font-size: 0.8rem;
+    color: #666;
+    margin-top: 0.5rem;
+  }
+  
+  .student-grade-wrapper {
+    width: 25%;
+    text-align: center;
+    font-weight: bold;
+  }
+  
+  .student-grade {
+    font-size: 1rem;
+    color: #3333338f;
+  }
+  
+  .student-actions-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    width: 25%;
+  }
+  
+  .row-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 40px;
+    border-bottom: 2px solid #ccc;
+    font-weight: bold;
+  }
+  
+  .table-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 40px;
+    min-height: 50px;
+    border-bottom: 1px solid #ccc;
+  
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+  
+  .assignment-title-wrapper {
+    font-weight: bold;
+    width: 100%;
+  }
+  
+  .assignment-title {
+    font-size: 1.2rem;
+  }
+  
+  .base-button {
+    cursor: pointer;
+  
+    color: white;
+    border: none;
+  
+    border-radius: 4px;
+    padding: 8px 16px;
+  
+    cursor: pointer;
+  }
+  
+  .delete-button {
+    background-color: #bb2124;
+    padding: 4px 8px;
+  }
+  
+  .add-button {
+    background-color: #227ebb;
+  }
+  
+  .search-input {
+    margin-bottom: 10px;
+  }

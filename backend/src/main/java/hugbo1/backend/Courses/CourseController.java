@@ -87,4 +87,28 @@ public class CourseController {
         List<Student> students = courseService.getAllStudents(courseId);
         return ResponseEntity.ok(students);
     }
+
+    @DeleteMapping("/courses/{courseId}/students/{studentId}")
+    public ResponseEntity<Map<String, Object>> deleteStudentFromCourse(
+            @PathVariable String courseId,
+            @PathVariable String studentId) {
+
+        Map<String, Object> response = new HashMap<>();
+        Optional<Course> course = courseService.getCourseById(courseId);
+
+        if (course.isEmpty()) {
+            response.put("message", "Course not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
+
+        boolean isRemoved = courseService.removeStudentFromCourse(courseId, studentId);
+        if (isRemoved) {
+            response.put("message", "Student removed from course");
+            return ResponseEntity.ok(response);
+        } else {
+            response.put("message", "Student not found in this course");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
+    }
+
 }
