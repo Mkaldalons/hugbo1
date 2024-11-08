@@ -1,21 +1,33 @@
 
 package hugbo1.backend.Users;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
+import java.io.File;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
 public class UserController {
 
     private final UserService userService;
+
+    @Value("${profile.image.upload.dir}")
+    private String uploadDir;
 
     public UserController(UserService userService) {
         this.userService = userService;
@@ -49,6 +61,84 @@ public class UserController {
             responseBody.put("status", "Wrong email");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
         }
+    }
+    @PostMapping("/upload-profile-image")
+    public ResponseEntity<Map<String, Object>> uploadProfileImage(
+        @RequestParam("profileImage") MultipartFile file,
+        @RequestParam("username") String username) {
+
+        Map<String, Object> responseBody = new HashMap<>();
+
+        // Find the user
+        User user = userService.getUserByUserName(username);
+        if (user == null) {
+            responseBody.put("status", "User not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseBody);
+        }
+
+        if (file.isEmpty()) {
+            responseBody.put("status", "File is empty. Please select an image.");
+            return ResponseEntity.badRequest().body(responseBody);
+        }
+
+        try {
+            // Step 1: Delete the existing profile image if it exists
+            String oldProfileImagePath = user.getProfileImagePath();
+            if (oldProfileImagePath != null && !oldProfileImagePath.isEmpty()) {
+                // Only get the filename from oldProfileImagePath
+                String oldFileName = Paths.get(oldProfileImagePath).getFileName().toString();
+                Path oldFilePath = Paths.get(uploadDir, oldFileName); // Use filename only with uploadDir
+
+                System.out.println("Attempting to delete old profile image at path: " + oldFilePath);
+                File oldFile = oldFilePath.toFile();
+                if (oldFile.exists()) {
+                    boolean deleted = oldFile.delete(); // Attempt to delete the old file
+                    System.out.println("Old profile image deleted: " + oldProfileImagePath + " - Success: " + deleted);
+                } else {
+                    System.out.println("Old profile image not found at path: " + oldFilePath);
+                }
+            }
+
+            // Step 2: Save the new profile image
+            String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
+            Path newFilePath = Paths.get(uploadDir, fileName);
+            Files.createDirectories(newFilePath.getParent()); // Ensure directory exists
+            Files.copy(file.getInputStream(), newFilePath);
+
+            // Step 3: Update the user's profile image path in the database
+            user.setProfileImagePath("uploads/profile-images/" + fileName); // Save relative path
+            userService.addUser(user); // Update user record in the database
+
+            responseBody.put("status", "Profile image uploaded successfully");
+            responseBody.put("imagePath", "uploads/profile-images/" + fileName);
+            return ResponseEntity.ok(responseBody);
+        } catch (IOException e) {
+            e.printStackTrace();
+            responseBody.put("status", "Error uploading profile image");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseBody);
+        }
+    }
+
+    @GetMapping("/get-profile-image")
+    public ResponseEntity<Map<String, Object>> getProfileImage(@RequestParam("username") String username) {
+        Map<String, Object> responseBody = new HashMap<>();
+        
+        // Retrieve user by username
+        User user = userService.getUserByUserName(username);
+        if (user == null) {
+            responseBody.put("status", "User not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseBody);
+        }
+
+        String profileImagePath = user.getProfileImagePath();
+        if (profileImagePath == null || profileImagePath.isEmpty()) {
+            responseBody.put("status", "No profile image found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseBody);
+        }
+
+        responseBody.put("status", "Profile image found");
+        responseBody.put("imagePath", profileImagePath); // Return the path
+        return ResponseEntity.ok(responseBody);
     }
 }
 

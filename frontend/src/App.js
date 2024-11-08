@@ -16,6 +16,8 @@ import StudentView from "./components/StudentView/StudentView";
 import StudentGrades from "./components/StudentGrades/StudentGrades";
 import EditAssignment from "./components/Assignment/EditAssignment";
 import CourseView from "./components/Course/CourseView"
+import ProfilePage from './components/Profile/ProfilePage';
+
 
 function App() {
     const [username, setUsername] = useState('');
@@ -28,6 +30,7 @@ function App() {
                     <Route path="/" element={ <div className="App-header"> <img src={frontpage} alt="frontpage" /></div>}/>
                     <Route path="/login" element={<LoginPage setUsername={setUsername} />} />
                     <Route path="/signup" element={<LoginPage setUsername={setUsername} />} />
+                    <Route path="/profile" element={<ProfilePage />} />
                     <Route path="/update-password" element={<UpdatePasswordPage username={username} />} />
                     <Route path="/delete-account" element={<DeleteAccount username={username} />} />
                     <Route path="/instructor" element={<Instructor />} />

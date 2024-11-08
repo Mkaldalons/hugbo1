@@ -1,0 +1,61 @@
+.profile-container {
+    padding: 20px;
+    max-width: 500px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.profile-options {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.btn-update {
+    padding: 10px 20px;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-update:hover {
+    background-color: var(--hover-color);
+}
+
+.btn-delete {
+    padding: 10px 20px;
+    background-color: #d9534f; /* Red color for delete */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-delete:hover {
+    background-color: #c9302c;
+}
+
+/* Limit the profile image preview to a specific size */
+.profile-image-preview {
+    max-width: 150px; /* Adjust to your desired width */
+    max-height: 150px; /* Adjust to your desired height */
+    border-radius: 50%; /* Make it circular if desired */
+    object-fit: cover; /* Ensures the image is cropped to fit */
+    border: 2px solid #ccc; /* Optional border for styling */
+    margin-top: 10px;
+}
+
+.profile-image-display img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #ccc;
+}
+
+
