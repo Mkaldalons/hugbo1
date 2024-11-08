@@ -11,6 +11,7 @@ import java.util.Map;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
+@RequestMapping("/api/assignments")
 public class AssignmentController {
 
     private final AssignmentService assignmentService;
@@ -62,6 +63,12 @@ public class AssignmentController {
         }else {
             return ResponseEntity.status(404).body(null);
         }
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<Assignment>> searchAssignments(@RequestParam("name") String name) {
+        List<Assignment> assignments = assignmentService.searchAssignments(name);
+        return ResponseEntity.ok(assignments);
     }
 
     @PostMapping("/edit")
