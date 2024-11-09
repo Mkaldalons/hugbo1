@@ -13,6 +13,8 @@ public class User {
     private String password;
     private boolean isInstructor;
 
+    private String profileImagePath;
+
     public User() {
 
     }
@@ -65,5 +67,13 @@ public class User {
 
     public String toString(){
         return "Name: " + name + "\n User name: " + userName;
+    }
+    
+    public String getProfileImagePath() {
+        return profileImagePath;
+    }
+
+    public void setProfileImagePath(String profileImagePath) {
+        this.profileImagePath = profileImagePath;
     }
 }
