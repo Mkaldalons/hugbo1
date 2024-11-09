@@ -36,4 +36,8 @@ public class AssignmentService {
     public void deleteAssignmentById(int id) {
         assignmentRepository.deleteByAssignmentId(id);
     }
+    public boolean isPublished(int id) {
+        Assignment assignment = assignmentRepository.findByAssignmentId(id);
+        return assignment.isPublished();
+    }
 }

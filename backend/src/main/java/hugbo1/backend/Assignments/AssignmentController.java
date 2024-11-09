@@ -102,4 +102,31 @@ public class AssignmentController {
             return ResponseEntity.status(404).body(response);
         }
     }
+    @PostMapping("/publish-assignment/{assignmentId}")
+    public ResponseEntity<Map<String, Object>> publishAssignment(@PathVariable int assignmentId) {
+        Map<String, Object> response = new HashMap<>();
+        Assignment assignment = assignmentService.getAssignmentById(assignmentId);
+        if (assignmentService.doesAssignmentExist(assignment.getAssignmentId())) {
+            assignment.setPublished(true);
+            assignmentService.updateAssignment(assignment);
+            response.put("message", "Assignment published");
+            return ResponseEntity.ok(response);
+        }
+        response.put("message", "Assignment not found");
+        return ResponseEntity.status(404).body(response);
+    }
+
+    @PostMapping("/unpublish-assignment/{assignmentId}")
+    public ResponseEntity<Map<String, Object>> unpublishAssignment(@PathVariable int assignmentId) {
+        Map<String, Object> response = new HashMap<>();
+        Assignment assignment = assignmentService.getAssignmentById(assignmentId);
+        if (assignmentService.doesAssignmentExist(assignment.getAssignmentId())) {
+            assignment.setPublished(false);
+            assignmentService.updateAssignment(assignment);
+            response.put("message", "Assignment unpublished");
+            return ResponseEntity.ok(response);
+        }
+        response.put("message", "Assignment not found");
+        return ResponseEntity.status(404).body(response);
+    }
 }
