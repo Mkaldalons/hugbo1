@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './CourseView.css'
 
@@ -6,6 +7,7 @@ const CourseView = () => {
     const[courses, setCourses] = useState([]);
     const[loading, setLoading] = useState(true);
     const[error, setError] = useState(null);
+    const navigate = useNavigate();
 
     const userName = localStorage.getItem("username");
 
@@ -30,8 +32,8 @@ const CourseView = () => {
         }
     }, [userName]);
 
-    const handleViewCourse = (course) => {
-        console.log("course viewed...")
+    const handleViewCourseClick = (courseId) => {
+        navigate(`/courseView/${courseId}`);
     };
 
     return (
@@ -47,7 +49,7 @@ const CourseView = () => {
                     <li key={course.courseId} className="course-item">
                         <h3>{course.courseName}</h3>
                         <p>{course.description}</p>
-                        <button onClick={() => handleViewCourse(course)}>
+                        <button onClick={() => handleViewCourseClick(course.courseId)}>
                             View Course
                         </button>
                     </li>
