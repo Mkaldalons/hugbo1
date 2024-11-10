@@ -140,7 +140,7 @@ const StudentList = ({ students, isLoading, error, onDeleteStudent }) => {
       <div className="search-input-wrapper">
         <input
           type="text"
-          placeholder="Search students by name..."
+          placeholder="Search students"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           className="search-input"
