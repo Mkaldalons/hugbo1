@@ -19,4 +19,5 @@ public interface CourseRepository extends JpaRepository<Course, String> {
 
     @Query("SELECT DISTINCT c FROM Course c WHERE c.instructor = :userName")
     List<Course> findByInstructor(@Param("userName") String userName);
+
 }

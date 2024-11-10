@@ -7,20 +7,12 @@ const CourseDetailsView = () => {
   const [studentsLoading, setStudentsLoading] = useState(false);
   const [studentsError, setStudentsError] = useState(null);
 
-  const [students, setStudents] = useState([
-    { id: 1, name: "John Doe", username: "johndoe", grade: 90 },
-    { id: 2, name: "Jane Smith", username: "janesmith", grade: 85 },
-    { id: 3, name: "Jim Beam", username: "jimbeam", grade: 70 },
-  ]);
+  const [students, setStudents] = useState([]);
 
   const [assignmentsLoading, setAssignmentsLoading] = useState(false);
   const [assignmentsError, setAssignmentsError] = useState(null);
 
-  const [assignments, setAssignments] = useState([
-    { id: 1, title: "Assignment 1", averageGrade: 90 },
-    { id: 2, title: "Assignment 2", averageGrade: 85 },
-    { id: 3, title: "Assignment 3", averageGrade: 70 },
-  ]);
+  const [assignments, setAssignments] = useState([]);
 
   const [studentToAdd, setStudentToAdd] = useState("");
 
@@ -176,7 +168,7 @@ const StudentList = ({ students, isLoading, error, onDeleteStudent }) => {
             <div className="student-actions-wrapper">
               <button
                 className="base-button delete-button"
-                onClick={() => onDeleteStudent(student.id)}
+                onClick={() => onDeleteStudent(student.studentId)}
               >
                 Delete
               </button>

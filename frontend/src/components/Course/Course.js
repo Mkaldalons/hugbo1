@@ -84,10 +84,6 @@ const Course = () => {
         fetchCourses();
     }, []);
 
-
-    
-    
-
     return (
         <div className="course-container">
             <h2>Create a New Course</h2>
