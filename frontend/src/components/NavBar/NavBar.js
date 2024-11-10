@@ -48,16 +48,6 @@ function NavBar({ username, setUsername }) {
         navigate('/');
     };
 
-    const changePass = () => {
-        setIsDropdownOpen(false);
-        navigate('/update-password'); // Redirect to update password page
-    };
-
-    const deleteAccount = () => {
-        setIsDropdownOpen(false);
-        navigate('/delete-account'); // Redirect to delete account page
-    };
-
     return (
         <div className="nav-bar">
             <div className="nav-logo">
@@ -72,11 +62,8 @@ function NavBar({ username, setUsername }) {
 
                 {isDropdownOpen && username && (
                     <div className="dropdown-menu">
-                        <div className="dropdown-item" onClick={deleteAccount}>
-                            Delete Account
-                        </div>
-                        <div className="dropdown-item" onClick={changePass}>
-                            Update Password
+                        <div className="dropdown-item" onClick={() => navigate('/profile')}>
+                            My Profile
                         </div>
                         <div className="dropdown-item" onClick={logout}>
                             Log out

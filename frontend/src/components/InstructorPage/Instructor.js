@@ -30,6 +30,7 @@ const Instructor = () => {
 
 const Assignments = () => {
     const [assignments, setAssignments] = useState([]);
+    const [searchQuery, setSearchQuery] = useState('');
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -65,24 +66,37 @@ const Assignments = () => {
         }
     };
 
+    const filteredAssignments = assignments.filter((assignment) =>
+        assignment.assignmentName.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+
     return (
         <div className="assignments-section">
             <h2>Current Assignments</h2>
+            <div className="search-container">
+                <input
+                    type="text"
+                    placeholder="Search assignments by name..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                />
+            </div>
             <ul>
-                {assignments.length > 0 ? (
-                    assignments.map((assignment) => (
+                {filteredAssignments.length > 0 ? (
+                    filteredAssignments.map((assignment) => (
                         <li key={assignment.assignmentId}>
-                            {assignment.assignmentName} - Due: {assignment.dueDate} - < AverageGrades assignmentId={assignment.assignmentId}/>
+                            {assignment.assignmentName} - Due: {assignment.dueDate} - <AverageGrades assignmentId={assignment.assignmentId} />
                             <button onClick={() => handleEdit(assignment.assignmentId)}>Edit</button>
                             <button onClick={() => handleDelete(assignment.assignmentId)}>Delete</button>
                         </li>
                     ))
                 ) : (
-                    <li>No assignments available</li>
+                    <li>No assignments match your search</li>
                 )}
             </ul>
         </div>
     );
 };
+
 
 export default Instructor;

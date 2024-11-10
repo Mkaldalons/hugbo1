@@ -8,6 +8,7 @@ import LoginPage from "./components/Auth/LoginPage";
 import Instructor from "./components/InstructorPage/Instructor";
 import Student from "./components/StudentPage/StudentPage";
 import UpdatePasswordPage from "./components/Auth/UpdatePasswordPage";
+import UpdateEmailPage from "./components/Auth/UpdateEmailPage";
 import DeleteAccount from "./components/Auth/DeleteAccount";
 import Assignment from "./components/Assignment/Assignment";
 import Course from "./components/Course/Course";
@@ -15,7 +16,9 @@ import StudentAssignments from "./components/StudentsAssignment/StudentAssignmen
 import StudentView from "./components/StudentView/StudentView";
 import StudentGrades from "./components/StudentGrades/StudentGrades";
 import EditAssignment from "./components/Assignment/EditAssignment";
-import CourseView from "./components/Course/CourseView";
+
+import CourseView from "./components/Course/CourseView"
+import ProfilePage from './components/Profile/ProfilePage';
 import CourseDetailsView from "./components/Course/CourseDetailsView";
 
 function App() {
@@ -48,6 +51,10 @@ function App() {
             element={<UpdatePasswordPage username={username} />}
           />
           <Route
+            path="/update-recovery-email"
+            element={<UpdateEmailPage username={username} />}
+          />
+          <Route
             path="/delete-account"
             element={<DeleteAccount username={username} />}
           />
@@ -58,6 +65,7 @@ function App() {
             path="/edit-assignment/:assignmentId"
             element={<EditAssignment />}
           />
+          <Route path="/profile" element={<ProfilePage />} />
           <Route path="/course" element={<Course />} />
           <Route path="/courseView" element={<CourseView />} />
           <Route path="/courseView/:courseId" element={<CourseDetailsView />} />
@@ -68,6 +76,7 @@ function App() {
       </div>
     </Router>
   );
+
 }
 
 export default App;
