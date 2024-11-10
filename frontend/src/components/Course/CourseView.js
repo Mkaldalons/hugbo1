@@ -2,14 +2,16 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './CourseView.css'
+import { useNavigate } from 'react-router-dom';
 
 const CourseView = () => {
     const[courses, setCourses] = useState([]);
     const[loading, setLoading] = useState(true);
     const[error, setError] = useState(null);
-    const navigate = useNavigate();
 
     const userName = localStorage.getItem("username");
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchCourses = async () => {

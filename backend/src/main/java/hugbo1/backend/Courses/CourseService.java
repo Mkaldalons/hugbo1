@@ -57,25 +57,30 @@ public class CourseService {
     }
 
     public boolean removeStudentFromCourse(String courseId, String studentId) {
-    Optional<Course> courseOpt = getCourseById(courseId);
-
-    if (courseOpt.isPresent()) {
-        Course course = courseOpt.get();
-        List<Student> students = new ArrayList<>(course.getStudents());
-
-        Optional<Student> studentOpt = students.stream()
-        .filter(student -> student.getStudentId() == Integer.parseInt(studentId)) 
-        .findFirst();
-
-        if (studentOpt.isPresent()) {
-            students.remove(studentOpt.get());
-            course.setStudents(new HashSet<>(students));  
-            courseRepository.save(course);  
-            return true;  
+        Optional<Course> courseOpt = getCourseById(courseId);
+    
+        if (courseOpt.isPresent()) {
+            Course course = courseOpt.get();
+            
+            Optional<Student> studentOpt = course.getStudents().stream()
+                .filter(student -> student.getStudentId() == Integer.parseInt(studentId))
+                .findFirst();
+    
+            if (studentOpt.isPresent()) {
+                Student student = studentOpt.get();
+                
+                course.getStudents().remove(student);
+                student.getCourses().remove(course);
+                
+                courseRepository.save(course);
+                studentRepository.save(student);
+                
+                return true;
+            }
         }
+        return false;
     }
-    return false;  
-} 
+    
     public List<Student> findStudentsByCriteria(String courseId, String name, String username) {
         Optional<Course> courseOpt = getCourseById(courseId);
         if (courseOpt.isPresent()) {

@@ -7,33 +7,25 @@ const CourseDetailsView = () => {
   const [studentsLoading, setStudentsLoading] = useState(false);
   const [studentsError, setStudentsError] = useState(null);
 
-  const [students, setStudents] = useState([
-    { id: 1, name: "John Doe", username: "johndoe", grade: 90 },
-    { id: 2, name: "Jane Smith", username: "janesmith", grade: 85 },
-    { id: 3, name: "Jim Beam", username: "jimbeam", grade: 70 },
-  ]);
+  const [students, setStudents] = useState([]);
 
   const [assignmentsLoading, setAssignmentsLoading] = useState(false);
   const [assignmentsError, setAssignmentsError] = useState(null);
 
-  const [assignments, setAssignments] = useState([
-    { id: 1, title: "Assignment 1", averageGrade: 90 },
-    { id: 2, title: "Assignment 2", averageGrade: 85 },
-    { id: 3, title: "Assignment 3", averageGrade: 70 },
-  ]);
+  const [assignments, setAssignments] = useState([]);
 
   const [studentToAdd, setStudentToAdd] = useState("");
 
   const { courseId } = useParams();
 
   useEffect(() => {
-    // fetchStudents();
-    // fetchAssignments();
+    fetchStudents();
+    fetchAssignments();
   }, []);
 
   const fetchStudents = async () => {
     try {
-      const response = await axios.get(`http://localhost:8080/students?courseId=${courseId}`);
+      const response = await axios.get(`http://localhost:8080/courses/${courseId}/students`);
       setStudents(response.data);
       setStudentsError("");
     } catch (error) {
@@ -79,15 +71,22 @@ const CourseDetailsView = () => {
     console.log(response.data);
   };
 
-  const handleDeleteStudent = (studentId) => {
-    if (window.confirm("Ertu viss um að þú viljir eyða notanda?")) {
-      const filteredStudents = students.filter(
-        (student) => student.id !== studentId
-      );
-      setStudents(filteredStudents);
-      // TODO: Kalla í bakenda
+  const handleDeleteStudent = async (studentId) => {
+    if (window.confirm("Are you sure you want to delete this student?")) {
+      try {
+        const response = await axios.delete(`http://localhost:8080/courses/${courseId}/students/${studentId}`);
+        if (response.status === 200) {
+          alert("Student removed successfully");
+          fetchStudents(); 
+        } else {
+          alert("Failed to remove student");
+        }
+      } catch (error) {
+        console.error("Error removing student:", error);
+        alert("Error removing student");
+      }
     }
-  };
+  };  
 
   return (
     <div className="course-details-container">
@@ -169,7 +168,7 @@ const StudentList = ({ students, isLoading, error, onDeleteStudent }) => {
             <div className="student-actions-wrapper">
               <button
                 className="base-button delete-button"
-                onClick={() => onDeleteStudent(student.id)}
+                onClick={() => onDeleteStudent(student.studentId)}
               >
                 Delete
               </button>
