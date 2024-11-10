@@ -1,7 +1,9 @@
 package hugbo1.backend.Courses;
 
+import hugbo1.backend.Assignments.Assignment;
 import hugbo1.backend.Students.Student;
 import hugbo1.backend.Students.StudentRepository;
+import hugbo1.backend.Assignments.AssignmentRepository;
 import hugbo1.backend.Users.Instructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +20,8 @@ public class CourseService {
     private final CourseRepository courseRepository;
     @Autowired
     private StudentRepository studentRepository;
+    @Autowired
+    private AssignmentRepository assignmentRepository;
 
     public CourseService(CourseRepository courseRepository) {
         this.courseRepository = courseRepository;
@@ -54,6 +58,9 @@ public class CourseService {
     }
     public List<Course> getAllCoursesByInstructor(String userName) {
         return courseRepository.findByInstructor(userName);
+    }
+    public List<Assignment> getAllAssignments(String courseId){
+        return assignmentRepository.findAssignmentsByCourseId(courseId);
     }
 
     public boolean removeStudentFromCourse(String courseId, String studentId) {
