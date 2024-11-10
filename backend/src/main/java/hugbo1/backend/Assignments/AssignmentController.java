@@ -5,6 +5,7 @@ import hugbo1.backend.Courses.CourseService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -101,5 +102,40 @@ public class AssignmentController {
             response.put("message", "Assignment not found");
             return ResponseEntity.status(404).body(response);
         }
+    }
+    @PostMapping("/publish-assignment/{assignmentId}")
+    public ResponseEntity<Map<String, Object>> publishAssignment(@PathVariable int assignmentId) {
+        Map<String, Object> response = new HashMap<>();
+        Assignment assignment = assignmentService.getAssignmentById(assignmentId);
+        if (assignmentService.doesAssignmentExist(assignment.getAssignmentId())) {
+            assignment.setPublished(true);
+            assignmentService.updateAssignment(assignment);
+            response.put("message", "Assignment published");
+            return ResponseEntity.ok(response);
+        }
+        response.put("message", "Assignment not found");
+        return ResponseEntity.status(404).body(response);
+    }
+
+    @PostMapping("/unpublish-assignment/{assignmentId}")
+    public ResponseEntity<Map<String, Object>> unpublishAssignment(@PathVariable int assignmentId) {
+        Map<String, Object> response = new HashMap<>();
+        Assignment assignment = assignmentService.getAssignmentById(assignmentId);
+        if (assignmentService.doesAssignmentExist(assignment.getAssignmentId())) {
+            if (assignmentService.canBeUnpublished(assignment.getAssignmentId())) {
+                assignment.setPublished(true);
+                assignmentService.updateAssignment(assignment);
+                response.put("message", "Assignment published");
+                return ResponseEntity.ok(response);
+            }else{
+                response.put("message", "Assignment cannot be unpublished");
+            }
+            assignment.setPublished(false);
+            assignmentService.updateAssignment(assignment);
+            response.put("message", "Assignment unpublished");
+            return ResponseEntity.ok(response);
+        }
+        response.put("message", "Assignment not found");
+        return ResponseEntity.status(404).body(response);
     }
 }
