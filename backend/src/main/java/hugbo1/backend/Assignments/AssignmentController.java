@@ -5,6 +5,7 @@ import hugbo1.backend.Courses.CourseService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -121,6 +122,14 @@ public class AssignmentController {
         Map<String, Object> response = new HashMap<>();
         Assignment assignment = assignmentService.getAssignmentById(assignmentId);
         if (assignmentService.doesAssignmentExist(assignment.getAssignmentId())) {
+            if (assignmentService.canBeUnpublished(assignment.getAssignmentId())) {
+                assignment.setPublished(true);
+                assignmentService.updateAssignment(assignment);
+                response.put("message", "Assignment published");
+                return ResponseEntity.ok(response);
+            }else{
+                response.put("message", "Assignment cannot be unpublished");
+            }
             assignment.setPublished(false);
             assignmentService.updateAssignment(assignment);
             response.put("message", "Assignment unpublished");

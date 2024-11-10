@@ -72,7 +72,6 @@ const Assignments = () => {
     const handlePublish = async (assignmentId, published) => {
         try {
             let response;
-            console.log("The assignment you are interacting with has the status: ", published)
             if (!published) {
                 response = await axios.post(`http://localhost:8080/publish-assignment/${assignmentId}`);
                 if (response.data.message === 'Assignment published') {
@@ -88,7 +87,9 @@ const Assignments = () => {
                 if (response.data.message === 'Assignment unpublished') {
                     await fetchAssignments();
                     setMessage("Assignment successfully unpublished");
-                } else {
+                } if-else (response.data.message == 'Assignment cannot be unpublished') {
+                    setMessage('Cannot unpublish assignments while students are working on assignments')
+                }else{
                     setMessage("Failed to unpublish assignment");
                 }
             }
