@@ -54,6 +54,10 @@ const ProfilePage = () => {
         }
     };
 
+    const handleUpdateEmail = () => {
+        navigate('/update-recovery-email');
+    }
+
      // Handle image selection and preview
      const handleImageChange = (e) => {
         const file = e.target.files[0];
@@ -132,6 +136,9 @@ const ProfilePage = () => {
                 </button>
                 <button className="btn-delete" onClick={handleDeleteAccount}>
                     Delete Account
+                </button>
+                <button className="btn-update" onClick={handleUpdateEmail}>
+                    Update Recovery Email
                 </button>
             </div>
         </div>

@@ -8,6 +8,7 @@ import LoginPage from "./components/Auth/LoginPage";
 import Instructor from "./components/InstructorPage/Instructor";
 import Student from "./components/StudentPage/StudentPage";
 import UpdatePasswordPage from "./components/Auth/UpdatePasswordPage";
+import UpdateEmailPage from "./components/Auth/UpdateEmailPage";
 import DeleteAccount from "./components/Auth/DeleteAccount";
 import Assignment from "./components/Assignment/Assignment";
 import Course from "./components/Course/Course";
@@ -48,6 +49,10 @@ function App() {
           <Route
             path="/update-password"
             element={<UpdatePasswordPage username={username} />}
+          />
+          <Route
+            path="/update-recovery-email"
+            element={<UpdateEmailPage username={username} />}
           />
           <Route
             path="/delete-account"

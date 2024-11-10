@@ -14,6 +14,7 @@ public class User {
     private boolean isInstructor;
 
     private String profileImagePath;
+    private String recoveryEmail;
 
     public User() {
 
@@ -75,5 +76,13 @@ public class User {
 
     public void setProfileImagePath(String profileImagePath) {
         this.profileImagePath = profileImagePath;
+    }
+
+    public String getRecoveryEmail() {
+        return recoveryEmail;
+    }
+
+    public void setRecoveryEmail(String recoveryEmail) {
+        this.recoveryEmail = recoveryEmail;
     }
 }

@@ -62,6 +62,23 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
         }
     }
+    @PostMapping("/update-recovery-email")
+    public ResponseEntity<Map<String, Object>> updateRecoveryEmail(@RequestBody UserRequest userRequest) {
+        Map<String, Object> responseBody = new HashMap<>();
+
+        try {
+            userService.updateRecoveryEmail(userRequest.getUsername(), userRequest.getRecoveryEmail());
+            responseBody.put("status", "Recovery email updated successfully");
+            return ResponseEntity.ok(responseBody);
+        } catch (IllegalArgumentException e) {
+            responseBody.put("status", e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
+        } catch (Exception e) {
+            responseBody.put("status", "Error updating recovery email");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseBody);
+        }
+    }
+
     @PostMapping("/upload-profile-image")
     public ResponseEntity<Map<String, Object>> uploadProfileImage(
         @RequestParam("profileImage") MultipartFile file,
@@ -69,7 +86,6 @@ public class UserController {
 
         Map<String, Object> responseBody = new HashMap<>();
 
-        // Find the user
         User user = userService.getUserByUserName(username);
         if (user == null) {
             responseBody.put("status", "User not found");
@@ -85,14 +101,13 @@ public class UserController {
             // Step 1: Delete the existing profile image if it exists
             String oldProfileImagePath = user.getProfileImagePath();
             if (oldProfileImagePath != null && !oldProfileImagePath.isEmpty()) {
-                // Only get the filename from oldProfileImagePath
                 String oldFileName = Paths.get(oldProfileImagePath).getFileName().toString();
-                Path oldFilePath = Paths.get(uploadDir, oldFileName); // Use filename only with uploadDir
+                Path oldFilePath = Paths.get(uploadDir, oldFileName);
 
                 System.out.println("Attempting to delete old profile image at path: " + oldFilePath);
                 File oldFile = oldFilePath.toFile();
                 if (oldFile.exists()) {
-                    boolean deleted = oldFile.delete(); // Attempt to delete the old file
+                    boolean deleted = oldFile.delete(); 
                     System.out.println("Old profile image deleted: " + oldProfileImagePath + " - Success: " + deleted);
                 } else {
                     System.out.println("Old profile image not found at path: " + oldFilePath);
@@ -102,12 +117,12 @@ public class UserController {
             // Step 2: Save the new profile image
             String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
             Path newFilePath = Paths.get(uploadDir, fileName);
-            Files.createDirectories(newFilePath.getParent()); // Ensure directory exists
+            Files.createDirectories(newFilePath.getParent());
             Files.copy(file.getInputStream(), newFilePath);
 
             // Step 3: Update the user's profile image path in the database
-            user.setProfileImagePath("uploads/profile-images/" + fileName); // Save relative path
-            userService.addUser(user); // Update user record in the database
+            user.setProfileImagePath("uploads/profile-images/" + fileName);
+            userService.addUser(user);
 
             responseBody.put("status", "Profile image uploaded successfully");
             responseBody.put("imagePath", "uploads/profile-images/" + fileName);
@@ -123,7 +138,6 @@ public class UserController {
     public ResponseEntity<Map<String, Object>> getProfileImage(@RequestParam("username") String username) {
         Map<String, Object> responseBody = new HashMap<>();
         
-        // Retrieve user by username
         User user = userService.getUserByUserName(username);
         if (user == null) {
             responseBody.put("status", "User not found");
