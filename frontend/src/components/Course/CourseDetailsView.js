@@ -27,13 +27,13 @@ const CourseDetailsView = () => {
   const { courseId } = useParams();
 
   useEffect(() => {
-    // fetchStudents();
-    // fetchAssignments();
+    fetchStudents();
+    fetchAssignments();
   }, []);
 
   const fetchStudents = async () => {
     try {
-      const response = await axios.get(`http://localhost:8080/students?courseId=${courseId}`);
+      const response = await axios.get(`http://localhost:8080/courses/${courseId}/students`);
       setStudents(response.data);
       setStudentsError("");
     } catch (error) {
@@ -79,15 +79,22 @@ const CourseDetailsView = () => {
     console.log(response.data);
   };
 
-  const handleDeleteStudent = (studentId) => {
-    if (window.confirm("Ertu viss um að þú viljir eyða notanda?")) {
-      const filteredStudents = students.filter(
-        (student) => student.id !== studentId
-      );
-      setStudents(filteredStudents);
-      // TODO: Kalla í bakenda
+  const handleDeleteStudent = async (studentId) => {
+    if (window.confirm("Are you sure you want to delete this student?")) {
+      try {
+        const response = await axios.delete(`http://localhost:8080/courses/${courseId}/students/${studentId}`);
+        if (response.status === 200) {
+          alert("Student removed successfully");
+          fetchStudents(); 
+        } else {
+          alert("Failed to remove student");
+        }
+      } catch (error) {
+        console.error("Error removing student:", error);
+        alert("Error removing student");
+      }
     }
-  };
+  };  
 
   return (
     <div className="course-details-container">

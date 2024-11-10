@@ -64,22 +64,24 @@ public class CourseController {
         Student student = studentService.getStudentByUserName(registerRequest.getUserName());
         Optional<Course> course = courseService.getCourseById(registerRequest.getCourseId());
         Map<String, Object> responseBody = new HashMap<>();
+        
         if (courseService.getAllStudents(registerRequest.getCourseId()).contains(student)) {
             responseBody.put("message", "Student is already in this course");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
-        }else {
+        } else {
             if (course.isPresent()) {
                 courseService.registerStudentToCourse(student, course.get());
                 responseBody.put("message", "Student registered successfully");
                 return ResponseEntity.ok(responseBody);
-            }else {
-                responseBody.put("message", "Student not registered successfully");
+            } else {
+                responseBody.put("message", "Course not found");
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
             }
         }
     }
-    @GetMapping("/students")
-    public ResponseEntity<List<Student>> getAllStudentsByCourseId(@RequestParam String courseId) {
+
+    @GetMapping("/courses/{courseId}/students")
+    public ResponseEntity<List<Student>> getAllStudentsByCourseId(@PathVariable String courseId) {
         Optional<Course> course = courseService.getCourseById(courseId);
         if (course.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
