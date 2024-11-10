@@ -2,6 +2,7 @@ package hugbo1.backend.Courses;
 
 import hugbo1.backend.Students.Student;
 import hugbo1.backend.Students.StudentService;
+import hugbo1.backend.Assignments.*;
 import hugbo1.backend.Users.Instructor;
 import hugbo1.backend.Users.User;
 import hugbo1.backend.Users.UserService;
@@ -88,6 +89,16 @@ public class CourseController {
         }
         List<Student> students = courseService.getAllStudents(courseId);
         return ResponseEntity.ok(students);
+    }
+
+    @GetMapping("/courses/{courseId}/assignments")
+    public ResponseEntity<List<Assignment>> getAllAssignmentsByCourseId(@PathVariable String courseId){
+        Optional<Course> course = courseService.getCourseById(courseId);
+        if (course.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+        List<Assignment> assignments = courseService.getAllAssignments(courseId);
+        return ResponseEntity.ok(assignments);
     }
 
     @DeleteMapping("/courses/{courseId}/students/{studentId}")

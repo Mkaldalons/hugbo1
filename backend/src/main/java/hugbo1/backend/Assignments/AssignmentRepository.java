@@ -1,11 +1,20 @@
 package hugbo1.backend.Assignments;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+
+import hugbo1.backend.Students.Student;
 
 @Repository
 public interface AssignmentRepository extends JpaRepository<Assignment, String> {
     Assignment findByAssignmentId(int id);
     boolean existsByAssignmentId(int id);
     void deleteByAssignmentId(int id);
+
+    @Query("SELECT a FROM Assignment a WHERE a.courseId = :courseId")
+    List<Assignment> findAssignmentsByCourseId(@Param("courseId") String courseId);
 }

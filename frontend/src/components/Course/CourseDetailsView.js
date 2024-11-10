@@ -38,7 +38,7 @@ const CourseDetailsView = () => {
   
   const fetchAssignments = async () => {
     try {
-      const response = await axios.get(`http://localhost:8080/assignments?courseId=${courseId}`);
+      const response = await axios.get(`http://localhost:8080/courses/${courseId}/assignments`);
       setAssignments(response.data);
       setAssignmentsError("");
     } catch (error) {
@@ -186,19 +186,20 @@ const AssignmentList = ({ assignments, isLoading, error }) => {
       <h2 className="section-title">Assignments</h2>
       {isLoading && <div>Loading assignments...</div>}
       {error && <div>Error: {error}</div>}
+      {!isLoading && !error && assignments.length === 0 &&  <div>No assignments found</div>}
       <div className="course-assignment-list">
         <div className="row-header">
           <div className="assignment-title-wrapper">Title</div>
           <div className="assignment-average-grade-wrapper">Grade</div>
         </div>
         {assignments.map((assignment) => (
-          <div key={assignment.id} className="table-row">
+          <div key={assignment.assignmentId} className="table-row">
             <div className="assignment-title-wrapper">
-              <div className="assignment-title">{assignment.title}</div>
+              <div className="assignment-title">{assignment.assignmentName}</div>
             </div>
             <div className="assignment-average-grade-wrapper">
               <div className="assignment-average-grade">
-                {assignment.averageGrade || "-"}
+                {"-"}
               </div>
             </div>
           </div>
