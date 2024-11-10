@@ -42,5 +42,18 @@ public class UserService {
     public void deleteUser(User user) {
         userRepository.delete(user);
     }
+    public void changeEmail(User user, String newEmail) {
+        user.setEmail(newEmail);
+        userRepository.save(user);
+    }
+    public void updateRecoveryEmail(String username, String recoveryEmail) {
+        User user = userRepository.findByUserName(username);
+        if (user == null) {
+            throw new IllegalArgumentException("User not found");
+        }
+    
+        user.setRecoveryEmail(recoveryEmail);
+        userRepository.save(user);
+    }
 
 }

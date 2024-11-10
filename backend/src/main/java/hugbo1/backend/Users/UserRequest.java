@@ -4,6 +4,8 @@ public class UserRequest {
     private String username;
     private String oldPassword;
     private String newPassword;
+    private String recoveryEmail;
+   
 
     public String getOldPassword() {
         return oldPassword;
@@ -27,5 +29,13 @@ public class UserRequest {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getRecoveryEmail() {
+        return recoveryEmail;
+    }
+
+    public void setRecoveryEmail(String recoveryEmail) {
+        this.recoveryEmail = recoveryEmail;
     }
 }
