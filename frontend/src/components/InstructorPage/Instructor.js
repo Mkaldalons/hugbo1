@@ -32,22 +32,28 @@ const Assignments = () => {
     const [assignments, setAssignments] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
     const navigate = useNavigate();
+    const [message, setMessage] = useState("");
+
+
+    const fetchAssignments = async () => {
+        try {
+            const response = await axios.get('http://localhost:8080/assignments');
+            setAssignments(response.data);
+        } catch (error) {
+            console.error('Error fetching assignments:', error);
+        }
+    };
 
     useEffect(() => {
-        const fetchAssignments = async () => {
-            try {
-                const response = await axios.get('http://localhost:8080/assignments');
-                setAssignments(response.data);
-            } catch (error) {
-                console.error('Error fetching assignments:', error);
-            }
-        };
-
         fetchAssignments();
     }, []);
 
-    const handleEdit = (assignmentId) => {
-        navigate(`/edit-assignment/${assignmentId}`);
+    const handleEdit = (assignment, published) => {
+        if (!published) {
+            navigate(`/edit-assignment/${assignment}`)
+        } else{
+            setMessage("Assigments can not be edited after they have been published");
+        }
     };
 
     const handleDelete = async (assignmentId) => {
@@ -65,6 +71,55 @@ const Assignments = () => {
             }
         }
     };
+
+    const handlePublish = async (assignmentId, published) => {
+        try {
+            let response;
+            if (!published) {
+                response = await axios.post(`http://localhost:8080/publish-assignment/${assignmentId}`);
+                if (response.data.message === 'Assignment published') {
+                    setMessage("Assignment successfully published");
+
+                    setAssignments((prevAssignments) =>
+                        prevAssignments.map((assignment) =>
+                            assignment.assignmentId === assignmentId
+                                ? { ...assignment, published: true }
+                                : assignment
+                        )
+                    );
+                } else {
+                    setMessage("Failed to publish assignment");
+                }
+            } else {
+                response = await axios.post(`http://localhost:8080/unpublish-assignment/${assignmentId}`);
+                if (response.data.message === 'Assignment unpublished') {
+                    setMessage("Assignment successfully unpublished");
+
+                    // Update the published status locally
+                    setAssignments((prevAssignments) =>
+                        prevAssignments.map((assignment) =>
+                            assignment.assignmentId === assignmentId
+                                ? { ...assignment, published: false }
+                                : assignment
+                        )
+                    );
+
+                } else if (response.data.message === 'Assignment cannot be unpublished') {
+                    setMessage('Cannot unpublish assignments while students are working on assignments');
+                } else {
+                    setMessage("Failed to unpublish assignment");
+                }
+            }
+        }catch (error) {
+            console.error("Error publishing/unpublishing assignment:", error);
+            setMessage("An error occurred. Please try again later.");
+        }
+    };
+
+
+    function isPublished(assignment) {
+        return assignment.published ? "Yes" : "No"
+    }
 
     const filteredAssignments = assignments.filter((assignment) =>
         assignment.assignmentName.toLowerCase().includes(searchQuery.toLowerCase())
@@ -85,9 +140,11 @@ const Assignments = () => {
                 {filteredAssignments.length > 0 ? (
                     filteredAssignments.map((assignment) => (
                         <li key={assignment.assignmentId}>
-                            {assignment.assignmentName} - Due: {assignment.dueDate} - <AverageGrades assignmentId={assignment.assignmentId} />
                             <button onClick={() => handleEdit(assignment.assignmentId)}>Edit</button>
+                            {assignment.assignmentName} - Due: {assignment.dueDate} - Published: {isPublished(assignment)} - <AverageGrades assignmentId={assignment.assignmentId} />
+                            <button onClick={() => handleEdit(assignment.assignmentId, assignment.published)}>Edit</button>
                             <button onClick={() => handleDelete(assignment.assignmentId)}>Delete</button>
+                            <button onClick={() => handlePublish(assignment.assignmentId, assignment.published)}>{assignment.published ? "Unpublish" : "Publish"}</button>
                         </li>
                     ))
                 ) : (
