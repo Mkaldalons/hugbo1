@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.time.LocalDate;
+
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
@@ -101,5 +103,43 @@ public class AssignmentController {
             response.put("message", "Assignment not found");
             return ResponseEntity.status(404).body(response);
         }
+    }
+
+    @PostMapping("/publish-assignment/{assignmentId}")
+    public ResponseEntity<Map<String, Object>> publishAssignment(@PathVariable int assignmentId) {
+        Map<String, Object> response = new HashMap<>();
+        Assignment assignment = assignmentService.getAssignmentById(assignmentId);
+        if (assignmentService.doesAssignmentExist(assignment.getAssignmentId())) {
+            assignment.setPublished(true);
+            assignmentService.updateAssignment(assignment);
+            response.put("message", "Assignment published");
+            return ResponseEntity.ok(response);
+        }
+        response.put("message", "Assignment not found");
+        return ResponseEntity.status(404).body(response);
+    }
+
+    @PostMapping("/unpublish-assignment/{assignmentId}")
+    public ResponseEntity<Map<String, Object>> unpublishAssignment(@PathVariable int assignmentId) {
+        Map<String, Object> response = new HashMap<>();
+
+        // Retrieve the assignment
+        Assignment assignment = assignmentService.getAssignmentById(assignmentId);
+        if (assignment == null) {
+            response.put("message", "Assignment not found");
+            return ResponseEntity.status(404).body(response);
+        }
+
+        // Check if assignment can be unpublished
+        if (!assignmentService.canBeUnpublished(assignment.getAssignmentId())) {
+            response.put("message", "Assignment cannot be unpublished because students are already working on it.");
+            return ResponseEntity.ok(response);
+        }
+
+        // Proceed with unpublishing the assignment
+        assignment.setPublished(false);
+        assignmentService.updateAssignment(assignment);
+        response.put("message", "Assignment successfully unpublished");
+        return ResponseEntity.ok(response);
     }
 }
