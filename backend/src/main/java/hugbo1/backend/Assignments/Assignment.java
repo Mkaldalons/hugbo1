@@ -17,6 +17,7 @@ public class Assignment {
     private String jsonData;
     private String courseId;
     private String assignmentName;
+    private Boolean published = Boolean.FALSE;
 
     public int getAssignmentId() {
         return assignmentId;
@@ -56,5 +57,13 @@ public class Assignment {
 
     public void setAssignmentName(String assignmentName) {
         this.assignmentName = assignmentName;
+    }
+
+    public boolean isPublished() {
+        return published != null ? published : false;
+    }
+
+    public void setPublished(boolean published) {
+        this.published = published;
     }
 }

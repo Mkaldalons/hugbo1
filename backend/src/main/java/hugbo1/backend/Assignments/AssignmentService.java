@@ -4,11 +4,15 @@ import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 
 @Service
 public class AssignmentService {
 
     private final AssignmentRepository assignmentRepository;
+    private LocalDate dateToday = LocalDate.now();
+
 
     public AssignmentService(AssignmentRepository assignmentRepository) {
         this.assignmentRepository = assignmentRepository;
@@ -35,5 +39,21 @@ public class AssignmentService {
     @Transactional
     public void deleteAssignmentById(int id) {
         assignmentRepository.deleteByAssignmentId(id);
+    }
+
+    public boolean isPublished(int id) {
+        Assignment assignment = assignmentRepository.findByAssignmentId(id);
+        return assignment.isPublished();
+    }
+    public boolean canBeUnpublished(int id) {
+        Assignment assignment = assignmentRepository.findByAssignmentId(id);
+        LocalDate dueDate = assignment.getDueDate();
+        LocalDate oneWeekFromNow = dateToday.plusWeeks(1);
+    
+        // Check if the due date is less than or equal to one week from today
+        if (dueDate.isBefore(oneWeekFromNow) || dueDate.isEqual(oneWeekFromNow)) {
+            return false; // Cannot unpublish if due date is less than or equal to one week from now
+        }
+        return true;
     }
 }
