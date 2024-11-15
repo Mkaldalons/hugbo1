@@ -7,32 +7,36 @@ const ProfilePage = () => {
     const navigate = useNavigate();
     const [profileImage, setProfileImage] = useState(null);
     const [previewImage, setPreviewImage] = useState(null);
-    const [username, setUsername] = useState(localStorage.getItem('username') || ''); // Retrieve username from local storage or set it as empty
+    const [username, setUsername] = useState(localStorage.getItem('username') || '');
+    const [name, setName] = useState('');
+    const [recoveryEmail, setRecoveryEmail] = useState('');
+    const [email, setEmail] = useState('');
 
     const placeholderImage = 'http://localhost:8080/uploads/profile-images/base_profile.jpg';
 
     useEffect(() => {
-        const fetchProfileImage = async () => {
-            if (!username) return; // Ensure username is present before fetching
-    
-            try {
-                const response = await axios.get('http://localhost:8080/get-profile-image', {
-                    params: { username },
-                });
-    
-                // Check if an image path is returned and set it, or use a default placeholder
-                if (response.data.imagePath) {
-                    setProfileImage(`http://localhost:8080/${response.data.imagePath}`);
-                } else {
-                    setProfileImage('/path/to/default-placeholder.png'); // Use a placeholder if no image is available
-                }
-            } catch (error) {
-                console.error('Error fetching profile image:', error);
-                setProfileImage(placeholderImage); // Optional: set a placeholder on error
+        const fetchUserInfo = async () => {
+        try {
+            const userInfoResponse = await axios.get('http://localhost:8080/get-user-info', {
+                params: { username: localStorage.getItem('username') }
+            });
+            const userData = userInfoResponse.data;
+
+            setEmail(userData.email);
+            setRecoveryEmail(userData.recoveryEmail);
+            setName(userData.name);
+
+            if (userData.imagePath) {
+                setProfileImage(`http://localhost:8080/${userData.imagePath}`);
+            } else {
+                setProfileImage(placeholderImage);
             }
-        };
-    
-        fetchProfileImage();
+        } catch (error) {
+            console.error('Error fetching user info:', error);
+        }
+    };
+
+        fetchUserInfo();
     }, [username]);
 
     // Redirect to the Update Password page
@@ -100,6 +104,13 @@ const ProfilePage = () => {
     return (
         <div className="profile-container">
             <h2>My Profile</h2>
+
+            <div className="profile-info">
+                <p><strong>Username:</strong> {username}</p>
+                <p><strong>Name:</strong> {name}</p>
+                <p><strong>Email:</strong> {email}</p>
+                <p><strong>Recovery Email:</strong> {recoveryEmail}</p>
+            </div>
 
             <div className="profile-content">
                 {/* Profile Image Display on the Right */}
