@@ -154,5 +154,15 @@ public class UserController {
         responseBody.put("imagePath", profileImagePath); // Return the path
         return ResponseEntity.ok(responseBody);
     }
+
+    @GetMapping("/get-user-info")
+    public ResponseEntity<User> getUserInfo(@RequestParam String username) {
+        User user = userService.getUserByUserName(username);
+        if (user != null) {
+            return ResponseEntity.ok(user);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 }
 
