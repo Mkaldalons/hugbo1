@@ -124,4 +124,35 @@ public class CourseController {
         }
     }
 
+    @GetMapping("/courses/{courseId}")
+    public ResponseEntity<Course> getCourseById(@PathVariable String courseId) {
+        Optional<Course> course = courseService.getCourseById(courseId);
+        if (course.isPresent()) {
+            return ResponseEntity.ok(course.get());
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+
+    @PutMapping("/courses/{courseId}")
+    public ResponseEntity<Map<String, String>> updateCourseName(@PathVariable String courseId, @RequestBody Map<String, String> updates) {
+        String newCourseName = updates.get("courseName");
+        if (newCourseName == null || newCourseName.isEmpty()) {
+            Map<String, String> response = new HashMap<>();
+            response.put("message", "Invalid course name");
+            return ResponseEntity.badRequest().body(response);
+        }
+        
+        try {
+            courseService.updateCourseName(courseId, newCourseName);
+            Map<String, String> response = new HashMap<>();
+            response.put("message", "Course name updated successfully");
+            return ResponseEntity.ok(response);
+        } catch (IllegalArgumentException e) {
+            Map<String, String> response = new HashMap<>();
+            response.put("message", e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
+    }
+
 }

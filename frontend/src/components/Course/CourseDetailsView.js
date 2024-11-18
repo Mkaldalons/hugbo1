@@ -4,6 +4,12 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 
 const CourseDetailsView = () => {
+  const [course, setCourse] = useState(null);
+  const [courseError, setCourseError] = useState(null);
+
+  const [editCourseName, setEditCourseName] = useState("");
+  const [isEditing, setIsEditing] = useState(false);
+
   const [studentsLoading, setStudentsLoading] = useState(false);
   const [studentsError, setStudentsError] = useState(null);
 
@@ -19,9 +25,24 @@ const CourseDetailsView = () => {
   const { courseId } = useParams();
 
   useEffect(() => {
-    fetchStudents();
-    fetchAssignments();
+    fetchCourseData();
   }, []);
+
+  const fetchCourseData = async () => {
+    await Promise.all([fetchCourseDetails(), fetchStudents(), fetchAssignments()]);
+  };
+
+  const fetchCourseDetails = async () => {
+    try {
+      const response = await axios.get(`http://localhost:8080/courses/${courseId}`);
+      setCourse(response.data);
+      setEditCourseName(response.data.courseName);
+      setCourseError(null);
+    } catch (error) {
+      setCourseError("Error fetching course details");
+      console.error("Error fetching course details:", error);
+    }
+  };
 
   const fetchStudents = async () => {
     try {
@@ -46,6 +67,23 @@ const CourseDetailsView = () => {
       console.error("Error fetching assignments:", error);
     } finally {
       setAssignmentsLoading(false);
+    }
+  };
+
+
+  const handleUpdateCourseName = async () => {
+    try {
+      const response = await axios.put(`http://localhost:8080/courses/${courseId}`, {
+        courseName: editCourseName,
+      });
+      if (response.status === 200) {
+        setCourse({ ...course, courseName: editCourseName });
+        setIsEditing(false);
+        alert("Course name updated successfully");
+      }
+    } catch (error) {
+      console.error("Error updating course name:", error);
+      alert("Failed to update course name");
     }
   };
   
@@ -91,6 +129,34 @@ const CourseDetailsView = () => {
   return (
     <div className="course-details-container">
       <h1 className="course-title">Course Details</h1>
+      {/* Editable Course Name Section */}
+      <div className="course-name-edit">
+        {isEditing ? (
+          <div>
+            <input
+              type="text"
+              value={editCourseName}
+              onChange={(e) => setEditCourseName(e.target.value)}
+              placeholder="Enter new course name"
+              className="edit-course-input"
+            />
+            <button onClick={handleUpdateCourseName} className="base-button save-button">
+              Save
+            </button>
+            <button onClick={() => setIsEditing(false)} className="base-button cancel-button">
+              Cancel
+            </button>
+          </div>
+        ) : (
+          <h1 className="course-title">
+            {course ? course.courseName : "Loading Course..."}
+            <button onClick={() => setIsEditing(true)} className="base-button edit-button">
+              Edit
+            </button>
+          </h1>
+        )}
+      </div>
+      {courseError && <div className="error-message">{courseError}</div>}
       <div className="add-student-form">
         <form
           onSubmit={(e) => {

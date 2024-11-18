@@ -102,4 +102,15 @@ public class CourseService {
         }
         return new ArrayList<>();
     }
+
+    public void updateCourseName(String courseId, String newCourseName) {
+        Optional<Course> courseOpt = courseRepository.findById(courseId);
+        if (courseOpt.isPresent()) {
+            Course course = courseOpt.get();
+            course.setCourseName(newCourseName);
+            courseRepository.save(course);
+        } else {
+            throw new IllegalArgumentException("Course with ID " + courseId + " not found");
+        }
+    }
 }
