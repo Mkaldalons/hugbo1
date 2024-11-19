@@ -4,12 +4,10 @@ import hugbo1.backend.Assignments.Assignment;
 import hugbo1.backend.Students.Student;
 import hugbo1.backend.Students.StudentRepository;
 import hugbo1.backend.Assignments.AssignmentRepository;
-import hugbo1.backend.Users.Instructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -101,6 +99,10 @@ public class CourseService {
                     .toList();
         }
         return new ArrayList<>();
+    }
+
+    public List<Course> getAllCoursesByStudentId(int studentId) {
+        return courseRepository.findCoursesByStudentId(studentId);
     }
 
     public void updateCourseName(String courseId, String newCourseName) {
