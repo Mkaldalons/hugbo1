@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
 
 @Service
 public class AssignmentService {
@@ -54,5 +53,10 @@ public class AssignmentService {
             return false;
         }
         return true;
+    }
+    public List<Assignment> getAllPublishedAssignmentByCourseId(String courseId) {
+        List<Assignment> assignments = assignmentRepository.findAssignmentsByCourseId(courseId);
+        assignments.removeIf(assignment -> !assignment.isPublished());
+        return assignments;
     }
 }

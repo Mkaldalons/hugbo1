@@ -7,11 +7,10 @@ const StudentView = () => {
     const [userName, setUserName] = useState('');
     const [students, setStudents] = useState([])
 
-    // Fetch the available courses when the component loads
     useEffect(() => {
-        fetch('http://localhost:8080/courses')  // Adjust your backend URL as needed
+        fetch('http://localhost:8080/courses')
             .then(response => response.json())
-            .then(data => setCourses(data))  // Set the list of courses
+            .then(data => setCourses(data))
             .catch(error => console.error('Error fetching courses:', error));
     }, []);
 
@@ -44,7 +43,7 @@ const StudentView = () => {
             .then(data => {
                 console.log('Response from backend:', data);
                 alert('Student added successfully!');
-                setUserName('');  // Clear the input field after successful submission
+                setUserName('');
             })
             .catch(error => console.error('Error adding student:', error));
     };
@@ -53,7 +52,6 @@ const StudentView = () => {
         <div className="container">
             <h1>Add Student to Course</h1>
 
-            {/* Dropdown for selecting a course */}
             <select className="dropdown" value={selectedCourse} onChange={handleCourseChange}>
                 <option value="">Select a course</option>
                 {courses.map(course => (

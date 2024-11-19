@@ -50,13 +50,14 @@ const CourseItem = ( { course } ) => {
 
 const Course = () => {
     const [courseName, setCourseName] = useState("");
+    const [courseDescription, setCourseDescription] = useState("");
     const [courses, setCourses] = useState([]);
 
 
     const createCourse = async () => {
         if (courseName.trim()) {
             const username = localStorage.getItem('username');
-            const newCourse = { courseName: courseName, createdBy: username };
+            const newCourse = { courseName: courseName, courseDescription: courseDescription, createdBy: username };
             if(!username){
                 console.error('No username found.')
                 return;
@@ -64,8 +65,8 @@ const Course = () => {
 
             try {
                 const response = await axios.post('http://localhost:8080/courses', newCourse);
-                setCourses([...courses, response.data]); // Add the new course to the state
-                setCourseName(""); // Reset the course name input
+                setCourses([...courses, response.data]);
+                setCourseName("");
             } catch (error) {
                 console.error('Error creating course:', error);
             }
@@ -95,6 +96,12 @@ const Course = () => {
                     value={courseName}
                     onChange={(e) => setCourseName(e.target.value)}
                     placeholder="Enter course name"
+                />
+                <input
+                    type="text"
+                    value={courseDescription}
+                    onChange={(e) => setCourseDescription(e.target.value)}
+                    placeholder="Enter course description"
                 />
             </div>
             <button className="create-course-btn" onClick={createCourse}>Create Course</button>

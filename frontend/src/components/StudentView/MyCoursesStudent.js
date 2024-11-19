@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const MyCoursesStudent = () => {
     const { userName } = useParams();
     const [courses, setCourses] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchCourses = async () => {
@@ -21,7 +22,7 @@ const MyCoursesStudent = () => {
         };
 
         fetchCourses();
-    }, [userName]); // Fetch courses whenever userName changes
+    }, [userName]);
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error: {error}</p>;
@@ -36,6 +37,11 @@ const MyCoursesStudent = () => {
                             <h2>{course.courseName}</h2>
                             <p>{course.description}</p>
                             <p><strong>Instructor:</strong> {course.instructor}</p>
+                            <button
+                                onClick={() => navigate(`/view-course-assignments/${course.courseId}`)}
+                            >
+                                View Course
+                            </button>
                         </li>
                     ))}
                 </ul>
