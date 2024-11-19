@@ -3,6 +3,8 @@ import "./CourseDetailsView.css";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 
+const FAILING_GRADE = 4.9;
+
 const CourseDetailsView = () => {
   const [course, setCourse] = useState(null);
   const [courseError, setCourseError] = useState(null);
@@ -22,6 +24,8 @@ const CourseDetailsView = () => {
 
   const [studentToAdd, setStudentToAdd] = useState("");
 
+  const [studentsView, setStudentsView] = useState('all');
+
   const { courseId } = useParams();
 
   useEffect(() => {
@@ -29,7 +33,7 @@ const CourseDetailsView = () => {
   }, []);
 
   const fetchCourseData = async () => {
-    await Promise.all([fetchCourseDetails(), fetchStudents(), fetchAssignments()]);
+    await Promise.all([fetchCourseDetails(), fetchFailingStudents(), fetchAssignments()]);
   };
 
   const fetchCourseDetails = async () => {
@@ -47,6 +51,19 @@ const CourseDetailsView = () => {
   const fetchStudents = async () => {
     try {
       const response = await axios.get(`http://localhost:8080/courses/${courseId}/students`);
+      setStudents(response.data);
+      setStudentsError("");
+    } catch (error) {
+      setStudentsError(error.message);
+      console.error("Error fetching students:", error);
+    } finally {
+      setStudentsLoading(false);
+    }
+  };
+
+  const fetchFailingStudents = async () => {
+    try {
+      const response = await axios.get(`http://localhost:8080/courses/${courseId}/students/grades?grade=${FAILING_GRADE}`);
       setStudents(response.data);
       setStudentsError("");
     } catch (error) {
@@ -124,7 +141,16 @@ const CourseDetailsView = () => {
         alert("Error removing student");
       }
     }
-  };  
+  };
+
+  const onChangeStudentView = (view) => {
+    if(view === 'failing') {
+      fetchFailingStudents();
+    } else {
+      fetchStudents();
+    }
+    setStudentsView(view);
+  }
 
   return (
     <div className="course-details-container">
@@ -181,6 +207,7 @@ const CourseDetailsView = () => {
           isLoading={studentsLoading}
           error={studentsError}
           onDeleteStudent={handleDeleteStudent}
+          onSetStudentsView={onChangeStudentView}
         />
         <AssignmentList
           assignments={assignments}
@@ -192,7 +219,7 @@ const CourseDetailsView = () => {
   );
 };
 
-const StudentList = ({ students, isLoading, error, onDeleteStudent }) => {
+const StudentList = ({ students, isLoading, error, onDeleteStudent, onSetStudentsView }) => {
   const [searchTerm, setSearchTerm] = useState("");
 
   const filteredStudents = students.filter((student) =>
@@ -202,6 +229,11 @@ const StudentList = ({ students, isLoading, error, onDeleteStudent }) => {
   return (
     <div className="section">
       <h2 className="section-title">Students</h2>
+      <div className="students-button-container">
+
+      <button className="students-button all-students-button" onClick={() => onSetStudentsView('all')}>All students</button>
+      <button className="students-button failing-students-button"  onClick={() => onSetStudentsView('failing')}>Failing students</button>
+      </div>
       <div className="search-input-wrapper">
         <input
           type="text"
@@ -229,7 +261,7 @@ const StudentList = ({ students, isLoading, error, onDeleteStudent }) => {
               <div className="student-username">{student.username}</div>
             </div>
             <div className="student-grade-wrapper">
-              <div className="student-grade">{student.grade || "-"}</div>
+              <div className="student-grade">{student.averageGrade || "-"}</div>
             </div>
             <div className="student-actions-wrapper">
               <button

@@ -149,3 +149,25 @@
   .search-input {
     margin-bottom: 10px;
   }
+
+
+  .students-button-container {
+    display: flex;
+    align-items: center;
+  }
+  
+  .students-button {
+    padding: 10px 20px;
+    border-radius: 8px;
+
+  }
+
+  .all-students-button {
+    background-color: gray;
+    margin-right: 4px;
+
+  }
+
+  .failing-students-button {
+    background-color: red;
+  }

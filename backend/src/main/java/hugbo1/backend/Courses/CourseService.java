@@ -4,11 +4,20 @@ import hugbo1.backend.Assignments.Assignment;
 import hugbo1.backend.Students.Student;
 import hugbo1.backend.Students.StudentRepository;
 import hugbo1.backend.Assignments.AssignmentRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -20,6 +29,7 @@ public class CourseService {
     private StudentRepository studentRepository;
     @Autowired
     private AssignmentRepository assignmentRepository;
+  
 
     public CourseService(CourseRepository courseRepository) {
         this.courseRepository = courseRepository;
@@ -48,6 +58,50 @@ public class CourseService {
     public List<Student> getAllStudents(String courseId) {
         return courseRepository.findStudentsByCourseId(courseId);
     }
+    
+    public List<Map<String, Object>> calculateStudentGrades(String courseId, List<Student> students) {
+        List<Object[]> assignmentsAndSubmissions = assignmentRepository.findAssignmentsAndSubmissionsByCourseId(courseId);
+    
+        Map<Integer, List<Double>> studentGradesMap = new HashMap<>();
+        Map<Integer, Integer> studentSubmissionCountMap = new HashMap<>();
+    
+        for (Object[] row : assignmentsAndSubmissions) {
+            LocalDate dueDate = (LocalDate) row[1];
+            Integer studentId = (Integer) row[2];
+            Double assignmentGrade = (Double) row[3];
+    
+            if (assignmentGrade == null && dueDate.isBefore(LocalDate.now())) {
+                assignmentGrade = 0.0;
+            }
+    
+            if (studentId != null) {
+                studentGradesMap.computeIfAbsent(studentId, k -> new ArrayList<>()).add(assignmentGrade);
+    
+                studentSubmissionCountMap.put(studentId, studentSubmissionCountMap.getOrDefault(studentId, 0) + 1);
+            }
+        }
+    
+        return students.stream()
+                .map(student -> {
+                    Integer studentId = student.getStudentId();
+                    List<Double> grades = studentGradesMap.getOrDefault(studentId, Collections.emptyList());
+                    double averageGrade = grades.stream().mapToDouble(Double::doubleValue).average().orElse(0.0);
+                    int submissionCount = studentSubmissionCountMap.getOrDefault(studentId, 0); 
+    
+                    Map<String, Object> result = new HashMap<>();
+                    result.put("studentId", studentId);
+                    result.put("name", student.getName());
+                    result.put("userName", student.getUserName());
+                    result.put("averageGrade", averageGrade);
+                    result.put("submissionCount", submissionCount); 
+                    return result;
+                })
+                .toList();
+    }
+
+    
+
+
     public void registerStudentToCourse(Student student, Course course) {
         course.getStudents().add(student);
         student.getCourses().add(course);

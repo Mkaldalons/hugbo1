@@ -17,4 +17,13 @@ public interface AssignmentRepository extends JpaRepository<Assignment, String> 
 
     @Query("SELECT a FROM Assignment a WHERE a.courseId = :courseId")
     List<Assignment> findAssignmentsByCourseId(@Param("courseId") String courseId);
+
+    @Query("""
+    SELECT a.assignmentId, a.dueDate, sub.student.id, sub.assignmentGrade
+    FROM Assignment a
+    LEFT JOIN AssignmentSubmission sub ON a.assignmentId = sub.assignmentId
+    WHERE a.courseId = :courseId
+""")
+List<Object[]> findAssignmentsAndSubmissionsByCourseId(@Param("courseId") String courseId);
+
 }
