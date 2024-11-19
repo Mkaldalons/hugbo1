@@ -83,6 +83,7 @@ public class CourseController {
 
     @GetMapping("/courses/{courseId}/students")
     public ResponseEntity<List<Student>> getAllStudentsByCourseId(@PathVariable String courseId) {
+        System.out.println("Received courseId in /courses/{courseId}/students: " + courseId); // Print courseId
         Optional<Course> course = courseService.getCourseById(courseId);
         if (course.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
@@ -126,6 +127,7 @@ public class CourseController {
 
     @GetMapping("/courses/{courseId}")
     public ResponseEntity<Course> getCourseById(@PathVariable String courseId) {
+        System.out.println("Received courseId in /courses/{courseId}: " + courseId); // Print courseId received
         Optional<Course> course = courseService.getCourseById(courseId);
         if (course.isPresent()) {
             return ResponseEntity.ok(course.get());

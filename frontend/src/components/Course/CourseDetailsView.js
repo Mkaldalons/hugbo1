@@ -34,6 +34,7 @@ const CourseDetailsView = () => {
 
   const fetchCourseDetails = async () => {
     try {
+      console.log("Fetching course with ID:", courseId);
       const response = await axios.get(`http://localhost:8080/courses/${courseId}`);
       setCourse(response.data);
       setEditCourseName(response.data.courseName);
@@ -80,6 +81,7 @@ const CourseDetailsView = () => {
         setCourse({ ...course, courseName: editCourseName });
         setIsEditing(false);
         alert("Course name updated successfully");
+        fetchCourseDetails();
       }
     } catch (error) {
       console.error("Error updating course name:", error);
