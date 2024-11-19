@@ -19,7 +19,8 @@ public class SubmissionController {
 
     @GetMapping("/average-grade/{assignmentId}")
     public double averageGrade(@PathVariable int assignmentId) {
-        return submissionService.getAverageGradeFromId(assignmentId);
+        double value = submissionService.getAverageGradeFromId(assignmentId);
+        return Math.round(value * 100.0) / 100.0;
     }
     @GetMapping("/grades/{assignmentId}")
     public List<Double> grades(@PathVariable int assignmentId) {

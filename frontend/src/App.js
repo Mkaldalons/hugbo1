@@ -16,6 +16,7 @@ import StudentAssignments from "./components/StudentsAssignment/StudentAssignmen
 import StudentView from "./components/StudentView/StudentView";
 import StudentGrades from "./components/StudentGrades/StudentGrades";
 import EditAssignment from "./components/Assignment/EditAssignment";
+import ViewAssignment from "./components/Assignment/ViewAssignment";
 
 import CourseView from "./components/Course/CourseView"
 import ProfilePage from './components/Profile/ProfilePage';
@@ -61,6 +62,7 @@ function App() {
           <Route path="/instructor" element={<Instructor />} />
           <Route path="/student" element={<Student />} />
           <Route path="/assignment" element={<Assignment />} />
+          <Route path="/view-assignment/:assignmentId" element={< ViewAssignment />} />
           <Route
             path="/edit-assignment/:assignmentId"
             element={<EditAssignment />}

@@ -140,7 +140,7 @@ const Assignments = () => {
                 {filteredAssignments.length > 0 ? (
                     filteredAssignments.map((assignment) => (
                         <li key={assignment.assignmentId}>
-                            <button onClick={() => handleEdit(assignment.assignmentId)}>Edit</button>
+                            <button onClick={() => navigate(`/view-assignment/${assignment.assignmentId}`)}>View</button>
                             {assignment.assignmentName} - Due: {assignment.dueDate} - Published: {isPublished(assignment)} - <AverageGrades assignmentId={assignment.assignmentId} />
                             <button onClick={() => handleEdit(assignment.assignmentId, assignment.published)}>Edit</button>
                             <button onClick={() => handleDelete(assignment.assignmentId)}>Delete</button>
