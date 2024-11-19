@@ -33,7 +33,7 @@ const CourseDetailsView = () => {
   }, []);
 
   const fetchCourseData = async () => {
-    await Promise.all([fetchCourseDetails(), fetchFailingStudents(), fetchAssignments()]);
+    await Promise.all([fetchCourseDetails(), fetchFailingStudents(), fetchAssignments(), fetchFailingStudents()]);
   };
 
   const fetchCourseDetails = async () => {
