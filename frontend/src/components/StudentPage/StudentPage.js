@@ -5,6 +5,7 @@ import axios from "axios";
 
 const StudentPage = () => {
     const navigate = useNavigate();
+    const userName = localStorage.getItem("username")
 
     return (
         <div className="dashboard-container">
@@ -13,6 +14,7 @@ const StudentPage = () => {
                 <div className="header-buttons">
                     <button className="btn" onClick={() => navigate('/studentAssignments')}>Assignments</button>
                     <button className="btn" onClick={() => navigate('/studentGrades')}>View Grades</button>
+                    <button className="btn" onClick={() => navigate(`/my-courses-student/${userName}`)}>My Courses</button>
                 </div>
             </header>
 

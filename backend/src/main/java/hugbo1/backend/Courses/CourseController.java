@@ -3,9 +3,6 @@ package hugbo1.backend.Courses;
 import hugbo1.backend.Students.Student;
 import hugbo1.backend.Students.StudentService;
 import hugbo1.backend.Assignments.*;
-import hugbo1.backend.Users.Instructor;
-import hugbo1.backend.Users.User;
-import hugbo1.backend.Users.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -55,9 +52,13 @@ public class CourseController {
 
     @GetMapping("/my-courses/{userName}")
     public List<Course> getMyCourses(@PathVariable String userName) {
-        System.out.println("Instructor with username: "+userName+
-                " has course"+courseService.getAllCoursesByInstructor(userName));
         return courseService.getAllCoursesByInstructor(userName);
+    }
+
+    @GetMapping("/my-courses-student/{userName}")
+    public List<Course> getMyCoursesStudent(@PathVariable String userName) {
+        Student student = studentService.getStudentByUserName(userName);
+        return courseService.getAllCoursesByStudentId(student.getStudentId());
     }
 
     @PostMapping("/students/add")
