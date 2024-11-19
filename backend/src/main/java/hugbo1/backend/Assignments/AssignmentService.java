@@ -3,10 +3,8 @@ package hugbo1.backend.Assignments;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
 
 @Service
 public class AssignmentService {

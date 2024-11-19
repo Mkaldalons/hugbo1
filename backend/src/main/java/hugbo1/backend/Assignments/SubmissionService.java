@@ -5,21 +5,17 @@ import hugbo1.backend.Students.StudentRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class SubmissionService {
 
     private final SubmissionRepository submissionRepository;
     private final StudentRepository studentRepository;
-    private final AssignmentRepository assignmentRepository;
 
-    public SubmissionService(SubmissionRepository submissionRepository, StudentRepository studentRepository, AssignmentRepository assignmentRepository) {
+    public SubmissionService(SubmissionRepository submissionRepository, StudentRepository studentRepository) {
         this.submissionRepository = submissionRepository;
         this.studentRepository = studentRepository;
-        this.assignmentRepository = assignmentRepository;
     }
 
     public double getAverageGradeFromId(int assignmentId) {

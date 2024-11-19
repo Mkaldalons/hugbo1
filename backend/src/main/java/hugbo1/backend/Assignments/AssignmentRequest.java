@@ -1,7 +1,6 @@
 package hugbo1.backend.Assignments;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 public class AssignmentRequest {
