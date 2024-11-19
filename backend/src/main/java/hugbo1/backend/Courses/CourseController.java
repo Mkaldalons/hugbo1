@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
@@ -90,8 +91,34 @@ public class CourseController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
         List<Student> students = courseService.getAllStudents(courseId);
+        
         return ResponseEntity.ok(students);
     }
+
+    @GetMapping("/courses/{courseId}/students/grades")
+    public ResponseEntity<List<Map<String, Object>>> getStudentByGradeCriteria(
+    @PathVariable String courseId, @RequestParam Double grade) {
+
+    Optional<Course> course = courseService.getCourseById(courseId);
+    if (course.isEmpty()) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+    }
+
+    List<Student> students = courseService.getAllStudents(courseId);
+
+    List<Map<String, Object>> studentsWithGrades = courseService.calculateStudentGrades(courseId, students);
+
+    List<Map<String, Object>> filteredStudentGrades = studentsWithGrades.stream()
+        .filter(student -> {
+            Double averageGrade = (Double) student.get("averageGrade");
+            return averageGrade != null && averageGrade <= grade;
+        })
+        .collect(Collectors.toList());
+
+    return ResponseEntity.ok(filteredStudentGrades);
+}
+
+
 
     @GetMapping("/courses/{courseId}/assignments")
     public ResponseEntity<List<Assignment>> getAllAssignmentsByCourseId(@PathVariable String courseId){
