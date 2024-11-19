@@ -3,15 +3,14 @@ package hugbo1.backend.Courses;
 import hugbo1.backend.Students.Student;
 import hugbo1.backend.Students.StudentService;
 import hugbo1.backend.Assignments.*;
+import hugbo1.backend.Users.User;
+import hugbo1.backend.Users.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
@@ -21,24 +20,29 @@ public class CourseController {
     private final CourseService courseService;
     @Autowired
     private final StudentService studentService;
+    @Autowired
+    private final UserService userService;
 
-    public CourseController(CourseService courseService, StudentService studentService) {
+    public CourseController(CourseService courseService, StudentService studentService, UserService userService) {
         this.courseService = courseService;
         this.studentService = studentService;
+        this.userService = userService;
     }
 
     @PostMapping("/courses")
     public ResponseEntity<Map<String, Object>> createCourse(@RequestBody CourseRequest courseRequest) {
+        User user = userService.getUserByUserName(courseRequest.getCreatedBy());
+        String instructorName = user.getName();
         Course course = new Course();
         course.setCourseName(courseRequest.getCourseName());
+        course.setDescription(courseRequest.getCourseDescription());
         course.setCourseId(course.getCourseId());
-        course.setInstructor(courseRequest.getCreatedBy());
+        course.setInstructor(instructorName);
         if(courseService.doesCourseExist(course.getCourseId())) {
             Map<String, Object> responseBody = new HashMap<>();
             responseBody.put("message", "Course already exists");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
         }else {
-            course.setDescription("missing");
             courseService.addCourse(course);
             Map<String, Object> responseBody = new HashMap<>();
             responseBody.put("message", "Course created");
@@ -52,7 +56,11 @@ public class CourseController {
 
     @GetMapping("/my-courses/{userName}")
     public List<Course> getMyCourses(@PathVariable String userName) {
-        return courseService.getAllCoursesByInstructor(userName);
+        User user = userService.getUserByUserName(userName);
+        List<Course> courses = new ArrayList<>();
+        courses.addAll(courseService.getAllCoursesByInstructor(user.getName()));
+        courses.addAll(courseService.getAllCoursesByInstructor(userName));
+        return courses;
     }
 
     @GetMapping("/my-courses-student/{userName}")

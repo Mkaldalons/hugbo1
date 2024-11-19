@@ -2,6 +2,7 @@ package hugbo1.backend.Assignments;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import hugbo1.backend.Courses.CourseService;
+import hugbo1.backend.Users.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,8 +27,10 @@ public class AssignmentController {
     @PostMapping("/create")
     public ResponseEntity<Map<String, Object>> createAssignment(@RequestBody AssignmentRequest assignmentRequest) {
         Map<String, Object> response = new HashMap<>();
+        System.out.println("Assignment name is passed in as: "+assignmentRequest.getAssignmentName());
 
         if (!courseService.doesCourseExist(assignmentRequest.getCourseId())) {
+            System.out.println("Course not found");
             response.put("message", "Course not found");
             return ResponseEntity.status(400).body(response);
         }
@@ -40,14 +43,13 @@ public class AssignmentController {
             response.put("message", "Couldn't serialize to JSON");
             return ResponseEntity.status(500).body(response);
         }
-
         Assignment assignment = new Assignment();
         assignment.setCourseId(assignmentRequest.getCourseId());
-        assignment.setAssignmentName("Assignment");
+        assignment.setAssignmentName(assignmentRequest.getAssignmentName());
         assignment.setDueDate(assignmentRequest.getDueDate());
         assignment.setJsonData(jsonQuestions);
         assignmentService.createAssignment(assignment);
-
+        System.out.println("Assignment being created");
         response.put("message", "Assignment created");
         return ResponseEntity.ok(response);
     }
@@ -64,6 +66,19 @@ public class AssignmentController {
         }else {
             return ResponseEntity.status(404).body(null);
         }
+    }
+
+    @GetMapping("/assignments-by-course/{courseId}")
+    public ResponseEntity<List<Assignment>> getAssignmentsByCourse(@PathVariable String courseId) {
+        if (courseService.doesCourseExist(courseId)) {
+            if (!assignmentService.getAllPublishedAssignmentByCourseId(courseId).isEmpty()) {
+                return ResponseEntity.ok(assignmentService.getAllPublishedAssignmentByCourseId(courseId));
+            }
+            System.out.println("There are no published assignments for this course yet");
+            return ResponseEntity.status(404).body(null);
+        }
+        System.out.println("Course does not exist");
+        return ResponseEntity.status(404).body(null);
     }
 
     @PostMapping("/edit")

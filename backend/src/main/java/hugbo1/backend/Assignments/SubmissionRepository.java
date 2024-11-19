@@ -11,9 +11,18 @@ import java.util.List;
 
 @Repository
 @Table(name="Assignment_Submissions")
-public interface SubmissionRepository extends JpaRepository<Student, Integer> {
+public interface SubmissionRepository extends JpaRepository<AssignmentSubmission, Integer> {
 
     @Query("SELECT s.assignmentGrade FROM AssignmentSubmission s WHERE s.assignmentId = :assignmentId")
     List<Double> getAllAssignmentGradesById(@Param("assignmentId") int assignmentId);
 
+    @Query("SELECT MAX(s.assignmentGrade) " +
+            "FROM AssignmentSubmission s " +
+            "WHERE s.assignmentId = :assignmentId " +
+            "GROUP BY s.student")
+    List<Double> getMaxGradeOfAssignmentForStudent(@Param("assignmentId") int assignmentId);
+
+    List<AssignmentSubmission> findByAssignmentIdAndStudent(int assignmentId, Student student);
+
+    List<AssignmentSubmission> getAssignmentSubmissionByAssignmentId(int assignmentId);
 }

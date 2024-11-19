@@ -8,6 +8,7 @@ public class AssignmentRequest {
     private LocalDate dueDate;
     private List<QuestionRequest> questionRequest;
     private String courseId;
+    private String assignmentName;
 
     public String getAssignmentName() {
         return assignmentName;
@@ -16,8 +17,6 @@ public class AssignmentRequest {
     public void setAssignmentName(String assignmentName) {
         this.assignmentName = assignmentName;
     }
-
-    private String assignmentName;
 
     public int getAssignmentId() {
         return assignmentId;

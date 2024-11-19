@@ -5,11 +5,13 @@ import axios from 'axios';
 const Assignment = () => {
     const [courses, setCourses] = useState([]);
     const [selectedCourseId, setSelectedCourseId] = useState("");
+    const [assignmentName, setAssignmentName] = useState("");
     const [questions, setQuestions] = useState([]);
     const [newQuestion, setNewQuestion] = useState("");
     const [newOptions, setNewOptions] = useState(["", "", "", ""]);
     const [correctAnswerIndex, setCorrectAnswerIndex] = useState(null);
     const [dueDate, setDueDate] = useState("");
+    const [message, setMessage] = useState("");
 
     useEffect(() => {
         const fetchCourses = async () => {
@@ -51,23 +53,22 @@ const Assignment = () => {
             return;
         }
 
-        // Create the JSON object to represent the questions
         const assignmentData = {
             courseId: selectedCourseId,
             dueDate: dueDate,
-            questionRequests: questions
+            questionRequests: questions,
+            assignmentName: assignmentName
         };
 
 
         try {
-            // Send the data as a JSON string in the request body
             const response = await axios.post('http://localhost:8080/create', assignmentData, {
                 headers: {
-                    'Content-Type': 'application/json',  // Ensure the correct content type
+                    'Content-Type': 'application/json',
                 },
             });
             console.log('Assignment created successfully:', response.data);
-            console.log(JSON.stringify(assignmentData, null, 2));
+            setMessage("Assignment created successfully");
         } catch (error) {
             console.error('Error submitting assignment:', error);
         }
@@ -90,6 +91,15 @@ const Assignment = () => {
                         </option>
                     ))}
                 </select>
+            </div>
+
+            <div className="input-section">
+                <label>Assignment Name:</label>
+                <input
+                    type="text"
+                    value={assignmentName}
+                    onChange={(e) => setAssignmentName(e.target.value)}
+                />
             </div>
 
             <div className="input-section">

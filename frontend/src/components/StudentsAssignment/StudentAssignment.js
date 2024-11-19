@@ -6,7 +6,6 @@ const StudentAssignments = () => {
     const [assignments, setAssignments] = useState([]);
     const [selectedAssignment, setSelectedAssignment] = useState(null);
 
-    // Fetch assignments from the backend
     useEffect(() => {
         axios.get('http://localhost:8080/assignments')
             .then(response => {
@@ -17,7 +16,6 @@ const StudentAssignments = () => {
             });
     }, []);
 
-    // Handle button click to view a specific assignment
     const handleViewAssignment = (assignment) => {
         setSelectedAssignment(assignment);
     };

@@ -12,11 +12,18 @@ public class AssignmentSubmission {
     private int submissionId;
     private int assignmentId;
     private double assignmentGrade;
-    //private int studentId;
 
     @ManyToOne
     @JoinColumn(name = "student_id", nullable = false)
     private Student student;
+
+    public Student getStudent() {
+        return student;
+    }
+
+    public void setStudent(Student student) {
+        this.student = student;
+    }
 
     public int getSubmissionId() {
         return submissionId;
@@ -33,14 +40,6 @@ public class AssignmentSubmission {
     public void setAssignmentId(int assignmentId) {
         this.assignmentId = assignmentId;
     }
-
-//    public int getStudentId() {
-//        return studentId;
-//    }
-
-//    public void setStudentId(int studentId) {
-//        this.studentId = studentId;
-//    }
 
     public double getAssignmentGrade() {
         return assignmentGrade;
