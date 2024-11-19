@@ -5,6 +5,7 @@ import hugbo1.backend.Students.Student;
 import jakarta.persistence.*;
 
 import java.util.Set;
+import java.util.UUID;
 
 @Entity
 @Table( name = "Courses" )
@@ -22,6 +23,10 @@ public class Course {
     @JsonIgnore
     private Set<Student> students;
 
+    public Course() {
+        this.courseId = UUID.randomUUID().toString();
+    }
+
     public Set<Student> getStudents() {
         return students;
     }
@@ -31,12 +36,13 @@ public class Course {
     }
 
     public String getCourseId() {
-        courseId = courseName + 101;
         return courseId;
     }
 
     public void setCourseId(String course_id) {
-        this.courseId = course_id;
+        if (this.courseId == null) { // Set only if it's not already set
+            this.courseId = course_id;
+        }
     }
 
     public String getCourseName() {
