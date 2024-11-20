@@ -16,14 +16,12 @@ const ViewCourseAssignments = () => {
     useEffect(() => {
         const fetchAssignmentsAndSubmissions = async () => {
             try {
-                // Fetch assignments for the course
                 const assignmentResponse = await axios.get(
                     `http://localhost:8080/assignments-by-course/${courseId}`
                 );
                 const assignmentsData = assignmentResponse.data;
                 setAssignments(assignmentsData);
 
-                // Fetch submissions for each assignment
                 const submissionsData = {};
                 for (const assignment of assignmentsData) {
                     const submissionResponse = await axios.get(
@@ -32,11 +30,16 @@ const ViewCourseAssignments = () => {
                             params: { userName },
                         }
                     );
-                    submissionsData[assignment.assignmentId] = submissionResponse.data; // List of grades
+                    submissionsData[assignment.assignmentId] = submissionResponse.data;
                 }
                 setSubmissions(submissionsData);
             } catch (err) {
-                setError(err.message);
+                if (err.response && err.response.status === 404) {
+                    // No assignments found
+                    setAssignments([]);
+                } else {
+                    setError("An unexpected error occurred.");
+                }
             } finally {
                 setLoading(false);
             }
@@ -56,7 +59,7 @@ const ViewCourseAssignments = () => {
     };
 
     if (loading) return <p>Loading...</p>;
-    if (error) return <p>Error: {error}</p>;
+    if (error) return <p>{error}</p>;
 
     return (
         <div>
