@@ -22,4 +22,10 @@ public interface StudentRepository extends JpaRepository<Student, Integer> {
 
     @Query("SELECT s.submissions FROM Student s WHERE s.studentId = :studentId")
     List<AssignmentSubmission> findAssignmentSubmissionByStudentId(@Param("studentId") int studentId);
+
+    @Query("SELECT CASE WHEN COUNT(sc) > 0 THEN TRUE ELSE FALSE END " +
+       "FROM Student s JOIN s.courses sc " +
+       "WHERE s.userName = :userName AND sc.id = :courseId")
+    boolean isStudentEnrolledInCourse(@Param("userName") String userName, @Param("courseId") String courseId);
+
 }
