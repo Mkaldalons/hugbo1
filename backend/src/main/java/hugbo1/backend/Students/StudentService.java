@@ -85,4 +85,26 @@ public class StudentService {
             return 0;
         }
     }
+
+    public boolean removeSelfFromCourse(String userName, String courseId) {
+        Student student = studentRepository.findByUserName(userName);
+        if (student == null) {
+            System.out.println("Student not found: " + userName);
+            return false;
+        }
+    
+        Optional<Course> courseOpt = student.getCourses().stream()
+            .filter(course -> course.getCourseId().equals(courseId))
+            .findFirst();
+    
+        if (!courseOpt.isPresent()) {
+            System.out.println("Course not found for student: " + courseId);
+            return false;
+        }
+    
+        Course course = courseOpt.get();
+        student.getCourses().remove(course);
+        studentRepository.save(student);
+        return true;
+    }
 }

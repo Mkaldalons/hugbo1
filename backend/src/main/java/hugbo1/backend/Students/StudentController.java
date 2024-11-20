@@ -5,7 +5,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
@@ -32,6 +34,23 @@ public class StudentController {
     @GetMapping("/average-grade-student/{userName}")
     public double getAverageGradeForAssignments(@PathVariable String userName){
         return studentService.getAverageGradeForStudent(studentService.getStudentByUserName(userName));
+    }
+
+    @DeleteMapping("/student/{userName}/courses/{courseId}")
+    public ResponseEntity<Map<String, String>> leaveCourse(
+            @PathVariable String userName,
+            @PathVariable String courseId) {
+        
+        Map<String, String> response = new HashMap<>();
+
+        boolean isRemoved = studentService.removeSelfFromCourse(userName, courseId);
+        if (isRemoved) {
+            response.put("message", "Successfully removed from the course.");
+            return ResponseEntity.ok(response);
+        } else {
+            response.put("message", "Failed to remove from the course. Either the student or course was not found.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        }
     }
 
 }
