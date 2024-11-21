@@ -25,6 +25,12 @@ public interface SubmissionRepository extends JpaRepository<AssignmentSubmission
             "GROUP BY s.student")
     List<Double> getMaxGradeOfAssignmentForStudent(@Param("assignmentId") int assignmentId);
 
+
+    @Query("SELECT CASE WHEN COUNT(s) > 0 THEN TRUE ELSE FALSE END " +
+            "FROM AssignmentSubmission s " +
+            "WHERE s.assignmentId = :assignmentId AND s.student = :student")
+    boolean existsByAssignmentIdAndStudentId(@Param("assignmentId") int assignmentId, @Param("student") Student student);
+
     List<AssignmentSubmission> findByAssignmentIdAndStudent(int assignmentId, Student student);
 
     List<AssignmentSubmission> getAssignmentSubmissionByAssignmentId(int assignmentId);
