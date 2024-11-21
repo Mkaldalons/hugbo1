@@ -47,4 +47,20 @@ public class SubmissionService {
         }
         return grades;
     }
+    public void updateSubmission(int assignmentId, Student student, double assignmentGrade) {
+        List<AssignmentSubmission> submissions = submissionRepository.findByAssignmentIdAndStudent(assignmentId, student);
+        if (submissionRepository.existsByAssignmentIdAndStudentId(assignmentId, student)){
+            if(!submissions.isEmpty()){
+                for (AssignmentSubmission submission : submissions) {
+                    if (submission.getAssignmentGrade() <= assignmentGrade) {
+                        submission.setAssignmentGrade(assignmentGrade);
+                    }
+                }
+                submissionRepository.saveAll(submissions);
+            }
+        }
+    }
+    public boolean previousSubmissionExists(int assignmentId, Student student) {
+        return submissionRepository.existsByAssignmentIdAndStudentId(assignmentId, student);
+    }
 }

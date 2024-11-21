@@ -13,7 +13,6 @@ const StudentPage = () => {
                 <h1 className="header-title">Student Dashboard</h1>
                 <div className="header-buttons">
                     <button className="btn" onClick={() => navigate('/studentAssignments')}>Assignments</button>
-                    <button className="btn" onClick={() => navigate('/studentGrades')}>View Grades</button>
                     <button className="btn" onClick={() => navigate(`/my-courses-student/${userName}`)}>My Courses</button>
                 </div>
             </header>

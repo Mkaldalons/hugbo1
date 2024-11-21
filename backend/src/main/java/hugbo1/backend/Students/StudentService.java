@@ -2,22 +2,23 @@ package hugbo1.backend.Students;
 
 import hugbo1.backend.Assignments.*;
 import hugbo1.backend.Courses.Course;
-import jakarta.persistence.Table;
+import hugbo1.backend.Courses.CourseRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class StudentService {
 
     private final StudentRepository studentRepository;
-    private final AssignmentRepository assignmentRepository;
     private final AssignmentService assignmentService;
+    private final CourseRepository courseRepository;
 
-    public StudentService(StudentRepository studentRepository, AssignmentRepository assignmentRepository, AssignmentService assignmentService) {
+    public StudentService(StudentRepository studentRepository, AssignmentService assignmentService, CourseRepository courseRepository) {
         this.studentRepository = studentRepository;
-        this.assignmentRepository = assignmentRepository;
         this.assignmentService = assignmentService;
+        this.courseRepository = courseRepository;
     }
     public List<Student> getAllStudents() {
         return studentRepository.findAll();
@@ -77,6 +78,7 @@ public class StudentService {
         List <AssignmentSubmission> submissions = studentRepository.findAssignmentSubmissionByStudentId(student.getStudentId());
         double averageGrade = 0;
         for (AssignmentSubmission assignmentSubmission : submissions) {
+            System.out.println("Assignment Id: " + assignmentSubmission.getAssignmentId() + "grade: "+assignmentSubmission.getAssignmentGrade());
            averageGrade += assignmentSubmission.getAssignmentGrade();
         }
         if (!submissions.isEmpty()) {
@@ -84,6 +86,25 @@ public class StudentService {
         }else {
             return 0;
         }
+    }
+    public double getAverageFromCourse(Course course, Student student) {
+        List<Assignment> courseAssignments = assignmentService.getAllPublishedAssignmentByCourseId(course.getCourseId());
+        Map<Integer, Assignment> courseAssignmentsMap = courseAssignments.stream()
+                .collect(Collectors.toMap(Assignment::getAssignmentId, assignment -> assignment));
+
+        List<AssignmentSubmission> allSubmissions = studentRepository.findAssignmentSubmissionByStudentId(student.getStudentId());
+
+        List<AssignmentSubmission> submissions = allSubmissions.stream()
+                .filter(submission -> courseAssignmentsMap.containsKey(submission.getAssignmentId()))
+                .collect(Collectors.toList());
+
+        double totalGrade = submissions.stream()
+                .mapToDouble(AssignmentSubmission::getAssignmentGrade)
+                .sum();
+        return submissions.isEmpty() ? 0 : totalGrade / submissions.size();
+    }
+    public List<Course> getAllCoursesForStudent(Student student) {
+        return courseRepository.findCoursesByStudentId(student.getStudentId());
     }
 
     public boolean removeSelfFromCourse(String userName, String courseId) {

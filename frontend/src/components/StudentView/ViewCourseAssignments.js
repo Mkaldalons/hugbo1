@@ -8,6 +8,7 @@ const ViewCourseAssignments = () => {
 
     const [assignments, setAssignments] = useState([]);
     const [submissions, setSubmissions] = useState({});
+    const [averageGrade, setAverageGrade] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
@@ -35,7 +36,6 @@ const ViewCourseAssignments = () => {
                 setSubmissions(submissionsData);
             } catch (err) {
                 if (err.response && err.response.status === 404) {
-                    // No assignments found
                     setAssignments([]);
                 } else {
                     setError("An unexpected error occurred.");
@@ -45,7 +45,23 @@ const ViewCourseAssignments = () => {
             }
         };
 
+        const fetchAverageGrade = async () => {
+            try {
+                const response = await axios.get(
+                    `http://localhost:8080/average-grade-student-course/${courseId}`,
+                    {
+                        params: { userName },
+                    }
+                );
+                setAverageGrade(response.data); // Update average grade
+            } catch (err) {
+                console.error("Failed to fetch average grade:", err);
+                setAverageGrade(null);
+            }
+        };
+
         fetchAssignmentsAndSubmissions();
+        fetchAverageGrade(); // Fetch average grade
     }, [courseId, userName]);
 
     const handleTakeAssignment = (assignmentId) => {
@@ -64,6 +80,11 @@ const ViewCourseAssignments = () => {
     return (
         <div>
             <h1>Assignments for Course {courseId}</h1>
+            {/* Display the average grade */}
+            <p>
+                <strong>Average Grade for Course:</strong>{" "}
+                {averageGrade !== null ? averageGrade.toFixed(2) : "No grades available"}
+            </p>
             {assignments.length > 0 ? (
                 <ul>
                     {assignments.map((assignment) => (
@@ -74,12 +95,11 @@ const ViewCourseAssignments = () => {
                                 <p style={{ color: "red" }}>Cannot submit assignment - due date has passed</p>
                             ) : (
                                 <>
-                                    <p><strong>Submission Attempts:</strong></p>
                                     <ul>
                                         {submissions[assignment.assignmentId]?.length > 0 ? (
                                             submissions[assignment.assignmentId].map((grade, index) => (
                                                 <li key={index}>
-                                                    Attempt {index + 1}: {grade}
+                                                    Grade: {grade}
                                                 </li>
                                             ))
                                         ) : (
@@ -102,3 +122,4 @@ const ViewCourseAssignments = () => {
 };
 
 export default ViewCourseAssignments;
+

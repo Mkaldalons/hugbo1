@@ -59,4 +59,8 @@ public class AssignmentService {
         assignments.removeIf(assignment -> !assignment.isPublished());
         return assignments;
     }
+    public String getAssignmentNameById(int id) {
+        Assignment assignment = assignmentRepository.findByAssignmentId(id);
+        return assignment.getAssignmentName();
+    }
 }

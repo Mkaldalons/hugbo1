@@ -16,6 +16,9 @@ public interface SubmissionRepository extends JpaRepository<AssignmentSubmission
     @Query("SELECT s.assignmentGrade FROM AssignmentSubmission s WHERE s.assignmentId = :assignmentId")
     List<Double> getAllAssignmentGradesById(@Param("assignmentId") int assignmentId);
 
+    @Query("SELECT s.assignmentId FROM AssignmentSubmission s WHERE s.student = :student")
+    List<Integer> getAllAssignmentIdsByStudent(@Param("student") Student student);
+
     @Query("SELECT MAX(s.assignmentGrade) " +
             "FROM AssignmentSubmission s " +
             "WHERE s.assignmentId = :assignmentId " +

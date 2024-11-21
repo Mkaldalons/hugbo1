@@ -8,11 +8,9 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Set;
 
 @Repository
 public interface StudentRepository extends JpaRepository<Student, Integer> {
-
 
     Student findByStudentId(int id);
     Student findByUserName(String userName);
@@ -27,5 +25,6 @@ public interface StudentRepository extends JpaRepository<Student, Integer> {
        "FROM Student s JOIN s.courses sc " +
        "WHERE s.userName = :userName AND sc.id = :courseId")
     boolean isStudentEnrolledInCourse(@Param("userName") String userName, @Param("courseId") String courseId);
+
 
 }

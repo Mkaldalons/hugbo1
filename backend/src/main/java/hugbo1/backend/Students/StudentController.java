@@ -1,21 +1,23 @@
 package hugbo1.backend.Students;
 
 import hugbo1.backend.Assignments.Assignment;
+import hugbo1.backend.Courses.Course;
+import hugbo1.backend.Courses.CourseService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
 public class StudentController {
     private final StudentService studentService;
+    private final CourseService courseService;
 
-    public StudentController(StudentService studentService) {
+    public StudentController(StudentService studentService, CourseService courseService) {
         this.studentService = studentService;
+        this.courseService = courseService;
     }
 
     @GetMapping("/student/{userName}/assignments/{assignmentId}")
@@ -34,6 +36,23 @@ public class StudentController {
     @GetMapping("/average-grade-student/{userName}")
     public double getAverageGradeForAssignments(@PathVariable String userName){
         return studentService.getAverageGradeForStudent(studentService.getStudentByUserName(userName));
+    }
+    @GetMapping("/average-grade-student-course/{courseId}")
+    public double getAverageGradeForStudentCourse(@PathVariable String courseId, @RequestParam String userName){
+        Optional<Course> course = courseService.getCourseById(courseId);
+        Student student = studentService.getStudentByUserName(userName);
+        return course.map(value -> studentService.getAverageFromCourse(value, student)).orElse(0.0);
+    }
+    @GetMapping("filtered-assignments/{userName}")
+    public List<Assignment> getFilteredAssignments(@PathVariable String userName) {
+        System.out.println("Username: "+userName);
+        Student student = studentService.getStudentByUserName(userName);
+        List<Course> courses = studentService.getAllCoursesForStudent(student);
+        List<Assignment> assignments = new ArrayList<>();
+        for (Course course : courses) {
+            assignments.addAll(courseService.getAllAssignments(course.getCourseId()));
+        }
+        return assignments;
     }
 
     @DeleteMapping("/student/{userName}/courses/{courseId}")

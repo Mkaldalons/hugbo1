@@ -33,13 +33,14 @@ public class SubmissionController {
         double value = submissionService.getAverageGradeFromId(assignmentId);
         return Math.round(value * 100.0) / 100.0;
     }
+
     @GetMapping("/grades/{assignmentId}")
     public List<Double> grades(@PathVariable int assignmentId) {
         return submissionService.getAllAssignmentGrades(assignmentId);
     }
+
     @GetMapping("/assignment-submission/{assignmentId}")
     public boolean hasBeenSubmitted(@PathVariable int assignmentId, @RequestParam String userName) {
-        System.out.println(userName+" and assignment id: "+assignmentId);
         Student student = studentService.getStudentByUserName(userName);
         return submissionService.submittedByStudent(assignmentId, student.getStudentId());
     }
@@ -75,12 +76,18 @@ public class SubmissionController {
                         }
                     }
                 }
-                AssignmentSubmission submission = new AssignmentSubmission();
-                submission.setStudent(student);
-                submission.setAssignmentId(submissionRequest.getAssignmentId());
-                submission.setAssignmentGrade((correctCount / questions.size())*10);
-                submissionRepository.save(submission);
-                response.put("grade", submission.getAssignmentGrade());
+                double assignmentGrade = ((correctCount / questions.size()) * 10);
+                if (submissionService.previousSubmissionExists(submissionRequest.getAssignmentId(), student)) {
+                    submissionService.updateSubmission(submissionRequest.getAssignmentId(), student, assignmentGrade);
+                    response.put("grade", assignmentGrade);
+                } else {
+                    AssignmentSubmission submission = new AssignmentSubmission();
+                    submission.setStudent(student);
+                    submission.setAssignmentId(submissionRequest.getAssignmentId());
+                    submission.setAssignmentGrade(assignmentGrade);
+                    submissionRepository.save(submission);
+                    response.put("grade", submission.getAssignmentGrade());
+                }
                 return ResponseEntity.ok(response);
             }
         } catch (Exception e) {

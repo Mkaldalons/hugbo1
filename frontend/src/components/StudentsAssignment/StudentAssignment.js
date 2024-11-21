@@ -5,9 +5,11 @@ import './StudentAssignment.css'; //
 const StudentAssignments = () => {
     const [assignments, setAssignments] = useState([]);
     const [selectedAssignment, setSelectedAssignment] = useState(null);
+    const userName = localStorage.getItem("username")
 
     useEffect(() => {
-        axios.get('http://localhost:8080/assignments')
+        console.log(userName)
+        axios.get(`http://localhost:8080/filtered-assignments/${userName}`)
             .then(response => {
                 setAssignments(response.data);
             })
