@@ -13,7 +13,7 @@ if [ -f "$DB_NAME" ]; then
 fi
 
 echo "Running learningSquare.sql to create schema..."
-if sqlite3 "$DB_NAME" < learningSquare.sql; then
+if sqlite3 "$DB_NAME" < /app/learningSquare.sql; then
     echo "Schema created successfully."
 else
     echo "Failed to create schema. Exiting."
@@ -21,7 +21,7 @@ else
 fi
 
 echo "Running insertData.sql to insert data..."
-if sqlite3 "$DB_NAME" < insertData.sql; then
+if sqlite3 "$DB_NAME" < /app/insertData.sql; then
     echo "Data inserted successfully."
 else
     echo "Failed to insert data. Exiting."
