@@ -167,7 +167,6 @@ public class CourseController {
 
     @GetMapping("/courses/{courseId}")
     public ResponseEntity<Course> getCourseById(@PathVariable String courseId) {
-        System.out.println("Received courseId in /courses/{courseId}: " + courseId); // Print courseId received
         Optional<Course> course = courseService.getCourseById(courseId);
         if (course.isPresent()) {
             return ResponseEntity.ok(course.get());

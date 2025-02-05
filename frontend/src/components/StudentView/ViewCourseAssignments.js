@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
+import course from "../Course/Course";
 
 const ViewCourseAssignments = () => {
     const { courseId } = useParams();
@@ -9,6 +10,7 @@ const ViewCourseAssignments = () => {
     const [assignments, setAssignments] = useState([]);
     const [submissions, setSubmissions] = useState({});
     const [averageGrade, setAverageGrade] = useState(null);
+    const [course, setCourse] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
@@ -74,13 +76,28 @@ const ViewCourseAssignments = () => {
         return currentDate > assignmentDueDate;
     };
 
+    useEffect(() => {
+        const fetchCourse = async () => {
+            try {
+                const response = await axios.get(`http://localhost:8080/courses/${courseId}`);
+                setCourse(response.data); // Set the fetched course data
+                console.log(response.data.courseName);
+                setLoading(false); // Stop loading
+            } catch (err) {
+                console.error("Error fetching course:", err);
+                setLoading(false); // Stop loading even on error
+            }
+        };
+
+        fetchCourse();
+    }, [courseId]); // Runs whenever `courseId` changes
+
     if (loading) return <p>Loading...</p>;
     if (error) return <p>{error}</p>;
 
     return (
         <div>
-            <h1>Assignments for Course {courseId}</h1>
-            {/* Display the average grade */}
+            <h1>Assignments for Course {course.courseName}</h1>
             <p>
                 <strong>Average Grade for Course:</strong>{" "}
                 {averageGrade !== null ? averageGrade.toFixed(2) : "No grades available"}
@@ -122,4 +139,3 @@ const ViewCourseAssignments = () => {
 };
 
 export default ViewCourseAssignments;
-

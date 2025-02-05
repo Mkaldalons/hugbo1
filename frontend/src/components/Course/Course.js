@@ -58,6 +58,7 @@ const Course = () => {
         if (courseName.trim()) {
             const username = localStorage.getItem('username');
             const newCourse = { courseName: courseName, courseDescription: courseDescription, createdBy: username };
+            console.log("Course Name being entered: ", newCourse.courseName);
             if(!username){
                 console.error('No username found.')
                 return;
@@ -66,7 +67,7 @@ const Course = () => {
             try {
                 const response = await axios.post('http://localhost:8080/courses', newCourse);
                 setCourses([...courses, response.data]);
-                setCourseName("");
+                setCourseName(newCourse.courseName);
             } catch (error) {
                 console.error('Error creating course:', error);
             }
