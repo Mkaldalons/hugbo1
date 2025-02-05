@@ -11,16 +11,16 @@ WORKDIR /app
 COPY --from=build /app/target/*.jar app.jar
 
 # Copy the database setup files
-COPY database/setup-db.sh /app/database/setup-db.sh
+COPY database/database_setup.sh /app/database/database_setup.sh
 COPY database/learningSquare.sql /app/database/learningSquare.sql
 COPY database/insertData.sql /app/database/insertData.sql
 
 # Install SQLite3 and make the script executable
 RUN apt-get update && apt-get install -y sqlite3 && \
-    chmod +x /app/database/setup-db.sh
+    chmod +x /app/database/database_setup.sh
 
 # Run the database setup script
-RUN /app/database/setup-db.sh
+RUN /app/database/database_setup.sh
 
 # Expose the application port
 EXPOSE 8080
