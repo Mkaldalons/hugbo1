@@ -4,12 +4,7 @@ package hugbo1.backend.Users;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -155,9 +150,9 @@ public class UserController {
         return ResponseEntity.ok(responseBody);
     }
 
-    @GetMapping("/get-user-info")
-    public ResponseEntity<User> getUserInfo(@RequestParam String username) {
-        User user = userService.getUserByUserName(username);
+    @GetMapping("/users/{userName}")
+    public ResponseEntity<User> getUserInfo(@PathVariable String userName) {
+        User user = userService.getUserByUserName(userName);
         if (user != null) {
             return ResponseEntity.ok(user);
         } else {
