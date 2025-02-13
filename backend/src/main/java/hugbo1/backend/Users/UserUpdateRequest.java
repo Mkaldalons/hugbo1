@@ -1,11 +1,13 @@
 package hugbo1.backend.Users;
 
-public class UserRequest {
-    private String username;
+import org.springframework.web.multipart.MultipartFile;
+
+public class UserUpdateRequest {
+    private String userName;
     private String oldPassword;
     private String newPassword;
     private String recoveryEmail;
-   
+    private MultipartFile profileImage;
 
     public String getOldPassword() {
         return oldPassword;
@@ -23,12 +25,12 @@ public class UserRequest {
         this.newPassword = newPassword;
     }
 
-    public String getUsername() {
-        return username;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getRecoveryEmail() {
@@ -38,4 +40,13 @@ public class UserRequest {
     public void setRecoveryEmail(String recoveryEmail) {
         this.recoveryEmail = recoveryEmail;
     }
+
+    public MultipartFile getProfileImage() {
+        return profileImage;
+    }
+
+    public void setProfileImage(MultipartFile profileImage) {
+        this.profileImage = profileImage;
+    }
+
 }

@@ -12,11 +12,13 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.io.File;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
+@RequestMapping("/users")
 public class UserController {
 
     private final UserService userService;
@@ -28,14 +30,13 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping("/update-password")
-    public ResponseEntity<Map<String, Object>> updatePassword(@RequestBody UserRequest userRequest) {
+    public ResponseEntity<Map<String, Object>> updatePassword(String newPassword, String oldPassword, String userName) {
         Map<String, Object> responseBody = new HashMap<>();
 
-        User user = userService.getUserByUserName(userRequest.getUsername());
+        User user = userService.getUserByUserName(userName);
 
-        if(userRequest.getOldPassword().equals(user.getPassword())){
-            user.setPassword(userRequest.getNewPassword());
+        if(oldPassword.equals(user.getPassword())){
+            user.setPassword(newPassword);
             userService.changePassword(user, user.getPassword());
             responseBody.put("status", "Password changed successfully");
             return ResponseEntity.ok(responseBody);
@@ -57,12 +58,12 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
         }
     }
-    @PostMapping("/update-recovery-email")
-    public ResponseEntity<Map<String, Object>> updateRecoveryEmail(@RequestBody UserRequest userRequest) {
+
+    public ResponseEntity<Map<String, Object>> updateRecoveryEmail(String recoveryEmail, String userName) {
         Map<String, Object> responseBody = new HashMap<>();
 
         try {
-            userService.updateRecoveryEmail(userRequest.getUsername(), userRequest.getRecoveryEmail());
+            userService.updateRecoveryEmail(userName, recoveryEmail);
             responseBody.put("status", "Recovery email updated successfully");
             return ResponseEntity.ok(responseBody);
         } catch (IllegalArgumentException e) {
@@ -74,14 +75,25 @@ public class UserController {
         }
     }
 
-    @PostMapping("/upload-profile-image")
-    public ResponseEntity<Map<String, Object>> uploadProfileImage(
-        @RequestParam("profileImage") MultipartFile file,
-        @RequestParam("username") String username) {
+    @PatchMapping("/{userName}")
+    public ResponseEntity<Map<String, Object>> updateUser(@RequestBody UserUpdateRequest userUpdateRequest, @PathVariable String userName) {
+        if (userUpdateRequest.getProfileImage() != null) {
+            return uploadProfileImage(userUpdateRequest.getProfileImage(), userName);
+        }
+        if (!userUpdateRequest.getNewPassword().isEmpty() && !userUpdateRequest.getOldPassword().isEmpty()) {
+            return updatePassword(userUpdateRequest.getNewPassword(), userUpdateRequest.getOldPassword(), userName);
+        }
+        if(!userUpdateRequest.getRecoveryEmail().isEmpty()) {
+            return updateRecoveryEmail(userUpdateRequest.getRecoveryEmail(), userName);
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+    public ResponseEntity<Map<String, Object>> uploadProfileImage(MultipartFile file, String userName) {
 
         Map<String, Object> responseBody = new HashMap<>();
 
-        User user = userService.getUserByUserName(username);
+        User user = userService.getUserByUserName(userName);
         if (user == null) {
             responseBody.put("status", "User not found");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseBody);
@@ -129,11 +141,11 @@ public class UserController {
         }
     }
 
-    @GetMapping("/get-profile-image")
-    public ResponseEntity<Map<String, Object>> getProfileImage(@RequestParam("username") String username) {
+    @GetMapping("/users/{userName}/profileImage")
+    public ResponseEntity<Map<String, Object>> getProfileImage(@PathVariable String userName) {
         Map<String, Object> responseBody = new HashMap<>();
         
-        User user = userService.getUserByUserName(username);
+        User user = userService.getUserByUserName(userName);
         if (user == null) {
             responseBody.put("status", "User not found");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseBody);
@@ -150,7 +162,7 @@ public class UserController {
         return ResponseEntity.ok(responseBody);
     }
 
-    @GetMapping("/users/{userName}")
+    @GetMapping("{userName}")
     public ResponseEntity<User> getUserInfo(@PathVariable String userName) {
         User user = userService.getUserByUserName(userName);
         if (user != null) {
@@ -158,6 +170,12 @@ public class UserController {
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @GetMapping("")
+    public ResponseEntity<List<User>> getAllUsers() {
+        List<User> allUsers = userService.getAllUsers();
+        return ResponseEntity.ok(allUsers);
     }
 }
 
