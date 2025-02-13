@@ -28,8 +28,6 @@ public class RegisterController {
         if (!signupRequest.getPassword().equals(signupRequest.getConfirmPassword())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Passwords do not match");
         }
-
-        // Create a new user and add to the user store
         User newUser = new User(
                 signupRequest.getUsername(),
                 signupRequest.getName(),
