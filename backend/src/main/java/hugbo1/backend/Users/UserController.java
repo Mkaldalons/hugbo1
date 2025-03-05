@@ -75,7 +75,7 @@ public class UserController {
         }
     }
 
-    @PatchMapping("/{userName}")
+    @PatchMapping("{userName}")
     public ResponseEntity<Map<String, Object>> updateUser(@RequestBody UserUpdateRequest userUpdateRequest, @PathVariable String userName) {
         if (userUpdateRequest.getProfileImage() != null) {
             return uploadProfileImage(userUpdateRequest.getProfileImage(), userName);
@@ -141,7 +141,7 @@ public class UserController {
         }
     }
 
-    @GetMapping("/users/{userName}/profileImage")
+    @GetMapping("{userName}/profileImage")
     public ResponseEntity<Map<String, Object>> getProfileImage(@PathVariable String userName) {
         Map<String, Object> responseBody = new HashMap<>();
         
