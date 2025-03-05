@@ -21,12 +21,14 @@ public class RegisterController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<String> signUp(@RequestBody SignupRequest signupRequest) {
+    public ResponseEntity<User> signUp(@RequestBody SignupRequest signupRequest) {
         if (userService.doesUserExistByEmail(signupRequest.getEmail())) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Email already registered");
+            System.out.println("Email already exists");
+            return ResponseEntity.notFound().build();
         }
         if (!signupRequest.getPassword().equals(signupRequest.getConfirmPassword())) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Passwords do not match");
+            System.out.println("Passwords do not match");
+            return ResponseEntity.notFound().build();
         }
         User newUser = new User(
                 signupRequest.getUsername(),
@@ -42,7 +44,8 @@ public class RegisterController {
             student.setName(newUser.getName());
             studentService.addStudent(student);
         }
-        return ResponseEntity.ok("User registered successfully");
+        System.out.println("New user created");
+        return ResponseEntity.ok(newUser);
     }
 
 }
