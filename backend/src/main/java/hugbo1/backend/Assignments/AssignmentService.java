@@ -54,7 +54,7 @@ public class AssignmentService {
         }
         return true;
     }
-    public List<Assignment> getAllPublishedAssignmentByCourseId(String courseId) {
+    public List<Assignment> getAllPublishedAssignmentByCourseId(Integer courseId) {
         List<Assignment> assignments = assignmentRepository.findAssignmentsByCourseId(courseId);
         assignments.removeIf(assignment -> !assignment.isPublished());
         return assignments;

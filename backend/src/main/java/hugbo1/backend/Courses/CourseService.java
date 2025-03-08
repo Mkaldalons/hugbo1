@@ -39,23 +39,23 @@ public class CourseService {
         return courseRepository.findAll();
     }
 
-    public Optional<Course> getCourseById(String id) {
+    public Optional<Course> getCourseById(Integer id) {
         return courseRepository.findById(id);
     }
 
-    public boolean doesCourseExist(String id) {
+    public boolean doesCourseExist(Integer id) {
         return courseRepository.existsById(id);
     }
 
-    public void deleteCourse(String id) {
+    public void deleteCourse(int id) {
         courseRepository.deleteById(id);
     }
 
-    public List<Student> getAllStudents(String courseId) {
+    public List<Student> getAllStudents(Integer courseId) {
         return courseRepository.findStudentsByCourseId(courseId);
     }
     
-    public List<Map<String, Object>> calculateStudentGrades(String courseId, List<Student> students) {
+    public List<Map<String, Object>> calculateStudentGrades(Integer courseId, List<Student> students) {
         List<Object[]> assignmentsAndSubmissions = assignmentRepository.findAssignmentsAndSubmissionsByCourseId(courseId);
     
         Map<Integer, List<Double>> studentGradesMap = new HashMap<>();
@@ -107,11 +107,11 @@ public class CourseService {
     public List<Course> getAllCoursesByInstructor(String userName) {
         return courseRepository.findByInstructor(userName);
     }
-    public List<Assignment> getAllAssignments(String courseId){
+    public List<Assignment> getAllAssignments(Integer courseId){
         return assignmentRepository.findAssignmentsByCourseId(courseId);
     }
 
-    public boolean removeStudentFromCourse(String courseId, String studentId) {
+    public boolean removeStudentFromCourse(Integer courseId, String studentId) {
         Optional<Course> courseOpt = getCourseById(courseId);
     
         if (courseOpt.isPresent()) {
@@ -136,7 +136,7 @@ public class CourseService {
         return false;
     }
     
-    public List<Student> findStudentsByCriteria(String courseId, String name, String username) {
+    public List<Student> findStudentsByCriteria(Integer courseId, String name, String username) {
         Optional<Course> courseOpt = getCourseById(courseId);
         if (courseOpt.isPresent()) {
             Course course = courseOpt.get();
@@ -155,13 +155,27 @@ public class CourseService {
         return courseRepository.findCoursesByStudentId(studentId);
     }
 
-    public void updateCourseName(String courseId, String newCourseName) {
+    public void updateCourseName(Integer courseId, String newCourseName) {
         Optional<Course> courseOpt = courseRepository.findById(courseId);
         if (courseOpt.isPresent()) {
             Course course = courseOpt.get();
             course.setCourseName(newCourseName);
             courseRepository.save(course);
         } else {
+            throw new IllegalArgumentException("Course with ID " + courseId + " not found");
+        }
+    }
+
+    public void updateCourseDescription(Integer courseId, String newDescription) {
+        Optional<Course> courseOpt = courseRepository.findById(courseId);
+        if (courseOpt.isPresent())
+        {
+            Course course = courseOpt.get();
+            course.setDescription(newDescription);
+            courseRepository.save(course);
+        }
+        else
+        {
             throw new IllegalArgumentException("Course with ID " + courseId + " not found");
         }
     }

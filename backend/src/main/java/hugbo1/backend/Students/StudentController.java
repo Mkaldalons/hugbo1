@@ -38,7 +38,7 @@ public class StudentController {
         return studentService.getAverageGradeForStudent(studentService.getStudentByUserName(userName));
     }
     @GetMapping("/average-grade-student-course/{courseId}")
-    public double getAverageGradeForStudentCourse(@PathVariable String courseId, @RequestParam String userName){
+    public double getAverageGradeForStudentCourse(@PathVariable Integer courseId, @RequestParam String userName){
         Optional<Course> course = courseService.getCourseById(courseId);
         Student student = studentService.getStudentByUserName(userName);
         return course.map(value -> studentService.getAverageFromCourse(value, student)).orElse(0.0);

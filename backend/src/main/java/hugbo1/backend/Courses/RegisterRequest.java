@@ -2,14 +2,14 @@ package hugbo1.backend.Courses;
 
 public class RegisterRequest {
 
-    private String courseId;
+    private Integer courseId;
     private String userName;
 
-    public String getCourseId() {
+    public Integer getCourseId() {
         return courseId;
     }
 
-    public void setCourseId(String courseId) {
+    public void setCourseId(Integer courseId) {
         this.courseId = courseId;
     }
 

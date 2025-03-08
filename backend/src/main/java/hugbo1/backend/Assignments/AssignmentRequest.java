@@ -6,7 +6,7 @@ import java.util.List;
 public class AssignmentRequest {
     private LocalDate dueDate;
     private List<QuestionRequest> questionRequest;
-    private String courseId;
+    private Integer courseId;
     private String assignmentName;
 
     public String getAssignmentName() {
@@ -51,11 +51,11 @@ public class AssignmentRequest {
         this.questionRequest = questionRequests;
     }
 
-    public String getCourseId() {
+    public Integer getCourseId() {
         return courseId;
     }
 
-    public void setCourseId(String courseId) {
+    public void setCourseId(Integer courseId) {
         this.courseId = courseId;
     }
 }
