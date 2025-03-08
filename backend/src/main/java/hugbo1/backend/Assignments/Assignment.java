@@ -15,7 +15,7 @@ public class Assignment {
     private int assignmentId;
     private LocalDate dueDate;
     private String jsonData;
-    private String courseId;
+    private Integer courseId;
     private String assignmentName;
     private Boolean published = Boolean.FALSE;
 
@@ -43,11 +43,11 @@ public class Assignment {
         this.jsonData = jsonData;
     }
 
-    public String getCourseId() {
+    public Integer getCourseId() {
         return courseId;
     }
 
-    public void setCourseId(String courseId) {
+    public void setCourseId(Integer courseId) {
         this.courseId = courseId;
     }
 

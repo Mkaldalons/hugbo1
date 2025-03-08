@@ -5,15 +5,15 @@ import hugbo1.backend.Students.Student;
 import jakarta.persistence.*;
 
 import java.util.Set;
-import java.util.UUID;
 
 @Entity
 @Table( name = "Courses" )
 public class Course {
 
     @Id
-    @Column( name = "course_id", unique = true)
-    private String courseId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column( name = "course_id", unique = true, nullable = false )
+    private Integer courseId;
     private String courseName;
     private String instructor;
     private String description;
@@ -24,7 +24,6 @@ public class Course {
     private Set<Student> students;
 
     public Course() {
-        this.courseId = UUID.randomUUID().toString();
     }
 
     public Set<Student> getStudents() {
@@ -35,14 +34,12 @@ public class Course {
         this.students = students;
     }
 
-    public String getCourseId() {
+    public Integer getCourseId() {
         return courseId;
     }
 
-    public void setCourseId(String course_id) {
-        if (this.courseId == null) { // Set only if it's not already set
+    public void setCourseId(Integer course_id) {
             this.courseId = course_id;
-        }
     }
 
     public String getCourseName() {

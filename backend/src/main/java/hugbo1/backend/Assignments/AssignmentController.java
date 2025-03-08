@@ -67,7 +67,7 @@ public class AssignmentController {
     }
 
     @GetMapping("/assignments/{courseId}")
-    public ResponseEntity<List<Assignment>> getAssignmentsByCourse(@PathVariable String courseId) {
+    public ResponseEntity<List<Assignment>> getAssignmentsByCourse(@PathVariable Integer courseId) {
         if (courseService.doesCourseExist(courseId)) {
             if (!assignmentService.getAllPublishedAssignmentByCourseId(courseId).isEmpty()) {
                 return ResponseEntity.ok(assignmentService.getAllPublishedAssignmentByCourseId(courseId));

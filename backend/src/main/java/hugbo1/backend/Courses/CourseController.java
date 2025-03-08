@@ -19,6 +19,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
+@RequestMapping("/courses")
 public class CourseController {
 
     @Autowired
@@ -34,70 +35,67 @@ public class CourseController {
         this.userService = userService;
     }
 
-    @PostMapping("/courses")
+    @PostMapping("")
     public ResponseEntity<Map<String, Object>> createCourse(@RequestBody CourseRequest courseRequest) {
-        User user = userService.getUserByUserName(courseRequest.getCreatedBy());
-        String instructorName = user.getName();
         Course course = new Course();
         course.setCourseName(courseRequest.getCourseName());
-        course.setDescription(courseRequest.getCourseDescription());
+        course.setDescription(courseRequest.getDescription());
         course.setCourseId(course.getCourseId());
-        course.setInstructor(instructorName);
-        if(courseService.doesCourseExist(course.getCourseId())) {
-            Map<String, Object> responseBody = new HashMap<>();
-            responseBody.put("message", "Course already exists");
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
-        }else {
-            courseService.addCourse(course);
-            Map<String, Object> responseBody = new HashMap<>();
-            responseBody.put("message", "Course created");
-            return ResponseEntity.ok(responseBody);
-        }
+        course.setInstructor(courseRequest.getInstructor());
+
+        courseService.addCourse(course);
+        Map<String, Object> responseBody = new HashMap<>();
+        responseBody.put("message", "Course created");
+        return ResponseEntity.ok(responseBody);
     }
-    @GetMapping("/courses")
+    @GetMapping("")
     public ResponseEntity<List<Course>> getAllCourses() {
         return ResponseEntity.ok(courseService.getAllCourses());
     }
 
-    @GetMapping("/my-courses/{userName}")
+    @GetMapping("/{userName}")
     public List<Course> getMyCourses(@PathVariable String userName) {
         User user = userService.getUserByUserName(userName);
         List<Course> courses = new ArrayList<>();
-        courses.addAll(courseService.getAllCoursesByInstructor(user.getName()));
-        courses.addAll(courseService.getAllCoursesByInstructor(userName));
+        if (user.getisInstructor())
+        {
+            courses.addAll(courseService.getAllCoursesByInstructor(userName));
+        }
+        else
+        {
+            Student student = studentService.getStudentByUserName(userName);
+            courses.addAll(courseService.getAllCoursesByStudentId(student.getStudentId()));
+        }
         return courses;
     }
 
-    @GetMapping("/my-courses-student/{userName}")
-    public List<Course> getMyCoursesStudent(@PathVariable String userName) {
-        Student student = studentService.getStudentByUserName(userName);
-        return courseService.getAllCoursesByStudentId(student.getStudentId());
-    }
-
-    @PostMapping("/students/add")
-    public ResponseEntity<Map<String, Object>> registerStudentInCourse(@RequestBody RegisterRequest registerRequest){
-        Student student = studentService.getStudentByUserName(registerRequest.getUserName());
-        Optional<Course> course = courseService.getCourseById(registerRequest.getCourseId());
+    @PostMapping("/{courseId}/{userName}")
+    public ResponseEntity<Map<String, Object>> registerStudentInCourse(@PathVariable Integer courseId, @PathVariable String userName) {
+        Optional<Course> course = courseService.getCourseById(courseId);
         Map<String, Object> responseBody = new HashMap<>();
-        
-        if (courseService.getAllStudents(registerRequest.getCourseId()).contains(student)) {
-            responseBody.put("message", "Student is already in this course");
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
-        } else {
-            if (course.isPresent()) {
-                courseService.registerStudentToCourse(student, course.get());
-                responseBody.put("message", "Student registered successfully");
-                return ResponseEntity.ok(responseBody);
-            } else {
-                responseBody.put("message", "Course not found");
+
+        Student student = studentService.getStudentByUserName(userName);
+        if (student != null) {
+            if (courseService.getAllStudents(courseId).contains(student)) {
+                responseBody.put("message", "Student is already in this course");
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
+            } else {
+                if (course.isPresent()) {
+                    courseService.registerStudentToCourse(student, course.get());
+                    responseBody.put("message", "Student registered successfully");
+                    return ResponseEntity.ok(responseBody);
+                } else {
+                    responseBody.put("message", "Course not found");
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
+                }
             }
         }
+        responseBody.put("message", "Student not found");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
     }
 
-    @GetMapping("/courses/{courseId}/students")
-    public ResponseEntity<List<Student>> getAllStudentsByCourseId(@PathVariable String courseId) {
-        System.out.println("Received courseId in /courses/{courseId}/students: " + courseId); // Print courseId
+    @GetMapping("/{courseId}/students")
+    public ResponseEntity<List<Student>> getAllStudentsByCourseId(@PathVariable Integer courseId) {
         Optional<Course> course = courseService.getCourseById(courseId);
         if (course.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
@@ -107,9 +105,9 @@ public class CourseController {
         return ResponseEntity.ok(students);
     }
 
-    @GetMapping("/courses/{courseId}/students/grades")
+    @GetMapping("/{courseId}/students/grades")
     public ResponseEntity<List<Map<String, Object>>> getStudentByGradeCriteria(
-    @PathVariable String courseId, @RequestParam Double grade) {
+    @PathVariable Integer courseId, @RequestParam Double grade) {
 
     Optional<Course> course = courseService.getCourseById(courseId);
     if (course.isEmpty()) {
@@ -132,8 +130,8 @@ public class CourseController {
 
 
 
-    @GetMapping("/courses/{courseId}/assignments")
-    public ResponseEntity<List<Assignment>> getAllAssignmentsByCourseId(@PathVariable String courseId){
+    @GetMapping("/{courseId}/assignments")
+    public ResponseEntity<List<Assignment>> getAllAssignmentsByCourseId(@PathVariable Integer courseId){
         Optional<Course> course = courseService.getCourseById(courseId);
         if (course.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
@@ -142,9 +140,9 @@ public class CourseController {
         return ResponseEntity.ok(assignments);
     }
 
-    @DeleteMapping("/courses/{courseId}/students/{studentId}")
+    @DeleteMapping("/{courseId}/students/{studentId}")
     public ResponseEntity<Map<String, Object>> deleteStudentFromCourse(
-            @PathVariable String courseId,
+            @PathVariable Integer courseId,
             @PathVariable String studentId) {
 
         Map<String, Object> response = new HashMap<>();
@@ -154,7 +152,6 @@ public class CourseController {
             response.put("message", "Course not found");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
         }
-
         boolean isRemoved = courseService.removeStudentFromCourse(courseId, studentId);
         if (isRemoved) {
             response.put("message", "Student removed from course");
@@ -166,7 +163,7 @@ public class CourseController {
     }
 
     @GetMapping("/courses/{courseId}")
-    public ResponseEntity<Course> getCourseById(@PathVariable String courseId) {
+    public ResponseEntity<Course> getCourseById(@PathVariable Integer courseId) {
         Optional<Course> course = courseService.getCourseById(courseId);
         if (course.isPresent()) {
             return ResponseEntity.ok(course.get());
@@ -175,25 +172,19 @@ public class CourseController {
         }
     }
 
-    @PutMapping("/courses/{courseId}")
-    public ResponseEntity<Map<String, String>> updateCourseName(@PathVariable String courseId, @RequestBody Map<String, String> updates) {
-        String newCourseName = updates.get("courseName");
-        if (newCourseName == null || newCourseName.isEmpty()) {
-            Map<String, String> response = new HashMap<>();
-            response.put("message", "Invalid course name");
-            return ResponseEntity.badRequest().body(response);
-        }
-        
-        try {
-            courseService.updateCourseName(courseId, newCourseName);
-            Map<String, String> response = new HashMap<>();
+    @PatchMapping("/{courseId}")
+    public ResponseEntity<Map<String, String>> updateCourseDetails(@PathVariable Integer courseId, @RequestBody CourseRequest updates) {
+        Map<String, String> response = new HashMap<>();
+        if (!updates.getCourseName().isEmpty()) {
+            courseService.updateCourseName(courseId, updates.getCourseName());
             response.put("message", "Course name updated successfully");
             return ResponseEntity.ok(response);
-        } catch (IllegalArgumentException e) {
-            Map<String, String> response = new HashMap<>();
-            response.put("message", e.getMessage());
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
         }
+        if(!updates.getDescription().isEmpty()) {
+            courseService.updateCourseDescription(courseId, updates.getDescription());
+            response.put("message", "Course description updated successfully");
+            return ResponseEntity.ok(response);
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
-
 }

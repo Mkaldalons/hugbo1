@@ -9,13 +9,13 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface CourseRepository extends JpaRepository<Course, String> {
+public interface CourseRepository extends JpaRepository<Course, Integer> {
 
     Course findByCourseName(String courseName);
-    Course findByCourseId(String courseId);
+    Course findByCourseId(Integer courseId);
 
     @Query("SELECT c.students FROM Course c WHERE c.courseId = :courseId")
-    List<Student> findStudentsByCourseId(@Param("courseId") String courseId);
+    List<Student> findStudentsByCourseId(@Param("courseId") Integer courseId);
 
     @Query("SELECT s.courses FROM Student s WHERE s.studentId =:studentId")
     List<Course> findCoursesByStudentId(@Param("studentId") int studentId);

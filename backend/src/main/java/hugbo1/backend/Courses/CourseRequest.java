@@ -2,25 +2,24 @@ package hugbo1.backend.Courses;
 
 public class CourseRequest {
     private String courseName;
-    private String courseDescription;
+    private String description;
+    private String instructor;
 
-    public String getCourseDescription() {
-        return courseDescription;
+    public String getDescription() {
+        return description;
     }
 
-    public void setCourseDescription(String courseDescription) {
-        this.courseDescription = courseDescription;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public String getCreatedBy() {
-        return createdBy;
+    public String getInstructor() {
+        return instructor;
     }
 
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
+    public void setInstructor(String instructor) {
+        this.instructor = instructor;
     }
-
-    private String createdBy;
 
     public String getCourseName() {
         return courseName;

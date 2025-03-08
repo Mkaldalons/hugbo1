@@ -15,7 +15,7 @@ public interface AssignmentRepository extends JpaRepository<Assignment, String> 
     void deleteByAssignmentId(int id);
 
     @Query("SELECT a FROM Assignment a WHERE a.courseId = :courseId")
-    List<Assignment> findAssignmentsByCourseId(@Param("courseId") String courseId);
+    List<Assignment> findAssignmentsByCourseId(@Param("courseId") Integer courseId);
 
     @Query("""
     SELECT a.assignmentId, a.dueDate, sub.student.id, sub.assignmentGrade
@@ -23,6 +23,6 @@ public interface AssignmentRepository extends JpaRepository<Assignment, String> 
     LEFT JOIN AssignmentSubmission sub ON a.assignmentId = sub.assignmentId
     WHERE a.courseId = :courseId
 """)
-List<Object[]> findAssignmentsAndSubmissionsByCourseId(@Param("courseId") String courseId);
+List<Object[]> findAssignmentsAndSubmissionsByCourseId(@Param("courseId") Integer courseId);
 
 }
