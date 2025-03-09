@@ -42,10 +42,6 @@ public class AssignmentRequest {
         this.dueDate = dueDate;
     }
 
-    public List<QuestionRequest> getQuestionRequests() {
-        return questionRequest;
-    }
-
     public void setQuestionRequests(List<QuestionRequest> questionRequests) {
         this.questionRequest = questionRequests;
     }
