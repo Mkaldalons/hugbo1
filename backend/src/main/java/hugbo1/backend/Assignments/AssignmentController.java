@@ -1,5 +1,6 @@
 package hugbo1.backend.Assignments;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import hugbo1.backend.Courses.CourseService;
 import org.springframework.http.ResponseEntity;
@@ -36,7 +37,7 @@ public class AssignmentController {
         ObjectMapper objectMapper = new ObjectMapper();
         String jsonQuestions;
         try {
-            jsonQuestions = objectMapper.writeValueAsString(assignmentRequest.getQuestionRequests());
+            jsonQuestions = objectMapper.writeValueAsString(assignmentRequest.getQuestionRequest());
         } catch (Exception e) {
             response.put("message", "Couldn't serialize to JSON");
             return ResponseEntity.status(500).body(response);
@@ -58,9 +59,23 @@ public class AssignmentController {
     }
 
     @GetMapping("/{assignmentId}")
-    public ResponseEntity<Assignment> getAssignmentById(@PathVariable int assignmentId) {
+    public ResponseEntity<AssignmentRequest> getAssignmentById(@PathVariable int assignmentId) {
         if (assignmentService.doesAssignmentExist(assignmentId)) {
-            return ResponseEntity.ok(assignmentService.getAssignmentById(assignmentId));
+            Assignment assignment = assignmentService.getAssignmentById(assignmentId);
+            AssignmentRequest assignmentRequest = new AssignmentRequest();
+            assignmentRequest.setDueDate(assignment.getDueDate());
+
+            ObjectMapper objectMapper = new ObjectMapper();
+            try {
+                List<QuestionRequest> questionRequests = objectMapper.readValue(assignment.getJsonData(), new TypeReference<List<QuestionRequest>>() {});
+                assignmentRequest.setQuestionRequest(questionRequests);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+            assignmentRequest.setAssignmentName(assignment.getAssignmentName());
+            assignmentRequest.setCourseId(assignment.getCourseId());
+            assignmentRequest.setPublished(assignment.isPublished());
+            return ResponseEntity.ok(assignmentRequest);
         }else {
             return ResponseEntity.status(404).body(null);
         }
