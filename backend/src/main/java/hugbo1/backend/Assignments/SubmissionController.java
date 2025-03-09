@@ -58,7 +58,7 @@ public class SubmissionController {
             Assignment assignment = assignmentService.getAssignmentById(submissionRequest.getAssignmentId());
             Student student = studentService.getStudentByUserName(submissionRequest.getUserName());
 
-            String jsonData = assignment.getJsonData();
+            String jsonData = assignment.getQuestionRequest();
             ObjectMapper objectMapper = new ObjectMapper();
             List<QuestionRequest> questions = objectMapper.readValue(jsonData, new TypeReference<>() {
             });
