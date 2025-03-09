@@ -2,7 +2,6 @@ package hugbo1.backend.Assignments;
 
 import jakarta.persistence.*;
 
-import java.util.Date;
 import java.time.LocalDate;
 
 @Entity
@@ -14,7 +13,7 @@ public class Assignment {
     @Column(name = "assignment_id", unique = true, nullable = false)
     private int assignmentId;
     private LocalDate dueDate;
-    private String jsonData;
+    private String questionRequest;
     private Integer courseId;
     private String assignmentName;
     private Boolean published = Boolean.FALSE;
@@ -35,12 +34,12 @@ public class Assignment {
         this.dueDate = date;
     }
 
-    public String getJsonData() {
-        return jsonData;
+    public String getQuestionRequest() {
+        return questionRequest;
     }
 
-    public void setJsonData(String jsonData) {
-        this.jsonData = jsonData;
+    public void setQuestionRequest(String jsonData) {
+        this.questionRequest = jsonData;
     }
 
     public Integer getCourseId() {

@@ -45,9 +45,9 @@ public class AssignmentController {
         assignment.setCourseId(assignmentRequest.getCourseId());
         assignment.setAssignmentName(assignmentRequest.getAssignmentName());
         assignment.setDueDate(assignmentRequest.getDueDate());
-        assignment.setJsonData(jsonQuestions);
+        assignment.setQuestionRequest(jsonQuestions);
         assignmentService.createAssignment(assignment);
-        response.put("message", "Assignment created");
+        response.put("AssignmentId", assignment.getAssignmentId());
         return ResponseEntity.ok(response);
     }
 
@@ -92,7 +92,7 @@ public class AssignmentController {
         if(assignmentRequest.getCourseId() != null) {
             assignment.setCourseId(assignmentRequest.getCourseId());
         }
-        if(assignment.getJsonData().isEmpty()) {
+        if(assignment.getQuestionRequest().isEmpty()) {
             ObjectMapper objectMapper = new ObjectMapper();
             String jsonQuestions;
             try {
@@ -101,7 +101,7 @@ public class AssignmentController {
                 response.put("message", "Couldn't serialize to JSON");
                 return ResponseEntity.status(500).body(response);
             }
-            assignment.setJsonData(jsonQuestions);
+            assignment.setQuestionRequest(jsonQuestions);
         }
         if(assignmentRequest.getPublished() != null) {
             if (assignmentRequest.getPublished()) {
