@@ -49,18 +49,15 @@ public class AssignmentService {
         LocalDate dueDate = assignment.getDueDate();
         LocalDate oneWeekFromNow = dateToday.plusWeeks(1);
 
-        if (dueDate.isBefore(oneWeekFromNow) || dueDate.isEqual(oneWeekFromNow)) {
-            return false;
-        }
-        return true;
+        return !dueDate.isBefore(oneWeekFromNow) && !dueDate.isEqual(oneWeekFromNow);
     }
     public List<Assignment> getAllPublishedAssignmentByCourseId(Integer courseId) {
         List<Assignment> assignments = assignmentRepository.findAssignmentsByCourseId(courseId);
         assignments.removeIf(assignment -> !assignment.isPublished());
         return assignments;
     }
-    public String getAssignmentNameById(int id) {
-        Assignment assignment = assignmentRepository.findByAssignmentId(id);
-        return assignment.getAssignmentName();
+
+    public List<Assignment> getAllAssignmentsByCourseId(Integer courseId) {
+        return assignmentRepository.findAssignmentsByCourseId(courseId);
     }
 }

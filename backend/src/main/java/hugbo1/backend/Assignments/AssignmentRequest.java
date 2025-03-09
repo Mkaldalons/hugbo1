@@ -8,6 +8,15 @@ public class AssignmentRequest {
     private List<QuestionRequest> questionRequest;
     private Integer courseId;
     private String assignmentName;
+    private Boolean published;
+
+    public Boolean getPublished() {
+        return published;
+    }
+
+    public void setPublished(Boolean published) {
+        this.published = published;
+    }
 
     public String getAssignmentName() {
         return assignmentName;
@@ -17,14 +26,6 @@ public class AssignmentRequest {
         this.assignmentName = assignmentName;
     }
 
-    public int getAssignmentId() {
-        return assignmentId;
-    }
-
-    public void setAssignmentId(int assignmentId) {
-        this.assignmentId = assignmentId;
-    }
-
     public List<QuestionRequest> getQuestionRequest() {
         return questionRequest;
     }
@@ -32,8 +33,6 @@ public class AssignmentRequest {
     public void setQuestionRequest(List<QuestionRequest> questionRequest) {
         this.questionRequest = questionRequest;
     }
-
-    private int assignmentId;
 
     public LocalDate getDueDate() {
         return dueDate;
