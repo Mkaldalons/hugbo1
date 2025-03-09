@@ -25,7 +25,7 @@ public class AssignmentController {
     }
 
     @PostMapping("")
-    public ResponseEntity<Map<String, Object>> createAssignment(@RequestBody AssignmentRequest assignmentRequest) {
+    public ResponseEntity<Object> createAssignment(@RequestBody AssignmentRequest assignmentRequest) {
         Map<String, Object> response = new HashMap<>();
 
         if (!courseService.doesCourseExist(assignmentRequest.getCourseId())) {
@@ -47,8 +47,7 @@ public class AssignmentController {
         assignment.setDueDate(assignmentRequest.getDueDate());
         assignment.setJsonData(jsonQuestions);
         assignmentService.createAssignment(assignment);
-        response.put("message", "Assignment created");
-        return ResponseEntity.ok(response);
+        return ResponseEntity.status(200).body(assignment);
     }
 
     @GetMapping("")
