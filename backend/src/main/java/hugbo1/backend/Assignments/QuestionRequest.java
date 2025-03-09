@@ -4,7 +4,7 @@ import java.util.List;
 
 public class QuestionRequest {
     private String question;
-    private List<String> options;  // options is a List of strings, not a String
+    private List<String> options;
     private String correctAnswer;
 
     // Getters and setters
@@ -17,7 +17,7 @@ public class QuestionRequest {
     }
 
     public List<String> getOptions() {
-        return options;  // This is a list, not a string
+        return options;
     }
 
     public void setOptions(List<String> options) {

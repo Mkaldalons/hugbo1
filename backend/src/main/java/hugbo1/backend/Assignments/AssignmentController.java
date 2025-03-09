@@ -5,6 +5,7 @@ import hugbo1.backend.Courses.CourseService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +13,7 @@ import java.util.Map;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
+@RequestMapping("/assignments")
 public class AssignmentController {
 
     private final AssignmentService assignmentService;
@@ -22,13 +24,11 @@ public class AssignmentController {
         this.courseService = courseService;
     }
 
-    @PostMapping("/create")
+    @PostMapping("")
     public ResponseEntity<Map<String, Object>> createAssignment(@RequestBody AssignmentRequest assignmentRequest) {
         Map<String, Object> response = new HashMap<>();
-        System.out.println("Assignment name is passed in as: "+assignmentRequest.getAssignmentName());
 
         if (!courseService.doesCourseExist(assignmentRequest.getCourseId())) {
-            System.out.println("Course not found");
             response.put("message", "Course not found");
             return ResponseEntity.status(400).body(response);
         }
@@ -47,17 +47,17 @@ public class AssignmentController {
         assignment.setDueDate(assignmentRequest.getDueDate());
         assignment.setJsonData(jsonQuestions);
         assignmentService.createAssignment(assignment);
-        System.out.println("Assignment being created");
         response.put("message", "Assignment created");
         return ResponseEntity.ok(response);
     }
-    @GetMapping("/assignments")
+
+    @GetMapping("")
     public ResponseEntity<List<Assignment>> getAllAssignments() {
         List<Assignment> assignments = assignmentService.getAllAssignments();
         return ResponseEntity.ok(assignments);
     }
 
-    @GetMapping("/assignment/{assignmentId}")
+    @GetMapping("/{assignmentId}")
     public ResponseEntity<Assignment> getAssignmentById(@PathVariable int assignmentId) {
         if (assignmentService.doesAssignmentExist(assignmentId)) {
             return ResponseEntity.ok(assignmentService.getAssignmentById(assignmentId));
@@ -66,28 +66,33 @@ public class AssignmentController {
         }
     }
 
-    @GetMapping("/assignments/{courseId}")
-    public ResponseEntity<List<Assignment>> getAssignmentsByCourse(@PathVariable Integer courseId) {
-        if (courseService.doesCourseExist(courseId)) {
-            if (!assignmentService.getAllPublishedAssignmentByCourseId(courseId).isEmpty()) {
-                return ResponseEntity.ok(assignmentService.getAllPublishedAssignmentByCourseId(courseId));
-            }
-            System.out.println("There are no published assignments for this course yet");
-            return ResponseEntity.status(404).body(null);
+    @GetMapping("courses/{courseId}")
+    public ResponseEntity<Map<String, List<Assignment>>> getAssignmentsByCourse(@PathVariable Integer courseId) {
+        List<Assignment> assignments = new ArrayList<>();
+        HashMap<String, List<Assignment>> response = new HashMap<>();
+        if(courseService.doesCourseExist(courseId)) {
+            assignments = assignmentService.getAllAssignmentsByCourseId(courseId);
+            response.put("", assignments);
+            return ResponseEntity.ok(response);
         }
-        System.out.println("Course does not exist");
-        return ResponseEntity.status(404).body(null);
+        response.put("Course with id: "+courseId+" does not exist.", assignments);
+        return ResponseEntity.status(404).body(response);
     }
 
-    @PostMapping("/edit")
-    public ResponseEntity<Map<String, Object>> editAssignment(@RequestBody AssignmentRequest assignmentRequest) {
+    @PatchMapping("{assignmentId}")
+    public ResponseEntity<Map<String, Object>> editAssignment(@RequestBody AssignmentRequest assignmentRequest, @PathVariable int assignmentId) {
         Map<String, Object> response = new HashMap<>();
-        if (!courseService.doesCourseExist(assignmentRequest.getCourseId())) {
-            response.put("message", "Course not found");
-            return ResponseEntity.status(400).body(response);
-        }else {
-            Assignment assignment = assignmentService.getAssignmentById(assignmentRequest.getAssignmentId());
+        Assignment assignment = assignmentService.getAssignmentById(assignmentId);
+        if(assignmentRequest.getDueDate() != null) {
             assignment.setDueDate(assignmentRequest.getDueDate());
+        }
+        if(assignmentRequest.getAssignmentName() != null) {
+            assignment.setAssignmentName(assignmentRequest.getAssignmentName());
+        }
+        if(assignmentRequest.getCourseId() != null) {
+            assignment.setCourseId(assignmentRequest.getCourseId());
+        }
+        if(assignment.getJsonData().isEmpty()) {
             ObjectMapper objectMapper = new ObjectMapper();
             String jsonQuestions;
             try {
@@ -97,17 +102,31 @@ public class AssignmentController {
                 return ResponseEntity.status(500).body(response);
             }
             assignment.setJsonData(jsonQuestions);
-            assignment.setAssignmentName(assignmentRequest.getAssignmentName());
-            assignmentService.updateAssignment(assignment);
-            response.put("message", "Assignment updated");
-            return ResponseEntity.ok(response);
         }
+        if(assignmentRequest.getPublished() != null) {
+            if (assignmentRequest.getPublished()) {
+                assignment.setPublished(assignmentRequest.getPublished());
+            }
+            else
+            {
+                if(assignmentService.canBeUnpublished(assignmentId))
+                {
+                    assignment.setPublished(assignmentRequest.getPublished());
+                }
+                else {
+                    response.put("message", "Assignment cannot be unpublished because students are already working on it.");
+                }
+            }
+            assignment.setPublished(assignmentRequest.getPublished());
+        }
+        assignmentService.updateAssignment(assignment);
+        return ResponseEntity.ok(response);
     }
 
-    @PostMapping("/delete-assignment")
-    public ResponseEntity<Map<String, Object>> deleteAssignment(@RequestBody AssignmentRequest assignmentRequest) {
+    @DeleteMapping("{assignmentId}")
+    public ResponseEntity<Map<String, Object>> deleteAssignment(@PathVariable int assignmentId) {
         Map<String, Object> response = new HashMap<>();
-        Assignment assignment = assignmentService.getAssignmentById(assignmentRequest.getAssignmentId());
+        Assignment assignment = assignmentService.getAssignmentById(assignmentId);
         if (assignmentService.doesAssignmentExist(assignment.getAssignmentId())) {
             assignmentService.deleteAssignmentById(assignment.getAssignmentId());
             response.put("message", "Assignment deleted");
@@ -116,43 +135,5 @@ public class AssignmentController {
             response.put("message", "Assignment not found");
             return ResponseEntity.status(404).body(response);
         }
-    }
-
-    @PostMapping("/publish-assignment/{assignmentId}")
-    public ResponseEntity<Map<String, Object>> publishAssignment(@PathVariable int assignmentId) {
-        Map<String, Object> response = new HashMap<>();
-        Assignment assignment = assignmentService.getAssignmentById(assignmentId);
-        if (assignmentService.doesAssignmentExist(assignment.getAssignmentId())) {
-            assignment.setPublished(true);
-            assignmentService.updateAssignment(assignment);
-            response.put("message", "Assignment published");
-            return ResponseEntity.ok(response);
-        }
-        response.put("message", "Assignment not found");
-        return ResponseEntity.status(404).body(response);
-    }
-
-    @PostMapping("/unpublish-assignment/{assignmentId}")
-    public ResponseEntity<Map<String, Object>> unpublishAssignment(@PathVariable int assignmentId) {
-        Map<String, Object> response = new HashMap<>();
-
-        // Retrieve the assignment
-        Assignment assignment = assignmentService.getAssignmentById(assignmentId);
-        if (assignment == null) {
-            response.put("message", "Assignment not found");
-            return ResponseEntity.status(404).body(response);
-        }
-
-        // Check if assignment can be unpublished
-        if (!assignmentService.canBeUnpublished(assignment.getAssignmentId())) {
-            response.put("message", "Assignment cannot be unpublished because students are already working on it.");
-            return ResponseEntity.ok(response);
-        }
-
-        // Proceed with unpublishing the assignment
-        assignment.setPublished(false);
-        assignmentService.updateAssignment(assignment);
-        response.put("message", "Assignment successfully unpublished");
-        return ResponseEntity.ok(response);
     }
 }
