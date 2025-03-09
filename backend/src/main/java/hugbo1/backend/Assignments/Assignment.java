@@ -13,7 +13,7 @@ public class Assignment {
     @Column(name = "assignment_id", unique = true, nullable = false)
     private int assignmentId;
     private LocalDate dueDate;
-    private String questionRequest;
+    private String jsonData;
     private Integer courseId;
     private String assignmentName;
     private Boolean published = Boolean.FALSE;
@@ -34,12 +34,12 @@ public class Assignment {
         this.dueDate = date;
     }
 
-    public String getQuestionRequest() {
-        return questionRequest;
+    public String getJsonData() {
+        return jsonData;
     }
 
-    public void setQuestionRequest(String jsonData) {
-        this.questionRequest = jsonData;
+    public void setJsonData(String jsonData) {
+        this.jsonData = jsonData;
     }
 
     public Integer getCourseId() {
