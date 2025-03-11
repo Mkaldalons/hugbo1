@@ -82,16 +82,31 @@ public class AssignmentController {
     }
 
     @GetMapping("courses/{courseId}")
-    public ResponseEntity<Map<String, List<Assignment>>> getAssignmentsByCourse(@PathVariable Integer courseId) {
+    public ResponseEntity<List<AssignmentResponse>> getAssignmentsByCourse(@PathVariable Integer courseId) {
         List<Assignment> assignments = new ArrayList<>();
-        HashMap<String, List<Assignment>> response = new HashMap<>();
+        HashMap<String, List<AssignmentResponse>> response = new HashMap<>();
+        List<AssignmentResponse> assignmentResponses = new ArrayList<>();
         if(courseService.doesCourseExist(courseId)) {
             assignments = assignmentService.getAllAssignmentsByCourseId(courseId);
-            response.put("", assignments);
-            return ResponseEntity.ok(response);
+            for(Assignment assignment : assignments) {
+                AssignmentResponse assignmentResponse = new AssignmentResponse();
+                assignmentResponse.setAssignmentId(assignment.getAssignmentId());
+                assignmentResponse.setDueDate(assignment.getDueDate());
+                assignmentResponse.setAssignmentName(assignment.getAssignmentName());
+                assignmentResponse.setCourseId(assignment.getCourseId());
+                assignmentResponse.setPublished(assignment.isPublished());
+                ObjectMapper objectMapper = new ObjectMapper();
+                try {
+                    List<QuestionRequest> questionRequests = objectMapper.readValue(assignment.getJsonData(), new TypeReference<List<QuestionRequest>>() {});
+                    assignmentResponse.setQuestionRequest(questionRequests);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+                assignmentResponses.add(assignmentResponse);
+            }
+            return ResponseEntity.ok(assignmentResponses);
         }
-        response.put("Course with id: "+courseId+" does not exist.", assignments);
-        return ResponseEntity.status(404).body(response);
+        return ResponseEntity.status(404).body(assignmentResponses);
     }
 
     @PatchMapping("{assignmentId}")
