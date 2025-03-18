@@ -122,7 +122,7 @@ public class AssignmentController {
         if(assignmentRequest.getCourseId() != null) {
             assignment.setCourseId(assignmentRequest.getCourseId());
         }
-        if(assignment.getJsonData().isEmpty()) {
+        if(!assignment.getJsonData().isEmpty()) {
             ObjectMapper objectMapper = new ObjectMapper();
             String jsonQuestions;
             try {
