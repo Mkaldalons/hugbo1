@@ -38,7 +38,7 @@ public class StudentController {
     public double getAverageGradeForAssignments(@PathVariable String userName){
         return studentService.getAverageGradeForStudent(studentService.getStudentByUserName(userName));
     }
-    @GetMapping("/average/{courseId}")
+    @GetMapping("/average/course/{courseId}")
     public double getAverageGradeForStudentCourse(@PathVariable Integer courseId, @RequestParam String userName){
         Optional<Course> course = courseService.getCourseById(courseId);
         Student student = studentService.getStudentByUserName(userName);
