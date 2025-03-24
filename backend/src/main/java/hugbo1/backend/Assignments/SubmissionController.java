@@ -14,6 +14,7 @@ import java.util.Map;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
+@RequestMapping("/submissions")
 public class SubmissionController {
 
     private final SubmissionService submissionService;
@@ -28,7 +29,7 @@ public class SubmissionController {
         this.submissionRepository = submissionRepository;
     }
 
-    @GetMapping("/average-grade/{assignmentId}")
+    @GetMapping("/average/{assignmentId}")
     public double averageGrade(@PathVariable int assignmentId) {
         double value = submissionService.getAverageGradeFromId(assignmentId);
         return Math.round(value * 100.0) / 100.0;
@@ -39,19 +40,19 @@ public class SubmissionController {
         return submissionService.getAllAssignmentGrades(assignmentId);
     }
 
-    @GetMapping("/assignment-submission/{assignmentId}")
+    @GetMapping("/status/{assignmentId}")
     public boolean hasBeenSubmitted(@PathVariable int assignmentId, @RequestParam String userName) {
         Student student = studentService.getStudentByUserName(userName);
         return submissionService.submittedByStudent(assignmentId, student.getStudentId());
-    }
+  }
 
-    @GetMapping("/assignment-submissions/{assignmentId}")
+    @GetMapping("/grades/{assignmentId}")
     public List<Double> submissions(@PathVariable int assignmentId, @RequestParam String userName) {
         Student student = studentService.getStudentByUserName(userName);
         return submissionService.assignmentSubmissionByStudent(assignmentId, student);
     }
 
-    @PostMapping("/submit-assignment")
+    @PostMapping("")
     public ResponseEntity<Map<String, Object>> submitAssignment(@RequestBody SubmissionRequest submissionRequest) {
         Map<String, Object> response = new HashMap<>();
         try {
