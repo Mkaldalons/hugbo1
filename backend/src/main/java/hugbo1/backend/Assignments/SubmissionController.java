@@ -46,7 +46,7 @@ public class SubmissionController {
         return submissionService.submittedByStudent(assignmentId, student.getStudentId());
   }
 
-    @GetMapping("/grades/{assignmentId}")
+    @GetMapping("/grades/student/{assignmentId}")
     public List<Double> submissions(@PathVariable int assignmentId, @RequestParam String userName) {
         Student student = studentService.getStudentByUserName(userName);
         return submissionService.assignmentSubmissionByStudent(assignmentId, student);
