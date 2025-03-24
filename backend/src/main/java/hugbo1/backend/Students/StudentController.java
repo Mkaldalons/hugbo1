@@ -11,6 +11,7 @@ import java.util.*;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
+@RequestMapping("/students")
 public class StudentController {
     private final StudentService studentService;
     private final CourseService courseService;
@@ -29,15 +30,15 @@ public class StudentController {
     public List<Assignment> getStudentsSubmittedAssignments(@PathVariable String userName) {
         return studentService.getAllSubmissionsByStudent(studentService.getStudentByUserName(userName));
     }
-    @GetMapping("/grade/{assignmentId}/student/{userName}")
+    @GetMapping("/grade/{userName}/{assignmentId}")
     public double getGradeForAssignment(@PathVariable int assignmentId, @PathVariable String userName){
         return studentService.getGradeForAssignment(studentService.getStudentByUserName(userName), assignmentId);
     }
-    @GetMapping("/average-grade-student/{userName}")
+    @GetMapping("/average/{userName}")
     public double getAverageGradeForAssignments(@PathVariable String userName){
         return studentService.getAverageGradeForStudent(studentService.getStudentByUserName(userName));
     }
-    @GetMapping("/average-grade-student-course/{courseId}")
+    @GetMapping("/average/{courseId}")
     public double getAverageGradeForStudentCourse(@PathVariable Integer courseId, @RequestParam String userName){
         Optional<Course> course = courseService.getCourseById(courseId);
         Student student = studentService.getStudentByUserName(userName);
@@ -45,7 +46,6 @@ public class StudentController {
     }
     @GetMapping("filtered-assignments/{userName}")
     public List<Assignment> getFilteredAssignments(@PathVariable String userName) {
-        System.out.println("Username: "+userName);
         Student student = studentService.getStudentByUserName(userName);
         List<Course> courses = studentService.getAllCoursesForStudent(student);
         List<Assignment> assignments = new ArrayList<>();
