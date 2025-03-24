@@ -72,7 +72,7 @@ public class StudentService {
                 return assignmentSubmission.getAssignmentGrade();
             }
         }
-        return 0;
+        return -1;
     }
     public double getAverageGradeForStudent(Student student) {
         List <AssignmentSubmission> submissions = studentRepository.findAssignmentSubmissionByStudentId(student.getStudentId());
