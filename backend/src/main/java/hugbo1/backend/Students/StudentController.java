@@ -21,7 +21,7 @@ public class StudentController {
         this.courseService = courseService;
     }
 
-    @GetMapping("/student/{userName}/assignments/{assignmentId}")
+    @GetMapping("/{userName}/assignments/{assignmentId}")
     public boolean hasStudentSubmitted(@PathVariable String userName, @PathVariable int assignmentId) {
         Student student = studentService.getStudentByUserName(userName);
         return studentService.hasStudentSubmitted(student, assignmentId);
@@ -42,7 +42,7 @@ public class StudentController {
     public double getAverageGradeForStudentCourse(@PathVariable Integer courseId, @RequestParam String userName){
         Optional<Course> course = courseService.getCourseById(courseId);
         Student student = studentService.getStudentByUserName(userName);
-        return course.map(value -> studentService.getAverageFromCourse(value, student)).orElse(0.0);
+        return course.map(value -> studentService.getAverageFromCourse(value, student)).orElse(-1.0);
     }
     @GetMapping("filtered-assignments/{userName}")
     public List<Assignment> getFilteredAssignments(@PathVariable String userName) {

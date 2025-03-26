@@ -27,7 +27,7 @@ public class SubmissionService {
             }
             return averageGrade / assignmentGrades.size();
         }else {
-            return 0; //Testing purposes
+            return -1.0;
         }
 
     }

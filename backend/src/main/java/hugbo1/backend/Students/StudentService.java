@@ -84,7 +84,7 @@ public class StudentService {
         if (!submissions.isEmpty()) {
             return averageGrade/submissions.size();
         }else {
-            return 0;
+            return -1;
         }
     }
     public double getAverageFromCourse(Course course, Student student) {
@@ -101,7 +101,7 @@ public class StudentService {
         double totalGrade = submissions.stream()
                 .mapToDouble(AssignmentSubmission::getAssignmentGrade)
                 .sum();
-        return submissions.isEmpty() ? 0 : totalGrade / submissions.size();
+        return submissions.isEmpty() ? -1 : totalGrade / submissions.size();
     }
     public List<Course> getAllCoursesForStudent(Student student) {
         return courseRepository.findCoursesByStudentId(student.getStudentId());
