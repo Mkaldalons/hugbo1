@@ -80,11 +80,16 @@ public class UserController {
         if (userUpdateRequest.getProfileImage() != null) {
             return uploadProfileImage(userUpdateRequest.getProfileImage(), userName);
         }
-        if (!userUpdateRequest.getNewPassword().isEmpty() && !userUpdateRequest.getOldPassword().isEmpty()) {
-            return updatePassword(userUpdateRequest.getNewPassword(), userUpdateRequest.getOldPassword(), userName);
+        if (  userUpdateRequest.getNewPassword() != null && userUpdateRequest.getOldPassword() != null ) {
+            if(!userUpdateRequest.getNewPassword().isEmpty() && !userUpdateRequest.getOldPassword().isEmpty()) {
+                return updatePassword(userUpdateRequest.getNewPassword(), userUpdateRequest.getOldPassword(), userName);
+            }
         }
-        if(!userUpdateRequest.getRecoveryEmail().isEmpty()) {
-            return updateRecoveryEmail(userUpdateRequest.getRecoveryEmail(), userName);
+        if( userUpdateRequest.getRecoveryEmail() != null ) {
+            if(!userUpdateRequest.getRecoveryEmail().isEmpty())
+            {
+                return updateRecoveryEmail(userUpdateRequest.getRecoveryEmail(), userName);
+            }
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
