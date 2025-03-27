@@ -2,7 +2,6 @@ package hugbo1.backend.Users;
 
 import hugbo1.backend.Students.Student;
 import hugbo1.backend.Students.StudentService;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -38,7 +37,7 @@ public class RegisterController {
                 signupRequest.getisInstructor()
         );
         userService.addUser(newUser);
-        if (!newUser.getisInstructor()){
+        if (!newUser.isInstructor()){
             Student student = new Student();
             student.setUserName(newUser.getUserName());
             student.setName(newUser.getName());

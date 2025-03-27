@@ -111,7 +111,7 @@ public class UserController {
 
         try {
             // Step 1: Delete the existing profile image if it exists
-            String oldProfileImagePath = user.getProfileImagePath();
+            String oldProfileImagePath = user.getProfileImageData();
             if (oldProfileImagePath != null && !oldProfileImagePath.isEmpty()) {
                 String oldFileName = Paths.get(oldProfileImagePath).getFileName().toString();
                 Path oldFilePath = Paths.get(uploadDir, oldFileName);
@@ -133,7 +133,7 @@ public class UserController {
             Files.copy(file.getInputStream(), newFilePath);
 
             // Step 3: Update the user's profile image path in the database
-            user.setProfileImagePath("uploads/profile-images/" + fileName);
+            user.setProfileImageData("uploads/profile-images/" + fileName);
             userService.addUser(user);
 
             responseBody.put("status", "Profile image uploaded successfully");
@@ -156,7 +156,7 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseBody);
         }
 
-        String profileImagePath = user.getProfileImagePath();
+        String profileImagePath = user.getProfileImageData();
         if (profileImagePath == null || profileImagePath.isEmpty()) {
             responseBody.put("status", "No profile image found");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseBody);
