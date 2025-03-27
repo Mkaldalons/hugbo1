@@ -13,7 +13,7 @@ public class User {
     private String password;
     private boolean isInstructor;
 
-    private String profileImagePath;
+    private String profileImageData;
     private String recoveryEmail;
 
     public User() {
@@ -59,10 +59,12 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
-    public boolean getisInstructor() {
+
+    public boolean isInstructor() {
         return isInstructor;
     }
-    public void setisInstructor(boolean isInstructor) {
+
+    public void setIsInstructor(boolean isInstructor) {
         this.isInstructor = isInstructor;
     }
 
@@ -70,12 +72,12 @@ public class User {
         return "Name: " + name + "\n User name: " + userName;
     }
     
-    public String getProfileImagePath() {
-        return profileImagePath;
+    public String getProfileImageData() {
+        return profileImageData;
     }
 
-    public void setProfileImagePath(String profileImagePath) {
-        this.profileImagePath = profileImagePath;
+    public void setProfileImageData(String profileImagePath) {
+        this.profileImageData = profileImagePath;
     }
 
     public String getRecoveryEmail() {

@@ -57,7 +57,7 @@ public class CourseController {
     public List<Course> getMyCourses(@PathVariable String userName) {
         User user = userService.getUserByUserName(userName);
         List<Course> courses = new ArrayList<>();
-        if (user.getisInstructor())
+        if (user.isInstructor())
         {
             courses.addAll(courseService.getAllCoursesByInstructor(userName));
         }
