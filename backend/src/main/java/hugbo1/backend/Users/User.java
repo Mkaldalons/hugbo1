@@ -13,7 +13,7 @@ public class User {
     private String password;
     private boolean isInstructor;
 
-    private String profileImageData;
+    private byte[] profileImageData;
     private String recoveryEmail;
 
     public User() {
@@ -72,11 +72,11 @@ public class User {
         return "Name: " + name + "\n User name: " + userName;
     }
     
-    public String getProfileImageData() {
+    public byte[] getProfileImageData() {
         return profileImageData;
     }
 
-    public void setProfileImageData(String profileImagePath) {
+    public void setProfileImageData(byte[] profileImagePath) {
         this.profileImageData = profileImagePath;
     }
 

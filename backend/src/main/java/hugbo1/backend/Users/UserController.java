@@ -94,7 +94,7 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
-    public ResponseEntity<Map<String, Object>> uploadProfileImage(MultipartFile file, String userName) {
+    public ResponseEntity<Map<String, Object>> uploadProfileImage(byte[] file, String userName) {
 
         Map<String, Object> responseBody = new HashMap<>();
 
@@ -104,46 +104,22 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseBody);
         }
 
-        if (file.isEmpty()) {
+        if (file.length == 0) {
             responseBody.put("status", "File is empty. Please select an image.");
             return ResponseEntity.badRequest().body(responseBody);
         }
 
         try {
-            // Step 1: Delete the existing profile image if it exists
-            String oldProfileImagePath = user.getProfileImageData();
-            if (oldProfileImagePath != null && !oldProfileImagePath.isEmpty()) {
-                String oldFileName = Paths.get(oldProfileImagePath).getFileName().toString();
-                Path oldFilePath = Paths.get(uploadDir, oldFileName);
-
-                System.out.println("Attempting to delete old profile image at path: " + oldFilePath);
-                File oldFile = oldFilePath.toFile();
-                if (oldFile.exists()) {
-                    boolean deleted = oldFile.delete(); 
-                    System.out.println("Old profile image deleted: " + oldProfileImagePath + " - Success: " + deleted);
-                } else {
-                    System.out.println("Old profile image not found at path: " + oldFilePath);
-                }
-            }
-
-            // Step 2: Save the new profile image
-            String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
-            Path newFilePath = Paths.get(uploadDir, fileName);
-            Files.createDirectories(newFilePath.getParent());
-            Files.copy(file.getInputStream(), newFilePath);
-
-            // Step 3: Update the user's profile image path in the database
-            user.setProfileImageData("uploads/profile-images/" + fileName);
-            userService.addUser(user);
-
-            responseBody.put("status", "Profile image uploaded successfully");
-            responseBody.put("imagePath", "uploads/profile-images/" + fileName);
-            return ResponseEntity.ok(responseBody);
-        } catch (IOException e) {
-            e.printStackTrace();
-            responseBody.put("status", "Error uploading profile image");
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseBody);
+            user.setProfileImageData(file);
+            userService.updateUser(user);
+            responseBody.put("status", user.getProfileImageData());
+            ResponseEntity.ok(responseBody);
+        }catch (Exception e) {
+            responseBody.put("status", e.getMessage());
+            ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseBody);
         }
+        responseBody.put("status", "Could not upload profile image");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
     }
 
     @GetMapping("{userName}/profileImage")
@@ -156,14 +132,14 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseBody);
         }
 
-        String profileImagePath = user.getProfileImageData();
-        if (profileImagePath == null || profileImagePath.isEmpty()) {
+        byte[] profileImagePath = user.getProfileImageData();
+        if (profileImagePath == null || profileImagePath.length == 0) {
             responseBody.put("status", "No profile image found");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseBody);
         }
 
         responseBody.put("status", "Profile image found");
-        responseBody.put("imagePath", profileImagePath); // Return the path
+        responseBody.put("imagePath", profileImagePath);
         return ResponseEntity.ok(responseBody);
     }
 
