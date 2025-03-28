@@ -7,7 +7,7 @@ public class UserUpdateRequest {
     private String oldPassword;
     private String newPassword;
     private String recoveryEmail;
-    private MultipartFile profileImage;
+    private byte[] profileImage;
 
     public String getOldPassword() {
         return oldPassword;
@@ -41,11 +41,11 @@ public class UserUpdateRequest {
         this.recoveryEmail = recoveryEmail;
     }
 
-    public MultipartFile getProfileImage() {
+    public byte[] getProfileImage() {
         return profileImage;
     }
 
-    public void setProfileImage(MultipartFile profileImage) {
+    public void setProfileImage(byte[] profileImage) {
         this.profileImage = profileImage;
     }
 
