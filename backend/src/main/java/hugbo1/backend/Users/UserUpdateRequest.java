@@ -1,13 +1,11 @@
 package hugbo1.backend.Users;
 
-import org.springframework.web.multipart.MultipartFile;
-
 public class UserUpdateRequest {
     private String userName;
     private String oldPassword;
     private String newPassword;
     private String recoveryEmail;
-    private byte[] profileImage;
+    private byte[] profileImageData;
 
     public String getOldPassword() {
         return oldPassword;
@@ -41,12 +39,12 @@ public class UserUpdateRequest {
         this.recoveryEmail = recoveryEmail;
     }
 
-    public byte[] getProfileImage() {
-        return profileImage;
+    public byte[] getProfileImageData() {
+        return profileImageData;
     }
 
-    public void setProfileImage(byte[] profileImage) {
-        this.profileImage = profileImage;
+    public void setProfileImageData(byte[] profileImageData) {
+        this.profileImageData = profileImageData;
     }
 
 }

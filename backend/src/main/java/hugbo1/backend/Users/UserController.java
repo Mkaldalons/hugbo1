@@ -5,16 +5,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.io.File;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
@@ -77,8 +72,10 @@ public class UserController {
 
     @PatchMapping("{userName}")
     public ResponseEntity<Map<String, Object>> updateUser(@RequestBody UserUpdateRequest userUpdateRequest, @PathVariable String userName) {
-        if (userUpdateRequest.getProfileImage() != null) {
-            return uploadProfileImage(userUpdateRequest.getProfileImage(), userName);
+        System.out.println("Update user request called");
+        if (userUpdateRequest.getProfileImageData() != null || userUpdateRequest.getProfileImageData().length != 0) {
+            System.out.println("Update profile image data called");
+            return uploadProfileImage(userUpdateRequest.getProfileImageData(), userName);
         }
         if (  userUpdateRequest.getNewPassword() != null && userUpdateRequest.getOldPassword() != null ) {
             if(!userUpdateRequest.getNewPassword().isEmpty() && !userUpdateRequest.getOldPassword().isEmpty()) {
@@ -97,29 +94,29 @@ public class UserController {
     public ResponseEntity<Map<String, Object>> uploadProfileImage(byte[] file, String userName) {
 
         Map<String, Object> responseBody = new HashMap<>();
-
         User user = userService.getUserByUserName(userName);
         if (user == null) {
             responseBody.put("status", "User not found");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseBody);
         }
-
+        System.out.println("User is not null");
         if (file.length == 0) {
+            System.out.println("File is empty");
             responseBody.put("status", "File is empty. Please select an image.");
             return ResponseEntity.badRequest().body(responseBody);
         }
-
+        System.out.println("File is not empty");
         try {
             user.setProfileImageData(file);
             userService.updateUser(user);
+            System.out.println("Profile image updated successfully");
             responseBody.put("status", user.getProfileImageData());
-            ResponseEntity.ok(responseBody);
+            return ResponseEntity.ok(responseBody);
         }catch (Exception e) {
+            System.out.println("Caught Exception");
             responseBody.put("status", e.getMessage());
-            ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseBody);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseBody);
         }
-        responseBody.put("status", "Could not upload profile image");
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
     }
 
     @GetMapping("{userName}/profileImage")
