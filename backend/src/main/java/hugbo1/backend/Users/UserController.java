@@ -72,9 +72,7 @@ public class UserController {
 
     @PatchMapping("{userName}")
     public ResponseEntity<Map<String, Object>> updateUser(@RequestBody UserUpdateRequest userUpdateRequest, @PathVariable String userName) {
-        System.out.println("Update user request called");
         if (userUpdateRequest.getProfileImageData() != null || userUpdateRequest.getProfileImageData().length != 0) {
-            System.out.println("Update profile image data called");
             return uploadProfileImage(userUpdateRequest.getProfileImageData(), userName);
         }
         if (  userUpdateRequest.getNewPassword() != null && userUpdateRequest.getOldPassword() != null ) {
@@ -99,21 +97,16 @@ public class UserController {
             responseBody.put("status", "User not found");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseBody);
         }
-        System.out.println("User is not null");
         if (file.length == 0) {
-            System.out.println("File is empty");
             responseBody.put("status", "File is empty. Please select an image.");
             return ResponseEntity.badRequest().body(responseBody);
         }
-        System.out.println("File is not empty");
         try {
             user.setProfileImageData(file);
             userService.updateUser(user);
-            System.out.println("Profile image updated successfully");
             responseBody.put("status", user.getProfileImageData());
             return ResponseEntity.ok(responseBody);
         }catch (Exception e) {
-            System.out.println("Caught Exception");
             responseBody.put("status", e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseBody);
         }

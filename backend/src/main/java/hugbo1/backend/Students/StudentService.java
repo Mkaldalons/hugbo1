@@ -78,7 +78,6 @@ public class StudentService {
         List <AssignmentSubmission> submissions = studentRepository.findAssignmentSubmissionByStudentId(student.getStudentId());
         double averageGrade = 0;
         for (AssignmentSubmission assignmentSubmission : submissions) {
-            System.out.println("Assignment Id: " + assignmentSubmission.getAssignmentId() + "grade: "+assignmentSubmission.getAssignmentGrade());
            averageGrade += assignmentSubmission.getAssignmentGrade();
         }
         if (!submissions.isEmpty()) {
@@ -110,7 +109,6 @@ public class StudentService {
     public boolean removeSelfFromCourse(String userName, String courseId) {
         Student student = studentRepository.findByUserName(userName);
         if (student == null) {
-            System.out.println("Student not found: " + userName);
             return false;
         }
     
@@ -119,7 +117,6 @@ public class StudentService {
             .findFirst();
     
         if (!courseOpt.isPresent()) {
-            System.out.println("Course not found for student: " + courseId);
             return false;
         }
     

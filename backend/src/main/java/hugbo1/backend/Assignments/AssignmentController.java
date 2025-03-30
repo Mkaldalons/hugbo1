@@ -83,8 +83,7 @@ public class AssignmentController {
 
     @GetMapping("courses/{courseId}")
     public ResponseEntity<List<AssignmentResponse>> getAssignmentsByCourse(@PathVariable Integer courseId) {
-        List<Assignment> assignments = new ArrayList<>();
-        HashMap<String, List<AssignmentResponse>> response = new HashMap<>();
+        List<Assignment> assignments;
         List<AssignmentResponse> assignmentResponses = new ArrayList<>();
         if(courseService.doesCourseExist(courseId)) {
             assignments = assignmentService.getAllAssignmentsByCourseId(courseId);

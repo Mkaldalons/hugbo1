@@ -3,6 +3,7 @@ package hugbo1.backend.Assignments;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.time.LocalDate;
 
@@ -46,10 +47,10 @@ public class AssignmentService {
     }
     public boolean canBeUnpublished(int id) {
         Assignment assignment = assignmentRepository.findByAssignmentId(id);
-        LocalDate dueDate = assignment.getDueDate();
+        LocalDateTime dueDate = assignment.getDueDate();
         LocalDate oneWeekFromNow = dateToday.plusWeeks(1);
 
-        return !dueDate.isBefore(oneWeekFromNow) && !dueDate.isEqual(oneWeekFromNow);
+        return !dueDate.isBefore(oneWeekFromNow.atStartOfDay()) && !dueDate.isEqual(oneWeekFromNow.atStartOfDay());
     }
     public List<Assignment> getAllPublishedAssignmentByCourseId(Integer courseId) {
         List<Assignment> assignments = assignmentRepository.findAssignmentsByCourseId(courseId);
