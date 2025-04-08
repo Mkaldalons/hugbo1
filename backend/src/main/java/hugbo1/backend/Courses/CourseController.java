@@ -162,7 +162,7 @@ public class CourseController {
         }
     }
 
-    @GetMapping("/courses/{courseId}")
+    @GetMapping("course/{courseId}")
     public ResponseEntity<Course> getCourseById(@PathVariable Integer courseId) {
         Optional<Course> course = courseService.getCourseById(courseId);
         if (course.isPresent()) {
@@ -175,15 +175,19 @@ public class CourseController {
     @PatchMapping("/{courseId}")
     public ResponseEntity<Map<String, String>> updateCourseDetails(@PathVariable Integer courseId, @RequestBody CourseRequest updates) {
         Map<String, String> response = new HashMap<>();
-        if (!updates.getCourseName().isEmpty()) {
-            courseService.updateCourseName(courseId, updates.getCourseName());
-            response.put("message", "Course name updated successfully");
-            return ResponseEntity.ok(response);
+        if (updates.getCourseName() != null) {
+            if (!updates.getCourseName().isEmpty()) {
+                courseService.updateCourseName(courseId, updates.getCourseName());
+                response.put("message", "Course name updated successfully");
+                return ResponseEntity.ok(response);
+            }
         }
-        if(!updates.getDescription().isEmpty()) {
-            courseService.updateCourseDescription(courseId, updates.getDescription());
-            response.put("message", "Course description updated successfully");
-            return ResponseEntity.ok(response);
+        if (updates.getDescription() != null) {
+            if(!updates.getDescription().isEmpty()) {
+                courseService.updateCourseDescription(courseId, updates.getDescription());
+                response.put("message", "Course description updated successfully");
+                return ResponseEntity.ok(response);
+            }
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
