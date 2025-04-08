@@ -72,8 +72,11 @@ public class UserController {
 
     @PatchMapping("{userName}")
     public ResponseEntity<Map<String, Object>> updateUser(@RequestBody UserUpdateRequest userUpdateRequest, @PathVariable String userName) {
-        if (userUpdateRequest.getProfileImageData() != null || userUpdateRequest.getProfileImageData().length != 0) {
-            return uploadProfileImage(userUpdateRequest.getProfileImageData(), userName);
+        if (userUpdateRequest.getProfileImageData() != null) {
+            if(userUpdateRequest.getProfileImageData().length != 0)
+            {
+                return uploadProfileImage(userUpdateRequest.getProfileImageData(), userName);
+            }
         }
         if (  userUpdateRequest.getNewPassword() != null && userUpdateRequest.getOldPassword() != null ) {
             if(!userUpdateRequest.getNewPassword().isEmpty() && !userUpdateRequest.getOldPassword().isEmpty()) {
